@@ -1,0 +1,32 @@
+{
+  "configurations" : [
+    {
+      "id" : "CC401413-1A1A-4818-ACEC-7B30B918973B",
+      "name" : "Configuration 1",
+      "options" : {
+
+      }
+    }
+  ],
+  "defaultOptions" : {
+    "codeCoverage" : false
+  },
+  "testTargets" : [
+    {
+      "skippedTests" : [
+        "AATHTest",
+        "AgentTest",
+        "CredentialsTest",
+        "CriolloTest",
+        "OobTest",
+        "ProofsTest"
+      ],
+      "target" : {
+        "containerPath" : "container:AriesFramework.xcodeproj",
+        "identifier" : "BB3F293127E3031A00D667C1",
+        "name" : "AriesFrameworkTests"
+      }
+    }
+  ],
+  "version" : 1
+}

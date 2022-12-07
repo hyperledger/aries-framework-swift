@@ -1,0 +1,1580 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 55;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		0233A18A249B8CDB80DDDFDA /* Pods_AriesFrameworkTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EC84AE11C175D3BF0C8C6B5F /* Pods_AriesFrameworkTests.framework */; };
+		BB076808285C38BC00BEACC9 /* OutOfBandServiceTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB076807285C38BC00BEACC9 /* OutOfBandServiceTest.swift */; };
+		BB081CCD2845BA3700087F92 /* RepositotyTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB081CCC2845BA3700087F92 /* RepositotyTest.swift */; };
+		BB081CCF2845BC6300087F92 /* TestRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB081CCE2845BC6300087F92 /* TestRecord.swift */; };
+		BB0EB33427E4280B00B0D0E4 /* ConnectionRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB0EB33327E4280B00B0D0E4 /* ConnectionRecord.swift */; };
+		BB0EB33627E429FD00B0D0E4 /* DidDoc.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB0EB33527E429FD00B0D0E4 /* DidDoc.swift */; };
+		BB0EB33827E42AE800B0D0E4 /* Connection.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB0EB33727E42AE800B0D0E4 /* Connection.swift */; };
+		BB0EB33B27E44C5900B0D0E4 /* EmbeddedAuthentication.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB0EB33A27E44C5900B0D0E4 /* EmbeddedAuthentication.swift */; };
+		BB0EB33F27E44D5000B0D0E4 /* Ed25119Sig2018.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB0EB33E27E44D5000B0D0E4 /* Ed25119Sig2018.swift */; };
+		BB0EB34127E44E1500B0D0E4 /* PublicKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB0EB34027E44E1500B0D0E4 /* PublicKey.swift */; };
+		BB0EB34527E488E800B0D0E4 /* EddsaSaSigSecp256k1.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB0EB34427E488E800B0D0E4 /* EddsaSaSigSecp256k1.swift */; };
+		BB0EB34727E4895700B0D0E4 /* RsaSig2018.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB0EB34627E4895700B0D0E4 /* RsaSig2018.swift */; };
+		BB0F6C8B286400B900F86BB5 /* OobTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB0F6C8A286400B900F86BB5 /* OobTest.swift */; };
+		BB141579286ADCC600235480 /* CredentialService.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB141578286ADCC500235480 /* CredentialService.swift */; };
+		BB14157B286ADD4C00235480 /* CredentialRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB14157A286ADD4C00235480 /* CredentialRepository.swift */; };
+		BB14157D286ADD9700235480 /* CredentialExchangeRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB14157C286ADD9700235480 /* CredentialExchangeRecord.swift */; };
+		BB14157F286AF0ED00235480 /* CredentialState.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB14157E286AF0EB00235480 /* CredentialState.swift */; };
+		BB141581286AF10600235480 /* CredentialPreviewAttribute.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB141580286AF10600235480 /* CredentialPreviewAttribute.swift */; };
+		BB141583286AF11400235480 /* AutoAcceptCredential.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB141582286AF11400235480 /* AutoAcceptCredential.swift */; };
+		BB14AB5C2856EE5300C04EE0 /* AttachmentTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB14AB5B2856EE5300C04EE0 /* AttachmentTest.swift */; };
+		BB14AB5F28571A9E00C04EE0 /* OutOfBandRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB14AB5E28571A9D00C04EE0 /* OutOfBandRecord.swift */; };
+		BB14AB6128571AB300C04EE0 /* OutOfBandRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB14AB6028571AB300C04EE0 /* OutOfBandRepository.swift */; };
+		BB14AB6328571BE200C04EE0 /* OutOfBandTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB14AB6228571BE200C04EE0 /* OutOfBandTypes.swift */; };
+		BB14AB6628573BC300C04EE0 /* DIDParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB14AB6528573BC300C04EE0 /* DIDParser.swift */; };
+		BB14AB68285740E100C04EE0 /* DIDParserTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB14AB67285740E000C04EE0 /* DIDParserTest.swift */; };
+		BB1814D8285B0A3400BD4A05 /* HandshakeReuseMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB1814D7285B0A3400BD4A05 /* HandshakeReuseMessage.swift */; };
+		BB1814DA285B0A4C00BD4A05 /* HandshakeReuseAcceptedMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB1814D9285B0A4C00BD4A05 /* HandshakeReuseAcceptedMessage.swift */; };
+		BB1814DD285B0A7F00BD4A05 /* HandshakeReuseHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB1814DC285B0A7F00BD4A05 /* HandshakeReuseHandler.swift */; };
+		BB1814DF285B0A8A00BD4A05 /* HandshakeReuseAcceptedHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB1814DE285B0A8A00BD4A05 /* HandshakeReuseAcceptedHandler.swift */; };
+		BB1814E1285B0E6500BD4A05 /* OutOfBandService.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB1814E0285B0E6500BD4A05 /* OutOfBandService.swift */; };
+		BB1BAB9327E97C8600F623DA /* IndyAgentService.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB1BAB9227E97C8600F623DA /* IndyAgentService.swift */; };
+		BB1CB3A8286072EB008E8DA6 /* OutOfBandCommand.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB1CB3A7286072EB008E8DA6 /* OutOfBandCommand.swift */; };
+		BB1F4185286C25CE0076BE60 /* IndyCredentialView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB1F4184286C25CE0076BE60 /* IndyCredentialView.swift */; };
+		BB1F4187286C4D980076BE60 /* CredentialServiceOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB1F4186286C4D980076BE60 /* CredentialServiceOptions.swift */; };
+		BB2392F8282E3DA00056B55D /* MediationGrantHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB2392F7282E3DA00056B55D /* MediationGrantHandler.swift */; };
+		BB2392FA282E3DB00056B55D /* MediationDenyHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB2392F9282E3DB00056B55D /* MediationDenyHandler.swift */; };
+		BB254935285185AA00769958 /* OutOfBandInvitation.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB254934285185AA00769958 /* OutOfBandInvitation.swift */; };
+		BB2549382851868500769958 /* OutOfBandInvitationTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB2549372851868500769958 /* OutOfBandInvitationTest.swift */; };
+		BB25493A285192D900769958 /* HandshakeProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB254939285192D900769958 /* HandshakeProtocol.swift */; };
+		BB25493C285193A700769958 /* DiDExchange.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB25493B285193A700769958 /* DiDExchange.swift */; };
+		BB2549402851966400769958 /* OutOfBandDidCommService.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB25493F2851966400769958 /* OutOfBandDidCommService.swift */; };
+		BB2549422851B56C00769958 /* Attachment.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB2549412851B56C00769958 /* Attachment.swift */; };
+		BB2549442851B86800769958 /* JwsTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB2549432851B86800769958 /* JwsTypes.swift */; };
+		BB255D1C28503A8100839B3A /* CredentialsTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB255D1B28503A8100839B3A /* CredentialsTest.swift */; };
+		BB255D1E285045F200839B3A /* TestHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB255D1D285045F000839B3A /* TestHelper.swift */; };
+		BB26AD0A28110A6F008E7C11 /* MessageReceiver.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB26AD0928110A6F008E7C11 /* MessageReceiver.swift */; };
+		BB26AD0C2811415C008E7C11 /* WalletTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB26AD0B2811415C008E7C11 /* WalletTest.swift */; };
+		BB295D4A27FFCF2D004994C8 /* ConnectionRequestMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB295D4927FFCF2D004994C8 /* ConnectionRequestMessage.swift */; };
+		BB295D4D27FFD2E2004994C8 /* ConnectionRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB295D4C27FFD2E2004994C8 /* ConnectionRepository.swift */; };
+		BB2B735B287291B000C87F67 /* OfferCredentialMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB2B735A287291B000C87F67 /* OfferCredentialMessage.swift */; };
+		BB2B735D2872AFDC00C87F67 /* CredentialPreview.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB2B735C2872AFDC00C87F67 /* CredentialPreview.swift */; };
+		BB2B735F2872B5EC00C87F67 /* DidCommMessageRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB2B735E2872B5EC00C87F67 /* DidCommMessageRecord.swift */; };
+		BB2B73612872B61B00C87F67 /* DidCommMessageRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB2B73602872B61B00C87F67 /* DidCommMessageRepository.swift */; };
+		BB2B73632872C73800C87F67 /* DidCommMessageRepositoryTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB2B73622872C73800C87F67 /* DidCommMessageRepositoryTest.swift */; };
+		BB2DC654281A8A6700220250 /* Dispatcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB2DC653281A8A6700220250 /* Dispatcher.swift */; };
+		BB2DC656281BC80200220250 /* MessageHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB2DC655281BC80200220250 /* MessageHandler.swift */; };
+		BB2DC65828223E9800220250 /* SignatureDecorator.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB2DC65728223E9800220250 /* SignatureDecorator.swift */; };
+		BB2DC65A28223FE200220250 /* ConnectionResponseMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB2DC65928223FE200220250 /* ConnectionResponseMessage.swift */; };
+		BB2F06C627EB1BF6002C8F38 /* ReferencedAuthentication.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB2F06C527EB1BF6002C8F38 /* ReferencedAuthentication.swift */; };
+		BB39897227EC30BC00A1CA1C /* Authentication.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB39897127EC30BC00A1CA1C /* Authentication.swift */; };
+		BB39897427EC30D500A1CA1C /* DidDocTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB39897327EC30D500A1CA1C /* DidDocTest.swift */; };
+		BB39897627EC3E5A00A1CA1C /* DidCommService.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB39897527EC3E5900A1CA1C /* DidCommService.swift */; };
+		BB39897827EC3E5D00A1CA1C /* DidDocumentService.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB39897727EC3E5D00A1CA1C /* DidDocumentService.swift */; };
+		BB39897A27EC3EE000A1CA1C /* DidDocService.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB39897927EC3EE000A1CA1C /* DidDocService.swift */; };
+		BB39E0CC2806A1C4006940A3 /* HttpOutboundTransport.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB39E0CB2806A1C4006940A3 /* HttpOutboundTransport.swift */; };
+		BB3E133727E813110064F24E /* PublicKeyTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB0EB34827E489B300B0D0E4 /* PublicKeyTest.swift */; };
+		BB3F293327E3031A00D667C1 /* AriesFramework.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BB3F292827E3031A00D667C1 /* AriesFramework.framework */; };
+		BB3F293927E3031A00D667C1 /* AriesFramework.h in Headers */ = {isa = PBXBuildFile; fileRef = BB3F292B27E3031A00D667C1 /* AriesFramework.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		BB3F295927E305F400D667C1 /* AgentTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB3F295527E305F400D667C1 /* AgentTest.swift */; };
+		BB3F295B27E3089300D667C1 /* ConnectionInvitationMessageTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB3F295A27E3089200D667C1 /* ConnectionInvitationMessageTest.swift */; };
+		BB3F296B27E315C600D667C1 /* Wallet.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB3F295D27E315C600D667C1 /* Wallet.swift */; };
+		BB3F296C27E315C600D667C1 /* AgentConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB3F295F27E315C600D667C1 /* AgentConfig.swift */; };
+		BB3F296D27E315C600D667C1 /* MessageSender.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB3F296027E315C600D667C1 /* MessageSender.swift */; };
+		BB3F296E27E315C600D667C1 /* Agent.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB3F296127E315C600D667C1 /* Agent.swift */; };
+		BB3F296F27E315C600D667C1 /* ConnectionInvitationMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB3F296427E315C600D667C1 /* ConnectionInvitationMessage.swift */; };
+		BB3F297027E315C600D667C1 /* ConnectionCommand.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB3F296527E315C600D667C1 /* ConnectionCommand.swift */; };
+		BB3F297127E315C600D667C1 /* ConnectionService.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB3F296627E315C600D667C1 /* ConnectionService.swift */; };
+		BB3F297227E315C600D667C1 /* MediationRecipient.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB3F296727E315C600D667C1 /* MediationRecipient.swift */; };
+		BB3F297327E315C600D667C1 /* AriesFrameworkError.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB3F296927E315C600D667C1 /* AriesFrameworkError.swift */; };
+		BB3F297427E315C600D667C1 /* Types.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB3F296A27E315C600D667C1 /* Types.swift */; };
+		BB42BD2927FD4FB600880951 /* AgentDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB42BD2827FD4FB600880951 /* AgentDelegate.swift */; };
+		BB44A933283CA7B20029A7E0 /* BaseRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB44A932283CA7B20029A7E0 /* BaseRecord.swift */; };
+		BB44A935283CA7D00029A7E0 /* Repository.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB44A934283CA7D00029A7E0 /* Repository.swift */; };
+		BB5A51E928E693DC00FF2229 /* ProposeCredentialMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB5A51E828E693DC00FF2229 /* ProposeCredentialMessage.swift */; };
+		BB5E99A3282281AC00746E0F /* ConnectionResponseHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB5E99A2282281AC00746E0F /* ConnectionResponseHandler.swift */; };
+		BB5E99A62829108200746E0F /* SignatureDecoratorTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB5E99A52829108200746E0F /* SignatureDecoratorTest.swift */; };
+		BB5E99A8282A53D300746E0F /* TrustPingMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB5E99A7282A53D300746E0F /* TrustPingMessage.swift */; };
+		BB62F2C928AF1E6100B69D35 /* CredentialAckMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB62F2C828AF1E6100B69D35 /* CredentialAckMessage.swift */; };
+		BB63DC302897C41A00BDF91E /* ConnectionRequestHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB63DC2F2897C41900BDF91E /* ConnectionRequestHandler.swift */; };
+		BB63DC322897C96F00BDF91E /* TrustPingMessageHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB63DC312897C96F00BDF91E /* TrustPingMessageHandler.swift */; };
+		BB655FAD28B3542300A919E8 /* RevocationRegistryDelta.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB655FAC28B3542300A919E8 /* RevocationRegistryDelta.swift */; };
+		BB655FAF28B3668800A919E8 /* ProofCommand.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB655FAE28B3668800A919E8 /* ProofCommand.swift */; };
+		BB7765352922215F0007B678 /* AsyncWaiter.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB7765342922215F0007B678 /* AsyncWaiter.swift */; };
+		BB7A0338288F8FF900D53822 /* CredentialValues.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB7A0337288F8FF900D53822 /* CredentialValues.swift */; };
+		BB7A033A288FAD6200D53822 /* CredentialValuesTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB7A0339288FAD6200D53822 /* CredentialValuesTest.swift */; };
+		BB7A033E2891259500D53822 /* PresentationAckMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB7A033D2891259500D53822 /* PresentationAckMessage.swift */; };
+		BB7A0340289246FD00D53822 /* OfferCredentialHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB7A033F289246FD00D53822 /* OfferCredentialHandler.swift */; };
+		BB7A0343289247B400D53822 /* RequestCredentialHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB7A0342289247B400D53822 /* RequestCredentialHandler.swift */; };
+		BB7A03452892481800D53822 /* IssueCredentialHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB7A03442892481800D53822 /* IssueCredentialHandler.swift */; };
+		BB7A03472892484C00D53822 /* CredentialAckHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB7A03462892484C00D53822 /* CredentialAckHandler.swift */; };
+		BB7C768D28B46FF200C1AA96 /* RequestPresentationHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB7C768C28B46FF200C1AA96 /* RequestPresentationHandler.swift */; };
+		BB7C768F28B4700E00C1AA96 /* PresentationHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB7C768E28B4700E00C1AA96 /* PresentationHandler.swift */; };
+		BB7C769128B478CE00C1AA96 /* PresentationAckHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB7C769028B478CE00C1AA96 /* PresentationAckHandler.swift */; };
+		BB7C769428B480A900C1AA96 /* ProofsTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB7C769328B480A900C1AA96 /* ProofsTest.swift */; };
+		BB7C769628B4B4F800C1AA96 /* IndyCredential.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB7C769528B4B4F800C1AA96 /* IndyCredential.swift */; };
+		BB7C769B28B7410F00C1AA96 /* WsOutboundTransport.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB7C769A28B7410F00C1AA96 /* WsOutboundTransport.swift */; };
+		BB90F25F28F902080066AE87 /* KeylistUpdateMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB90F25E28F902070066AE87 /* KeylistUpdateMessage.swift */; };
+		BB90F26128F9022D0066AE87 /* KeylistUpdateResponseMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB90F26028F9022D0066AE87 /* KeylistUpdateResponseMessage.swift */; };
+		BB90F26328F902560066AE87 /* KeylistUpdateResponseHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB90F26228F902560066AE87 /* KeylistUpdateResponseHandler.swift */; };
+		BB9A04D92898FA870054D0D2 /* OutboundTransport.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB9A04D82898FA870054D0D2 /* OutboundTransport.swift */; };
+		BB9A04DB2898FAA40054D0D2 /* SubjectOutboundTransport.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB9A04DA2898FAA40054D0D2 /* SubjectOutboundTransport.swift */; };
+		BB9A04DF289902E80054D0D2 /* ConnectionTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB9A04DE289902E80054D0D2 /* ConnectionTest.swift */; };
+		BB9A04E2289A6A550054D0D2 /* local-genesis.txn in Resources */ = {isa = PBXBuildFile; fileRef = BB9A04E1289A65270054D0D2 /* local-genesis.txn */; };
+		BB9A04E4289B5EF40054D0D2 /* CredentialsCommand.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB9A04E3289B5EF40054D0D2 /* CredentialsCommand.swift */; };
+		BBA00EC828BDAE050037601C /* bcovrin-genesis.txn in Resources */ = {isa = PBXBuildFile; fileRef = BBA00EC728BDAE050037601C /* bcovrin-genesis.txn */; };
+		BBA00ECB28C9B4D50037601C /* CriolloTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBA00ECA28C9B4D50037601C /* CriolloTest.swift */; };
+		BBA2CF2627F452FB00437E58 /* ConnectionServiceTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBA2CF2527F452FA00437E58 /* ConnectionServiceTest.swift */; };
+		BBA92EB82924D0B7007F73B2 /* MediatorPickupStrategy.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBA92EB72924D0B7007F73B2 /* MediatorPickupStrategy.swift */; };
+		BBAAA627280FF05000F8AC63 /* TransportDecorator.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBAAA626280FF05000F8AC63 /* TransportDecorator.swift */; };
+		BBABA78928D17C32001EA090 /* TestHarnessConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBABA78828D17C32001EA090 /* TestHarnessConfig.swift */; };
+		BBABA78B28D1A107001EA090 /* AATHTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBABA78A28D1A107001EA090 /* AATHTest.swift */; };
+		BBABA79028D1B553001EA090 /* AgentController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBABA78F28D1B553001EA090 /* AgentController.swift */; };
+		BBABA79228D1BB42001EA090 /* ConnectionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBABA79128D1BB42001EA090 /* ConnectionController.swift */; };
+		BBABA79428D1BB67001EA090 /* CredentialController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBABA79328D1BB67001EA090 /* CredentialController.swift */; };
+		BBABA79628D1BB9B001EA090 /* CredentialDefinitionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBABA79528D1BB9B001EA090 /* CredentialDefinitionController.swift */; };
+		BBABA79828D1BBAC001EA090 /* DidController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBABA79728D1BBAC001EA090 /* DidController.swift */; };
+		BBABA79A28D1BC05001EA090 /* PresentProofController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBABA79928D1BC05001EA090 /* PresentProofController.swift */; };
+		BBABA79C28D1BC20001EA090 /* SchemaController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBABA79B28D1BC20001EA090 /* SchemaController.swift */; };
+		BBABA79E28D1CB12001EA090 /* ControllerUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBABA79D28D1CB12001EA090 /* ControllerUtils.swift */; };
+		BBABFF3C28AE182600141EB2 /* PartialProof.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBABFF3B28AE182600141EB2 /* PartialProof.swift */; };
+		BBADC253287BF5410099FE2C /* RequestCredentialMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBADC252287BF5410099FE2C /* RequestCredentialMessage.swift */; };
+		BBADC255287BF5590099FE2C /* IssueCredentialMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBADC254287BF5590099FE2C /* IssueCredentialMessage.swift */; };
+		BBADC258287C071B0099FE2C /* LedgerService.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBADC257287C071B0099FE2C /* LedgerService.swift */; };
+		BBB04E0028377DEF00ECA48B /* BatchMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBB04DFF28377DEF00ECA48B /* BatchMessage.swift */; };
+		BBB04E0228377E0D00ECA48B /* BatchPickupMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBB04E0128377E0D00ECA48B /* BatchPickupMessage.swift */; };
+		BBB04E0428377F5100ECA48B /* BatchHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBB04E0328377F5100ECA48B /* BatchHandler.swift */; };
+		BBB4E5C728A49D69007DF641 /* ProofRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBB4E5C628A49D69007DF641 /* ProofRepository.swift */; };
+		BBB4E5C928A49D9C007DF641 /* ProofExchangeRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBB4E5C828A49D9C007DF641 /* ProofExchangeRecord.swift */; };
+		BBB4E5CB28A4A090007DF641 /* AutoAcceptProof.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBB4E5CA28A4A090007DF641 /* AutoAcceptProof.swift */; };
+		BBB4E5CD28A4A0B1007DF641 /* ProofState.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBB4E5CC28A4A0B1007DF641 /* ProofState.swift */; };
+		BBB4E5CF28A4A39F007DF641 /* ProofService.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBB4E5CE28A4A39F007DF641 /* ProofService.swift */; };
+		BBB4E5D128A4A3FC007DF641 /* RevocationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBB4E5D028A4A3FC007DF641 /* RevocationService.swift */; };
+		BBB4E5D328A4C966007DF641 /* RequestPresentationMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBB4E5D228A4C966007DF641 /* RequestPresentationMessage.swift */; };
+		BBB4E5D528A4D51C007DF641 /* ProofRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBB4E5D428A4D51C007DF641 /* ProofRequest.swift */; };
+		BBB4E5D728A4D6B0007DF641 /* ProofAttributeInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBB4E5D628A4D6B0007DF641 /* ProofAttributeInfo.swift */; };
+		BBB4E5D928A4D79D007DF641 /* ProofPredicateInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBB4E5D828A4D79D007DF641 /* ProofPredicateInfo.swift */; };
+		BBB4E5DB28A4DC49007DF641 /* RevocationInterval.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBB4E5DA28A4DC49007DF641 /* RevocationInterval.swift */; };
+		BBB4E5DD28A4DDB9007DF641 /* AttributeFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBB4E5DC28A4DDB9007DF641 /* AttributeFilter.swift */; };
+		BBB4E5DF28A4EF48007DF641 /* PresentationMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBB4E5DE28A4EF48007DF641 /* PresentationMessage.swift */; };
+		BBB4E5E128A4F252007DF641 /* RequestedAttribute.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBB4E5E028A4F252007DF641 /* RequestedAttribute.swift */; };
+		BBB4E5E328A4F261007DF641 /* RequestedCredentials.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBB4E5E228A4F261007DF641 /* RequestedCredentials.swift */; };
+		BBB4E5E528A4F282007DF641 /* RequestedPredicate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBB4E5E428A4F282007DF641 /* RequestedPredicate.swift */; };
+		BBB4E5E728A4F291007DF641 /* RequestedProof.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBB4E5E628A4F291007DF641 /* RequestedProof.swift */; };
+		BBB4E5E928A4F2A4007DF641 /* RetrievedCredentials.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBB4E5E828A4F2A4007DF641 /* RetrievedCredentials.swift */; };
+		BBB4E5EB28A4FF8F007DF641 /* IndyCredentialInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBB4E5EA28A4FF8F007DF641 /* IndyCredentialInfo.swift */; };
+		BBB4E5ED28A500C8007DF641 /* ProofAttribute.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBB4E5EC28A500C8007DF641 /* ProofAttribute.swift */; };
+		BBC3D05B280428DE00DA3C70 /* AgentMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBC3D05A280428DE00DA3C70 /* AgentMessage.swift */; };
+		BBC3D05E2804292D00DA3C70 /* ThreadDecorator.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBC3D05D2804292D00DA3C70 /* ThreadDecorator.swift */; };
+		BBD15D7A28D82D0F0081D2BB /* OutOfBandController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBD15D7928D82D0D0081D2BB /* OutOfBandController.swift */; };
+		BBD15D7C28D8337E0081D2BB /* AgentInboundController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBD15D7B28D8337E0081D2BB /* AgentInboundController.swift */; };
+		BBD436C627E9D49B005ADF30 /* PubkeyParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBD436C527E9D49B005ADF30 /* PubkeyParser.swift */; };
+		BBEBC560282CCA8D0080C2EA /* MediationGrantMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBEBC55F282CCA8D0080C2EA /* MediationGrantMessage.swift */; };
+		BBEBC562282CCA9F0080C2EA /* MediationDenyMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBEBC561282CCA9F0080C2EA /* MediationDenyMessage.swift */; };
+		BBEBC565282CD75F0080C2EA /* MediationRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBEBC564282CD75F0080C2EA /* MediationRecord.swift */; };
+		BBEBC567282CD76D0080C2EA /* MediationRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBEBC566282CD76D0080C2EA /* MediationRepository.swift */; };
+		BBEBC569282CFC630080C2EA /* MediationRequestMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBEBC568282CFC630080C2EA /* MediationRequestMessage.swift */; };
+		BBFCDA7628DDA31C00100EDA /* IssueCredentialController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBFCDA7528DDA31C00100EDA /* IssueCredentialController.swift */; };
+		D3D19026A800EC6E3BB38526 /* Pods_AriesFramework.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D228CD5DF7C2A7E5833E5AA3 /* Pods_AriesFramework.framework */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		BB3F293427E3031A00D667C1 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = BB3F291F27E3031A00D667C1 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = BB3F292727E3031A00D667C1;
+			remoteInfo = AriesFramework;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		1D264F4676585E50BCE4E119 /* Pods-AriesFramework-AriesFrameworkTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AriesFramework-AriesFrameworkTests.debug.xcconfig"; path = "Target Support Files/Pods-AriesFramework-AriesFrameworkTests/Pods-AriesFramework-AriesFrameworkTests.debug.xcconfig"; sourceTree = "<group>"; };
+		4CF404074A623D7EF73AECF4 /* Pods-AriesFrameworkTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AriesFrameworkTests.debug.xcconfig"; path = "Target Support Files/Pods-AriesFrameworkTests/Pods-AriesFrameworkTests.debug.xcconfig"; sourceTree = "<group>"; };
+		665539ECD1EB40241981FBC7 /* Pods-AriesFramework.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AriesFramework.release.xcconfig"; path = "Target Support Files/Pods-AriesFramework/Pods-AriesFramework.release.xcconfig"; sourceTree = "<group>"; };
+		85951C57ED0829482532A0A2 /* Pods-AriesFramework.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AriesFramework.debug.xcconfig"; path = "Target Support Files/Pods-AriesFramework/Pods-AriesFramework.debug.xcconfig"; sourceTree = "<group>"; };
+		BB076807285C38BC00BEACC9 /* OutOfBandServiceTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OutOfBandServiceTest.swift; sourceTree = "<group>"; };
+		BB081CCC2845BA3700087F92 /* RepositotyTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RepositotyTest.swift; sourceTree = "<group>"; };
+		BB081CCE2845BC6300087F92 /* TestRecord.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestRecord.swift; sourceTree = "<group>"; };
+		BB0EB33327E4280B00B0D0E4 /* ConnectionRecord.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConnectionRecord.swift; sourceTree = "<group>"; };
+		BB0EB33527E429FD00B0D0E4 /* DidDoc.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DidDoc.swift; sourceTree = "<group>"; };
+		BB0EB33727E42AE800B0D0E4 /* Connection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Connection.swift; sourceTree = "<group>"; };
+		BB0EB33A27E44C5900B0D0E4 /* EmbeddedAuthentication.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmbeddedAuthentication.swift; sourceTree = "<group>"; };
+		BB0EB33E27E44D5000B0D0E4 /* Ed25119Sig2018.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Ed25119Sig2018.swift; sourceTree = "<group>"; };
+		BB0EB34027E44E1500B0D0E4 /* PublicKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PublicKey.swift; sourceTree = "<group>"; };
+		BB0EB34427E488E800B0D0E4 /* EddsaSaSigSecp256k1.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EddsaSaSigSecp256k1.swift; sourceTree = "<group>"; };
+		BB0EB34627E4895700B0D0E4 /* RsaSig2018.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RsaSig2018.swift; sourceTree = "<group>"; };
+		BB0EB34827E489B300B0D0E4 /* PublicKeyTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PublicKeyTest.swift; sourceTree = "<group>"; };
+		BB0F6C8A286400B900F86BB5 /* OobTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OobTest.swift; sourceTree = "<group>"; };
+		BB141578286ADCC500235480 /* CredentialService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CredentialService.swift; sourceTree = "<group>"; };
+		BB14157A286ADD4C00235480 /* CredentialRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CredentialRepository.swift; sourceTree = "<group>"; };
+		BB14157C286ADD9700235480 /* CredentialExchangeRecord.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CredentialExchangeRecord.swift; sourceTree = "<group>"; };
+		BB14157E286AF0EB00235480 /* CredentialState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CredentialState.swift; sourceTree = "<group>"; };
+		BB141580286AF10600235480 /* CredentialPreviewAttribute.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CredentialPreviewAttribute.swift; sourceTree = "<group>"; };
+		BB141582286AF11400235480 /* AutoAcceptCredential.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AutoAcceptCredential.swift; sourceTree = "<group>"; };
+		BB14AB5B2856EE5300C04EE0 /* AttachmentTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AttachmentTest.swift; sourceTree = "<group>"; };
+		BB14AB5E28571A9D00C04EE0 /* OutOfBandRecord.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OutOfBandRecord.swift; sourceTree = "<group>"; };
+		BB14AB6028571AB300C04EE0 /* OutOfBandRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OutOfBandRepository.swift; sourceTree = "<group>"; };
+		BB14AB6228571BE200C04EE0 /* OutOfBandTypes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OutOfBandTypes.swift; sourceTree = "<group>"; };
+		BB14AB6528573BC300C04EE0 /* DIDParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DIDParser.swift; sourceTree = "<group>"; };
+		BB14AB67285740E000C04EE0 /* DIDParserTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DIDParserTest.swift; sourceTree = "<group>"; };
+		BB1814D7285B0A3400BD4A05 /* HandshakeReuseMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HandshakeReuseMessage.swift; sourceTree = "<group>"; };
+		BB1814D9285B0A4C00BD4A05 /* HandshakeReuseAcceptedMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HandshakeReuseAcceptedMessage.swift; sourceTree = "<group>"; };
+		BB1814DC285B0A7F00BD4A05 /* HandshakeReuseHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HandshakeReuseHandler.swift; sourceTree = "<group>"; };
+		BB1814DE285B0A8A00BD4A05 /* HandshakeReuseAcceptedHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HandshakeReuseAcceptedHandler.swift; sourceTree = "<group>"; };
+		BB1814E0285B0E6500BD4A05 /* OutOfBandService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OutOfBandService.swift; sourceTree = "<group>"; };
+		BB1BAB9227E97C8600F623DA /* IndyAgentService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IndyAgentService.swift; sourceTree = "<group>"; };
+		BB1CB3A7286072EB008E8DA6 /* OutOfBandCommand.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OutOfBandCommand.swift; sourceTree = "<group>"; };
+		BB1F4184286C25CE0076BE60 /* IndyCredentialView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IndyCredentialView.swift; sourceTree = "<group>"; };
+		BB1F4186286C4D980076BE60 /* CredentialServiceOptions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CredentialServiceOptions.swift; sourceTree = "<group>"; };
+		BB2392F7282E3DA00056B55D /* MediationGrantHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = MediationGrantHandler.swift; path = AriesFramework/routing/handlers/MediationGrantHandler.swift; sourceTree = SOURCE_ROOT; };
+		BB2392F9282E3DB00056B55D /* MediationDenyHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = MediationDenyHandler.swift; path = AriesFramework/routing/handlers/MediationDenyHandler.swift; sourceTree = SOURCE_ROOT; };
+		BB254934285185AA00769958 /* OutOfBandInvitation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OutOfBandInvitation.swift; sourceTree = "<group>"; };
+		BB2549372851868500769958 /* OutOfBandInvitationTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OutOfBandInvitationTest.swift; sourceTree = "<group>"; };
+		BB254939285192D900769958 /* HandshakeProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HandshakeProtocol.swift; sourceTree = "<group>"; };
+		BB25493B285193A700769958 /* DiDExchange.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiDExchange.swift; sourceTree = "<group>"; };
+		BB25493F2851966400769958 /* OutOfBandDidCommService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OutOfBandDidCommService.swift; sourceTree = "<group>"; };
+		BB2549412851B56C00769958 /* Attachment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Attachment.swift; sourceTree = "<group>"; };
+		BB2549432851B86800769958 /* JwsTypes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JwsTypes.swift; sourceTree = "<group>"; };
+		BB255D1B28503A8100839B3A /* CredentialsTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CredentialsTest.swift; sourceTree = "<group>"; };
+		BB255D1D285045F000839B3A /* TestHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestHelper.swift; sourceTree = "<group>"; };
+		BB26AD0928110A6F008E7C11 /* MessageReceiver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageReceiver.swift; sourceTree = "<group>"; };
+		BB26AD0B2811415C008E7C11 /* WalletTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletTest.swift; sourceTree = "<group>"; };
+		BB295D4927FFCF2D004994C8 /* ConnectionRequestMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConnectionRequestMessage.swift; sourceTree = "<group>"; };
+		BB295D4C27FFD2E2004994C8 /* ConnectionRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConnectionRepository.swift; sourceTree = "<group>"; };
+		BB2B735A287291B000C87F67 /* OfferCredentialMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OfferCredentialMessage.swift; sourceTree = "<group>"; };
+		BB2B735C2872AFDC00C87F67 /* CredentialPreview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CredentialPreview.swift; sourceTree = "<group>"; };
+		BB2B735E2872B5EC00C87F67 /* DidCommMessageRecord.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DidCommMessageRecord.swift; sourceTree = "<group>"; };
+		BB2B73602872B61B00C87F67 /* DidCommMessageRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DidCommMessageRepository.swift; sourceTree = "<group>"; };
+		BB2B73622872C73800C87F67 /* DidCommMessageRepositoryTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DidCommMessageRepositoryTest.swift; sourceTree = "<group>"; };
+		BB2DC653281A8A6700220250 /* Dispatcher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Dispatcher.swift; sourceTree = "<group>"; };
+		BB2DC655281BC80200220250 /* MessageHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageHandler.swift; sourceTree = "<group>"; };
+		BB2DC65728223E9800220250 /* SignatureDecorator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignatureDecorator.swift; sourceTree = "<group>"; };
+		BB2DC65928223FE200220250 /* ConnectionResponseMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConnectionResponseMessage.swift; sourceTree = "<group>"; };
+		BB2F06C527EB1BF6002C8F38 /* ReferencedAuthentication.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReferencedAuthentication.swift; sourceTree = "<group>"; };
+		BB39897127EC30BC00A1CA1C /* Authentication.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Authentication.swift; path = AriesFramework/connection/models/didauth/Authentication.swift; sourceTree = SOURCE_ROOT; };
+		BB39897327EC30D500A1CA1C /* DidDocTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DidDocTest.swift; sourceTree = "<group>"; };
+		BB39897527EC3E5900A1CA1C /* DidCommService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DidCommService.swift; sourceTree = "<group>"; };
+		BB39897727EC3E5D00A1CA1C /* DidDocumentService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DidDocumentService.swift; sourceTree = "<group>"; };
+		BB39897927EC3EE000A1CA1C /* DidDocService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DidDocService.swift; sourceTree = "<group>"; };
+		BB39E0CB2806A1C4006940A3 /* HttpOutboundTransport.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HttpOutboundTransport.swift; sourceTree = "<group>"; };
+		BB3F292827E3031A00D667C1 /* AriesFramework.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = AriesFramework.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		BB3F292B27E3031A00D667C1 /* AriesFramework.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AriesFramework.h; sourceTree = "<group>"; };
+		BB3F293227E3031A00D667C1 /* AriesFrameworkTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AriesFrameworkTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		BB3F295527E305F400D667C1 /* AgentTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AgentTest.swift; sourceTree = "<group>"; };
+		BB3F295A27E3089200D667C1 /* ConnectionInvitationMessageTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConnectionInvitationMessageTest.swift; sourceTree = "<group>"; };
+		BB3F295D27E315C600D667C1 /* Wallet.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Wallet.swift; sourceTree = "<group>"; };
+		BB3F295F27E315C600D667C1 /* AgentConfig.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AgentConfig.swift; sourceTree = "<group>"; };
+		BB3F296027E315C600D667C1 /* MessageSender.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageSender.swift; sourceTree = "<group>"; };
+		BB3F296127E315C600D667C1 /* Agent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Agent.swift; sourceTree = "<group>"; };
+		BB3F296427E315C600D667C1 /* ConnectionInvitationMessage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConnectionInvitationMessage.swift; sourceTree = "<group>"; };
+		BB3F296527E315C600D667C1 /* ConnectionCommand.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConnectionCommand.swift; sourceTree = "<group>"; };
+		BB3F296627E315C600D667C1 /* ConnectionService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConnectionService.swift; sourceTree = "<group>"; };
+		BB3F296727E315C600D667C1 /* MediationRecipient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MediationRecipient.swift; sourceTree = "<group>"; };
+		BB3F296927E315C600D667C1 /* AriesFrameworkError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AriesFrameworkError.swift; sourceTree = "<group>"; };
+		BB3F296A27E315C600D667C1 /* Types.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Types.swift; sourceTree = "<group>"; };
+		BB42BD2827FD4FB600880951 /* AgentDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AgentDelegate.swift; sourceTree = "<group>"; };
+		BB44A932283CA7B20029A7E0 /* BaseRecord.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseRecord.swift; sourceTree = "<group>"; };
+		BB44A934283CA7D00029A7E0 /* Repository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Repository.swift; sourceTree = "<group>"; };
+		BB5A51E828E693DC00FF2229 /* ProposeCredentialMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProposeCredentialMessage.swift; sourceTree = "<group>"; };
+		BB5E99A2282281AC00746E0F /* ConnectionResponseHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConnectionResponseHandler.swift; sourceTree = "<group>"; };
+		BB5E99A52829108200746E0F /* SignatureDecoratorTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignatureDecoratorTest.swift; sourceTree = "<group>"; };
+		BB5E99A7282A53D300746E0F /* TrustPingMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrustPingMessage.swift; sourceTree = "<group>"; };
+		BB62F2C828AF1E6100B69D35 /* CredentialAckMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CredentialAckMessage.swift; sourceTree = "<group>"; };
+		BB63DC2F2897C41900BDF91E /* ConnectionRequestHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConnectionRequestHandler.swift; sourceTree = "<group>"; };
+		BB63DC312897C96F00BDF91E /* TrustPingMessageHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrustPingMessageHandler.swift; sourceTree = "<group>"; };
+		BB655FAC28B3542300A919E8 /* RevocationRegistryDelta.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RevocationRegistryDelta.swift; sourceTree = "<group>"; };
+		BB655FAE28B3668800A919E8 /* ProofCommand.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProofCommand.swift; sourceTree = "<group>"; };
+		BB7765342922215F0007B678 /* AsyncWaiter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AsyncWaiter.swift; sourceTree = "<group>"; };
+		BB7A0337288F8FF900D53822 /* CredentialValues.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CredentialValues.swift; sourceTree = "<group>"; };
+		BB7A0339288FAD6200D53822 /* CredentialValuesTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CredentialValuesTest.swift; sourceTree = "<group>"; };
+		BB7A033D2891259500D53822 /* PresentationAckMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PresentationAckMessage.swift; sourceTree = "<group>"; };
+		BB7A033F289246FD00D53822 /* OfferCredentialHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = OfferCredentialHandler.swift; path = AriesFramework/credentials/handlers/OfferCredentialHandler.swift; sourceTree = SOURCE_ROOT; };
+		BB7A0342289247B400D53822 /* RequestCredentialHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestCredentialHandler.swift; sourceTree = "<group>"; };
+		BB7A03442892481800D53822 /* IssueCredentialHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IssueCredentialHandler.swift; sourceTree = "<group>"; };
+		BB7A03462892484C00D53822 /* CredentialAckHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CredentialAckHandler.swift; sourceTree = "<group>"; };
+		BB7C768C28B46FF200C1AA96 /* RequestPresentationHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestPresentationHandler.swift; sourceTree = "<group>"; };
+		BB7C768E28B4700E00C1AA96 /* PresentationHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PresentationHandler.swift; sourceTree = "<group>"; };
+		BB7C769028B478CE00C1AA96 /* PresentationAckHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PresentationAckHandler.swift; sourceTree = "<group>"; };
+		BB7C769328B480A900C1AA96 /* ProofsTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProofsTest.swift; sourceTree = "<group>"; };
+		BB7C769528B4B4F800C1AA96 /* IndyCredential.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IndyCredential.swift; sourceTree = "<group>"; };
+		BB7C769A28B7410F00C1AA96 /* WsOutboundTransport.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WsOutboundTransport.swift; sourceTree = "<group>"; };
+		BB90F25E28F902070066AE87 /* KeylistUpdateMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeylistUpdateMessage.swift; sourceTree = "<group>"; };
+		BB90F26028F9022D0066AE87 /* KeylistUpdateResponseMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeylistUpdateResponseMessage.swift; sourceTree = "<group>"; };
+		BB90F26228F902560066AE87 /* KeylistUpdateResponseHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeylistUpdateResponseHandler.swift; sourceTree = "<group>"; };
+		BB9A04D82898FA870054D0D2 /* OutboundTransport.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OutboundTransport.swift; sourceTree = "<group>"; };
+		BB9A04DA2898FAA40054D0D2 /* SubjectOutboundTransport.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubjectOutboundTransport.swift; sourceTree = "<group>"; };
+		BB9A04DE289902E80054D0D2 /* ConnectionTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConnectionTest.swift; sourceTree = "<group>"; };
+		BB9A04E1289A65270054D0D2 /* local-genesis.txn */ = {isa = PBXFileReference; lastKnownFileType = text; path = "local-genesis.txn"; sourceTree = "<group>"; };
+		BB9A04E3289B5EF40054D0D2 /* CredentialsCommand.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CredentialsCommand.swift; sourceTree = "<group>"; };
+		BBA00EC728BDAE050037601C /* bcovrin-genesis.txn */ = {isa = PBXFileReference; lastKnownFileType = text; path = "bcovrin-genesis.txn"; sourceTree = "<group>"; };
+		BBA00ECA28C9B4D50037601C /* CriolloTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CriolloTest.swift; sourceTree = "<group>"; };
+		BBA2CF2527F452FA00437E58 /* ConnectionServiceTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConnectionServiceTest.swift; sourceTree = "<group>"; };
+		BBA92EB72924D0B7007F73B2 /* MediatorPickupStrategy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediatorPickupStrategy.swift; sourceTree = "<group>"; };
+		BBAAA626280FF05000F8AC63 /* TransportDecorator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TransportDecorator.swift; sourceTree = "<group>"; };
+		BBABA78828D17C32001EA090 /* TestHarnessConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestHarnessConfig.swift; sourceTree = "<group>"; };
+		BBABA78A28D1A107001EA090 /* AATHTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AATHTest.swift; sourceTree = "<group>"; };
+		BBABA78F28D1B553001EA090 /* AgentController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AgentController.swift; sourceTree = "<group>"; };
+		BBABA79128D1BB42001EA090 /* ConnectionController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConnectionController.swift; sourceTree = "<group>"; };
+		BBABA79328D1BB67001EA090 /* CredentialController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CredentialController.swift; sourceTree = "<group>"; };
+		BBABA79528D1BB9B001EA090 /* CredentialDefinitionController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CredentialDefinitionController.swift; sourceTree = "<group>"; };
+		BBABA79728D1BBAC001EA090 /* DidController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DidController.swift; sourceTree = "<group>"; };
+		BBABA79928D1BC05001EA090 /* PresentProofController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PresentProofController.swift; sourceTree = "<group>"; };
+		BBABA79B28D1BC20001EA090 /* SchemaController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SchemaController.swift; sourceTree = "<group>"; };
+		BBABA79D28D1CB12001EA090 /* ControllerUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ControllerUtils.swift; sourceTree = "<group>"; };
+		BBABFF3B28AE182600141EB2 /* PartialProof.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PartialProof.swift; sourceTree = "<group>"; };
+		BBADC252287BF5410099FE2C /* RequestCredentialMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestCredentialMessage.swift; sourceTree = "<group>"; };
+		BBADC254287BF5590099FE2C /* IssueCredentialMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IssueCredentialMessage.swift; sourceTree = "<group>"; };
+		BBADC257287C071B0099FE2C /* LedgerService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LedgerService.swift; sourceTree = "<group>"; };
+		BBB04DFF28377DEF00ECA48B /* BatchMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BatchMessage.swift; sourceTree = "<group>"; };
+		BBB04E0128377E0D00ECA48B /* BatchPickupMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BatchPickupMessage.swift; sourceTree = "<group>"; };
+		BBB04E0328377F5100ECA48B /* BatchHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BatchHandler.swift; sourceTree = "<group>"; };
+		BBB4E5C628A49D69007DF641 /* ProofRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProofRepository.swift; sourceTree = "<group>"; };
+		BBB4E5C828A49D9C007DF641 /* ProofExchangeRecord.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProofExchangeRecord.swift; sourceTree = "<group>"; };
+		BBB4E5CA28A4A090007DF641 /* AutoAcceptProof.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AutoAcceptProof.swift; sourceTree = "<group>"; };
+		BBB4E5CC28A4A0B1007DF641 /* ProofState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProofState.swift; sourceTree = "<group>"; };
+		BBB4E5CE28A4A39F007DF641 /* ProofService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProofService.swift; sourceTree = "<group>"; };
+		BBB4E5D028A4A3FC007DF641 /* RevocationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RevocationService.swift; sourceTree = "<group>"; };
+		BBB4E5D228A4C966007DF641 /* RequestPresentationMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestPresentationMessage.swift; sourceTree = "<group>"; };
+		BBB4E5D428A4D51C007DF641 /* ProofRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProofRequest.swift; sourceTree = "<group>"; };
+		BBB4E5D628A4D6B0007DF641 /* ProofAttributeInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProofAttributeInfo.swift; sourceTree = "<group>"; };
+		BBB4E5D828A4D79D007DF641 /* ProofPredicateInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProofPredicateInfo.swift; sourceTree = "<group>"; };
+		BBB4E5DA28A4DC49007DF641 /* RevocationInterval.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RevocationInterval.swift; sourceTree = "<group>"; };
+		BBB4E5DC28A4DDB9007DF641 /* AttributeFilter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AttributeFilter.swift; sourceTree = "<group>"; };
+		BBB4E5DE28A4EF48007DF641 /* PresentationMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PresentationMessage.swift; sourceTree = "<group>"; };
+		BBB4E5E028A4F252007DF641 /* RequestedAttribute.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestedAttribute.swift; sourceTree = "<group>"; };
+		BBB4E5E228A4F261007DF641 /* RequestedCredentials.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestedCredentials.swift; sourceTree = "<group>"; };
+		BBB4E5E428A4F282007DF641 /* RequestedPredicate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestedPredicate.swift; sourceTree = "<group>"; };
+		BBB4E5E628A4F291007DF641 /* RequestedProof.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestedProof.swift; sourceTree = "<group>"; };
+		BBB4E5E828A4F2A4007DF641 /* RetrievedCredentials.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RetrievedCredentials.swift; sourceTree = "<group>"; };
+		BBB4E5EA28A4FF8F007DF641 /* IndyCredentialInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IndyCredentialInfo.swift; sourceTree = "<group>"; };
+		BBB4E5EC28A500C8007DF641 /* ProofAttribute.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProofAttribute.swift; sourceTree = "<group>"; };
+		BBC3D05A280428DE00DA3C70 /* AgentMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AgentMessage.swift; sourceTree = "<group>"; };
+		BBC3D05D2804292D00DA3C70 /* ThreadDecorator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThreadDecorator.swift; sourceTree = "<group>"; };
+		BBD15D7928D82D0D0081D2BB /* OutOfBandController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OutOfBandController.swift; sourceTree = "<group>"; };
+		BBD15D7B28D8337E0081D2BB /* AgentInboundController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AgentInboundController.swift; sourceTree = "<group>"; };
+		BBD436C527E9D49B005ADF30 /* PubkeyParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PubkeyParser.swift; sourceTree = "<group>"; };
+		BBEBC55F282CCA8D0080C2EA /* MediationGrantMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediationGrantMessage.swift; sourceTree = "<group>"; };
+		BBEBC561282CCA9F0080C2EA /* MediationDenyMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediationDenyMessage.swift; sourceTree = "<group>"; };
+		BBEBC564282CD75F0080C2EA /* MediationRecord.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediationRecord.swift; sourceTree = "<group>"; };
+		BBEBC566282CD76D0080C2EA /* MediationRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediationRepository.swift; sourceTree = "<group>"; };
+		BBEBC568282CFC630080C2EA /* MediationRequestMessage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MediationRequestMessage.swift; sourceTree = "<group>"; };
+		BBFCDA7528DDA31C00100EDA /* IssueCredentialController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IssueCredentialController.swift; sourceTree = "<group>"; };
+		D228CD5DF7C2A7E5833E5AA3 /* Pods_AriesFramework.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_AriesFramework.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		D635BE126145CA599AA887F6 /* Pods-AriesFramework-AriesFrameworkTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AriesFramework-AriesFrameworkTests.release.xcconfig"; path = "Target Support Files/Pods-AriesFramework-AriesFrameworkTests/Pods-AriesFramework-AriesFrameworkTests.release.xcconfig"; sourceTree = "<group>"; };
+		EC84AE11C175D3BF0C8C6B5F /* Pods_AriesFrameworkTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_AriesFrameworkTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		FF3694205ED1596568E474EF /* Pods-AriesFrameworkTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AriesFrameworkTests.release.xcconfig"; path = "Target Support Files/Pods-AriesFrameworkTests/Pods-AriesFrameworkTests.release.xcconfig"; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		BB3F292527E3031A00D667C1 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D3D19026A800EC6E3BB38526 /* Pods_AriesFramework.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		BB3F292F27E3031A00D667C1 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				BB3F293327E3031A00D667C1 /* AriesFramework.framework in Frameworks */,
+				0233A18A249B8CDB80DDDFDA /* Pods_AriesFrameworkTests.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		5C27ECD0009C6E1F11B97F50 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				85951C57ED0829482532A0A2 /* Pods-AriesFramework.debug.xcconfig */,
+				665539ECD1EB40241981FBC7 /* Pods-AriesFramework.release.xcconfig */,
+				1D264F4676585E50BCE4E119 /* Pods-AriesFramework-AriesFrameworkTests.debug.xcconfig */,
+				D635BE126145CA599AA887F6 /* Pods-AriesFramework-AriesFrameworkTests.release.xcconfig */,
+				4CF404074A623D7EF73AECF4 /* Pods-AriesFrameworkTests.debug.xcconfig */,
+				FF3694205ED1596568E474EF /* Pods-AriesFrameworkTests.release.xcconfig */,
+			);
+			path = Pods;
+			sourceTree = "<group>";
+		};
+		8534DBA1D0217F6774A288EF /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				D228CD5DF7C2A7E5833E5AA3 /* Pods_AriesFramework.framework */,
+				EC84AE11C175D3BF0C8C6B5F /* Pods_AriesFrameworkTests.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		BB081CCB2845B9E300087F92 /* storage */ = {
+			isa = PBXGroup;
+			children = (
+				BB081CCC2845BA3700087F92 /* RepositotyTest.swift */,
+				BB081CCE2845BC6300087F92 /* TestRecord.swift */,
+				BB2B73622872C73800C87F67 /* DidCommMessageRepositoryTest.swift */,
+			);
+			path = storage;
+			sourceTree = "<group>";
+		};
+		BB0EB33227E427E700B0D0E4 /* models */ = {
+			isa = PBXGroup;
+			children = (
+				BB0EB33927E44C1F00B0D0E4 /* didauth */,
+				BB0EB33727E42AE800B0D0E4 /* Connection.swift */,
+				BB254939285192D900769958 /* HandshakeProtocol.swift */,
+				BB25493B285193A700769958 /* DiDExchange.swift */,
+			);
+			path = models;
+			sourceTree = "<group>";
+		};
+		BB0EB33927E44C1F00B0D0E4 /* didauth */ = {
+			isa = PBXGroup;
+			children = (
+				BB2F06C427EB03EB002C8F38 /* publicKey */,
+				BB0EB33527E429FD00B0D0E4 /* DidDoc.swift */,
+				BB39897927EC3EE000A1CA1C /* DidDocService.swift */,
+				BB1BAB9227E97C8600F623DA /* IndyAgentService.swift */,
+				BB39897527EC3E5900A1CA1C /* DidCommService.swift */,
+				BB39897727EC3E5D00A1CA1C /* DidDocumentService.swift */,
+				BB39897127EC30BC00A1CA1C /* Authentication.swift */,
+				BB0EB33A27E44C5900B0D0E4 /* EmbeddedAuthentication.swift */,
+				BB2F06C527EB1BF6002C8F38 /* ReferencedAuthentication.swift */,
+			);
+			path = didauth;
+			sourceTree = "<group>";
+		};
+		BB0EB34227E485D700B0D0E4 /* connection */ = {
+			isa = PBXGroup;
+			children = (
+				BB0EB34327E4889E00B0D0E4 /* didAuth */,
+				BB3F295A27E3089200D667C1 /* ConnectionInvitationMessageTest.swift */,
+				BBA2CF2527F452FA00437E58 /* ConnectionServiceTest.swift */,
+				BB9A04DE289902E80054D0D2 /* ConnectionTest.swift */,
+			);
+			path = connection;
+			sourceTree = "<group>";
+		};
+		BB0EB34327E4889E00B0D0E4 /* didAuth */ = {
+			isa = PBXGroup;
+			children = (
+				BB39897327EC30D500A1CA1C /* DidDocTest.swift */,
+				BB0EB34827E489B300B0D0E4 /* PublicKeyTest.swift */,
+			);
+			path = didAuth;
+			sourceTree = "<group>";
+		};
+		BB141573286ADC1F00235480 /* credentials */ = {
+			isa = PBXGroup;
+			children = (
+				BB7A03412892474700D53822 /* handlers */,
+				BB141575286ADC5F00235480 /* messages */,
+				BB141574286ADC5700235480 /* models */,
+				BB141576286ADC6B00235480 /* repository */,
+				BB9A04E3289B5EF40054D0D2 /* CredentialsCommand.swift */,
+				BB141578286ADCC500235480 /* CredentialService.swift */,
+			);
+			path = credentials;
+			sourceTree = "<group>";
+		};
+		BB141574286ADC5700235480 /* models */ = {
+			isa = PBXGroup;
+			children = (
+				BB141582286AF11400235480 /* AutoAcceptCredential.swift */,
+				BB14157E286AF0EB00235480 /* CredentialState.swift */,
+				BB2B735C2872AFDC00C87F67 /* CredentialPreview.swift */,
+				BB141580286AF10600235480 /* CredentialPreviewAttribute.swift */,
+				BB1F4186286C4D980076BE60 /* CredentialServiceOptions.swift */,
+				BB7A0337288F8FF900D53822 /* CredentialValues.swift */,
+				BB7C769528B4B4F800C1AA96 /* IndyCredential.swift */,
+				BB1F4184286C25CE0076BE60 /* IndyCredentialView.swift */,
+			);
+			path = models;
+			sourceTree = "<group>";
+		};
+		BB141575286ADC5F00235480 /* messages */ = {
+			isa = PBXGroup;
+			children = (
+				BB62F2C828AF1E6100B69D35 /* CredentialAckMessage.swift */,
+				BBADC254287BF5590099FE2C /* IssueCredentialMessage.swift */,
+				BB2B735A287291B000C87F67 /* OfferCredentialMessage.swift */,
+				BB5A51E828E693DC00FF2229 /* ProposeCredentialMessage.swift */,
+				BBADC252287BF5410099FE2C /* RequestCredentialMessage.swift */,
+			);
+			path = messages;
+			sourceTree = "<group>";
+		};
+		BB141576286ADC6B00235480 /* repository */ = {
+			isa = PBXGroup;
+			children = (
+				BB14157A286ADD4C00235480 /* CredentialRepository.swift */,
+				BB14157C286ADD9700235480 /* CredentialExchangeRecord.swift */,
+			);
+			path = repository;
+			sourceTree = "<group>";
+		};
+		BB14AB5D28571A7000C04EE0 /* repository */ = {
+			isa = PBXGroup;
+			children = (
+				BB14AB5E28571A9D00C04EE0 /* OutOfBandRecord.swift */,
+				BB14AB6028571AB300C04EE0 /* OutOfBandRepository.swift */,
+			);
+			path = repository;
+			sourceTree = "<group>";
+		};
+		BB14AB6428573BA300C04EE0 /* util */ = {
+			isa = PBXGroup;
+			children = (
+				BB14AB6528573BC300C04EE0 /* DIDParser.swift */,
+				BB7765342922215F0007B678 /* AsyncWaiter.swift */,
+			);
+			path = util;
+			sourceTree = "<group>";
+		};
+		BB1814DB285B0A6700BD4A05 /* handlers */ = {
+			isa = PBXGroup;
+			children = (
+				BB1814DC285B0A7F00BD4A05 /* HandshakeReuseHandler.swift */,
+				BB1814DE285B0A8A00BD4A05 /* HandshakeReuseAcceptedHandler.swift */,
+			);
+			path = handlers;
+			sourceTree = "<group>";
+		};
+		BB2392FB282E3E220056B55D /* handlers */ = {
+			isa = PBXGroup;
+			children = (
+				BBB04E0328377F5100ECA48B /* BatchHandler.swift */,
+				BB90F26228F902560066AE87 /* KeylistUpdateResponseHandler.swift */,
+				BB2392F7282E3DA00056B55D /* MediationGrantHandler.swift */,
+				BB2392F9282E3DB00056B55D /* MediationDenyHandler.swift */,
+			);
+			path = handlers;
+			sourceTree = "<group>";
+		};
+		BB2549332851856E00769958 /* oob */ = {
+			isa = PBXGroup;
+			children = (
+				BB1814DB285B0A6700BD4A05 /* handlers */,
+				BB25493E2851963100769958 /* messages */,
+				BB25493D2851962600769958 /* models */,
+				BB14AB5D28571A7000C04EE0 /* repository */,
+				BB14AB6428573BA300C04EE0 /* util */,
+				BB1814E0285B0E6500BD4A05 /* OutOfBandService.swift */,
+				BB1CB3A7286072EB008E8DA6 /* OutOfBandCommand.swift */,
+			);
+			path = oob;
+			sourceTree = "<group>";
+		};
+		BB2549362851862E00769958 /* oob */ = {
+			isa = PBXGroup;
+			children = (
+				BB2549372851868500769958 /* OutOfBandInvitationTest.swift */,
+				BB14AB67285740E000C04EE0 /* DIDParserTest.swift */,
+				BB076807285C38BC00BEACC9 /* OutOfBandServiceTest.swift */,
+				BB0F6C8A286400B900F86BB5 /* OobTest.swift */,
+			);
+			path = oob;
+			sourceTree = "<group>";
+		};
+		BB25493D2851962600769958 /* models */ = {
+			isa = PBXGroup;
+			children = (
+				BB25493F2851966400769958 /* OutOfBandDidCommService.swift */,
+				BB14AB6228571BE200C04EE0 /* OutOfBandTypes.swift */,
+			);
+			path = models;
+			sourceTree = "<group>";
+		};
+		BB25493E2851963100769958 /* messages */ = {
+			isa = PBXGroup;
+			children = (
+				BB254934285185AA00769958 /* OutOfBandInvitation.swift */,
+				BB1814D7285B0A3400BD4A05 /* HandshakeReuseMessage.swift */,
+				BB1814D9285B0A4C00BD4A05 /* HandshakeReuseAcceptedMessage.swift */,
+			);
+			path = messages;
+			sourceTree = "<group>";
+		};
+		BB255D1A28503A4700839B3A /* credentials */ = {
+			isa = PBXGroup;
+			children = (
+				BB7A0339288FAD6200D53822 /* CredentialValuesTest.swift */,
+				BB255D1B28503A8100839B3A /* CredentialsTest.swift */,
+			);
+			path = credentials;
+			sourceTree = "<group>";
+		};
+		BB295D4B27FFD2B4004994C8 /* repository */ = {
+			isa = PBXGroup;
+			children = (
+				BB0EB33327E4280B00B0D0E4 /* ConnectionRecord.swift */,
+				BB295D4C27FFD2E2004994C8 /* ConnectionRepository.swift */,
+			);
+			path = repository;
+			sourceTree = "<group>";
+		};
+		BB2F06C427EB03EB002C8F38 /* publicKey */ = {
+			isa = PBXGroup;
+			children = (
+				BBD436C527E9D49B005ADF30 /* PubkeyParser.swift */,
+				BB0EB33E27E44D5000B0D0E4 /* Ed25119Sig2018.swift */,
+				BB0EB34427E488E800B0D0E4 /* EddsaSaSigSecp256k1.swift */,
+				BB0EB34027E44E1500B0D0E4 /* PublicKey.swift */,
+				BB0EB34627E4895700B0D0E4 /* RsaSig2018.swift */,
+			);
+			path = publicKey;
+			sourceTree = "<group>";
+		};
+		BB3F291E27E3031A00D667C1 = {
+			isa = PBXGroup;
+			children = (
+				BB3F292A27E3031A00D667C1 /* AriesFramework */,
+				BB3F293627E3031A00D667C1 /* AriesFrameworkTests */,
+				BB3F292927E3031A00D667C1 /* Products */,
+				5C27ECD0009C6E1F11B97F50 /* Pods */,
+				8534DBA1D0217F6774A288EF /* Frameworks */,
+			);
+			sourceTree = "<group>";
+		};
+		BB3F292927E3031A00D667C1 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				BB3F292827E3031A00D667C1 /* AriesFramework.framework */,
+				BB3F293227E3031A00D667C1 /* AriesFrameworkTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		BB3F292A27E3031A00D667C1 /* AriesFramework */ = {
+			isa = PBXGroup;
+			children = (
+				BB3F292B27E3031A00D667C1 /* AriesFramework.h */,
+				BB3F296A27E315C600D667C1 /* Types.swift */,
+				BB3F295E27E315C600D667C1 /* agent */,
+				BB3F296227E315C600D667C1 /* connection */,
+				BB141573286ADC1F00235480 /* credentials */,
+				BB3F296827E315C600D667C1 /* error */,
+				BBADC256287C06F50099FE2C /* ledger */,
+				BB2549332851856E00769958 /* oob */,
+				BBB4E5C028A49CB2007DF641 /* proofs */,
+				BB5E99A9282BB6E200746E0F /* routing */,
+				BB44A931283CA7170029A7E0 /* storage */,
+				BB3F295C27E315C600D667C1 /* wallet */,
+			);
+			path = AriesFramework;
+			sourceTree = "<group>";
+		};
+		BB3F293627E3031A00D667C1 /* AriesFrameworkTests */ = {
+			isa = PBXGroup;
+			children = (
+				BB5E99A42829105200746E0F /* agent */,
+				BB0EB34227E485D700B0D0E4 /* connection */,
+				BB255D1A28503A4700839B3A /* credentials */,
+				BB2549362851862E00769958 /* oob */,
+				BB7C769228B4803500C1AA96 /* proofs */,
+				BB9A04E0289A64EE0054D0D2 /* resources */,
+				BB081CCB2845B9E300087F92 /* storage */,
+				BBA00EC928C9B47F0037601C /* testharness */,
+				BB26AD0B2811415C008E7C11 /* WalletTest.swift */,
+				BB255D1D285045F000839B3A /* TestHelper.swift */,
+			);
+			path = AriesFrameworkTests;
+			sourceTree = "<group>";
+		};
+		BB3F295C27E315C600D667C1 /* wallet */ = {
+			isa = PBXGroup;
+			children = (
+				BB3F295D27E315C600D667C1 /* Wallet.swift */,
+			);
+			path = wallet;
+			sourceTree = "<group>";
+		};
+		BB3F295E27E315C600D667C1 /* agent */ = {
+			isa = PBXGroup;
+			children = (
+				BBC3D05C2804290400DA3C70 /* decorators */,
+				BB3F295F27E315C600D667C1 /* AgentConfig.swift */,
+				BB3F296127E315C600D667C1 /* Agent.swift */,
+				BB42BD2827FD4FB600880951 /* AgentDelegate.swift */,
+				BBC3D05A280428DE00DA3C70 /* AgentMessage.swift */,
+				BB2DC653281A8A6700220250 /* Dispatcher.swift */,
+				BB2DC655281BC80200220250 /* MessageHandler.swift */,
+				BB3F296027E315C600D667C1 /* MessageSender.swift */,
+				BB26AD0928110A6F008E7C11 /* MessageReceiver.swift */,
+				BB39E0CB2806A1C4006940A3 /* HttpOutboundTransport.swift */,
+				BB9A04D82898FA870054D0D2 /* OutboundTransport.swift */,
+				BB9A04DA2898FAA40054D0D2 /* SubjectOutboundTransport.swift */,
+				BB7C769A28B7410F00C1AA96 /* WsOutboundTransport.swift */,
+			);
+			path = agent;
+			sourceTree = "<group>";
+		};
+		BB3F296227E315C600D667C1 /* connection */ = {
+			isa = PBXGroup;
+			children = (
+				BB5E99A12822818D00746E0F /* handlers */,
+				BB0EB33227E427E700B0D0E4 /* models */,
+				BB3F296327E315C600D667C1 /* messages */,
+				BB295D4B27FFD2B4004994C8 /* repository */,
+				BB3F296527E315C600D667C1 /* ConnectionCommand.swift */,
+				BB3F296627E315C600D667C1 /* ConnectionService.swift */,
+			);
+			path = connection;
+			sourceTree = "<group>";
+		};
+		BB3F296327E315C600D667C1 /* messages */ = {
+			isa = PBXGroup;
+			children = (
+				BB3F296427E315C600D667C1 /* ConnectionInvitationMessage.swift */,
+				BB2DC65928223FE200220250 /* ConnectionResponseMessage.swift */,
+				BB295D4927FFCF2D004994C8 /* ConnectionRequestMessage.swift */,
+				BB5E99A7282A53D300746E0F /* TrustPingMessage.swift */,
+			);
+			path = messages;
+			sourceTree = "<group>";
+		};
+		BB3F296827E315C600D667C1 /* error */ = {
+			isa = PBXGroup;
+			children = (
+				BB3F296927E315C600D667C1 /* AriesFrameworkError.swift */,
+			);
+			path = error;
+			sourceTree = "<group>";
+		};
+		BB44A931283CA7170029A7E0 /* storage */ = {
+			isa = PBXGroup;
+			children = (
+				BB44A932283CA7B20029A7E0 /* BaseRecord.swift */,
+				BB44A934283CA7D00029A7E0 /* Repository.swift */,
+				BB2B735E2872B5EC00C87F67 /* DidCommMessageRecord.swift */,
+				BB2B73602872B61B00C87F67 /* DidCommMessageRepository.swift */,
+			);
+			path = storage;
+			sourceTree = "<group>";
+		};
+		BB5E99A12822818D00746E0F /* handlers */ = {
+			isa = PBXGroup;
+			children = (
+				BB63DC2F2897C41900BDF91E /* ConnectionRequestHandler.swift */,
+				BB5E99A2282281AC00746E0F /* ConnectionResponseHandler.swift */,
+				BB63DC312897C96F00BDF91E /* TrustPingMessageHandler.swift */,
+			);
+			path = handlers;
+			sourceTree = "<group>";
+		};
+		BB5E99A42829105200746E0F /* agent */ = {
+			isa = PBXGroup;
+			children = (
+				BB3F295527E305F400D667C1 /* AgentTest.swift */,
+				BB5E99A52829108200746E0F /* SignatureDecoratorTest.swift */,
+				BB14AB5B2856EE5300C04EE0 /* AttachmentTest.swift */,
+			);
+			path = agent;
+			sourceTree = "<group>";
+		};
+		BB5E99A9282BB6E200746E0F /* routing */ = {
+			isa = PBXGroup;
+			children = (
+				BB2392FB282E3E220056B55D /* handlers */,
+				BB5E99AA282BB70500746E0F /* messages */,
+				BBEBC563282CD7240080C2EA /* repository */,
+				BB3F296727E315C600D667C1 /* MediationRecipient.swift */,
+				BBA92EB72924D0B7007F73B2 /* MediatorPickupStrategy.swift */,
+			);
+			path = routing;
+			sourceTree = "<group>";
+		};
+		BB5E99AA282BB70500746E0F /* messages */ = {
+			isa = PBXGroup;
+			children = (
+				BBB04DFF28377DEF00ECA48B /* BatchMessage.swift */,
+				BBB04E0128377E0D00ECA48B /* BatchPickupMessage.swift */,
+				BB90F25E28F902070066AE87 /* KeylistUpdateMessage.swift */,
+				BB90F26028F9022D0066AE87 /* KeylistUpdateResponseMessage.swift */,
+				BBEBC55F282CCA8D0080C2EA /* MediationGrantMessage.swift */,
+				BBEBC561282CCA9F0080C2EA /* MediationDenyMessage.swift */,
+				BBEBC568282CFC630080C2EA /* MediationRequestMessage.swift */,
+			);
+			path = messages;
+			sourceTree = "<group>";
+		};
+		BB7A03412892474700D53822 /* handlers */ = {
+			isa = PBXGroup;
+			children = (
+				BB7A03462892484C00D53822 /* CredentialAckHandler.swift */,
+				BB7A03442892481800D53822 /* IssueCredentialHandler.swift */,
+				BB7A033F289246FD00D53822 /* OfferCredentialHandler.swift */,
+				BB7A0342289247B400D53822 /* RequestCredentialHandler.swift */,
+			);
+			path = handlers;
+			sourceTree = "<group>";
+		};
+		BB7C769228B4803500C1AA96 /* proofs */ = {
+			isa = PBXGroup;
+			children = (
+				BB7C769328B480A900C1AA96 /* ProofsTest.swift */,
+			);
+			path = proofs;
+			sourceTree = "<group>";
+		};
+		BB9A04E0289A64EE0054D0D2 /* resources */ = {
+			isa = PBXGroup;
+			children = (
+				BB9A04E1289A65270054D0D2 /* local-genesis.txn */,
+				BBA00EC728BDAE050037601C /* bcovrin-genesis.txn */,
+			);
+			path = resources;
+			sourceTree = "<group>";
+		};
+		BBA00EC928C9B47F0037601C /* testharness */ = {
+			isa = PBXGroup;
+			children = (
+				BBABA78E28D1B534001EA090 /* controllers */,
+				BBABA78A28D1A107001EA090 /* AATHTest.swift */,
+				BBA00ECA28C9B4D50037601C /* CriolloTest.swift */,
+				BBABA78828D17C32001EA090 /* TestHarnessConfig.swift */,
+			);
+			path = testharness;
+			sourceTree = "<group>";
+		};
+		BBABA78E28D1B534001EA090 /* controllers */ = {
+			isa = PBXGroup;
+			children = (
+				BBABA78F28D1B553001EA090 /* AgentController.swift */,
+				BBD15D7B28D8337E0081D2BB /* AgentInboundController.swift */,
+				BBABA79128D1BB42001EA090 /* ConnectionController.swift */,
+				BBABA79D28D1CB12001EA090 /* ControllerUtils.swift */,
+				BBABA79328D1BB67001EA090 /* CredentialController.swift */,
+				BBABA79528D1BB9B001EA090 /* CredentialDefinitionController.swift */,
+				BBABA79728D1BBAC001EA090 /* DidController.swift */,
+				BBFCDA7528DDA31C00100EDA /* IssueCredentialController.swift */,
+				BBD15D7928D82D0D0081D2BB /* OutOfBandController.swift */,
+				BBABA79928D1BC05001EA090 /* PresentProofController.swift */,
+				BBABA79B28D1BC20001EA090 /* SchemaController.swift */,
+			);
+			path = controllers;
+			sourceTree = "<group>";
+		};
+		BBADC256287C06F50099FE2C /* ledger */ = {
+			isa = PBXGroup;
+			children = (
+				BBADC257287C071B0099FE2C /* LedgerService.swift */,
+			);
+			path = ledger;
+			sourceTree = "<group>";
+		};
+		BBB4E5C028A49CB2007DF641 /* proofs */ = {
+			isa = PBXGroup;
+			children = (
+				BBB4E5C128A49CC9007DF641 /* handlers */,
+				BBB4E5C528A49D30007DF641 /* messages */,
+				BBB4E5C428A49D29007DF641 /* models */,
+				BBB4E5C328A49CF1007DF641 /* repository */,
+				BB655FAE28B3668800A919E8 /* ProofCommand.swift */,
+				BBB4E5CE28A4A39F007DF641 /* ProofService.swift */,
+				BBB4E5D028A4A3FC007DF641 /* RevocationService.swift */,
+			);
+			path = proofs;
+			sourceTree = "<group>";
+		};
+		BBB4E5C128A49CC9007DF641 /* handlers */ = {
+			isa = PBXGroup;
+			children = (
+				BB7C769028B478CE00C1AA96 /* PresentationAckHandler.swift */,
+				BB7C768E28B4700E00C1AA96 /* PresentationHandler.swift */,
+				BB7C768C28B46FF200C1AA96 /* RequestPresentationHandler.swift */,
+			);
+			path = handlers;
+			sourceTree = "<group>";
+		};
+		BBB4E5C328A49CF1007DF641 /* repository */ = {
+			isa = PBXGroup;
+			children = (
+				BBB4E5C628A49D69007DF641 /* ProofRepository.swift */,
+				BBB4E5C828A49D9C007DF641 /* ProofExchangeRecord.swift */,
+			);
+			path = repository;
+			sourceTree = "<group>";
+		};
+		BBB4E5C428A49D29007DF641 /* models */ = {
+			isa = PBXGroup;
+			children = (
+				BBB4E5DC28A4DDB9007DF641 /* AttributeFilter.swift */,
+				BBB4E5CA28A4A090007DF641 /* AutoAcceptProof.swift */,
+				BBB4E5EA28A4FF8F007DF641 /* IndyCredentialInfo.swift */,
+				BBABFF3B28AE182600141EB2 /* PartialProof.swift */,
+				BBB4E5EC28A500C8007DF641 /* ProofAttribute.swift */,
+				BBB4E5D628A4D6B0007DF641 /* ProofAttributeInfo.swift */,
+				BBB4E5D828A4D79D007DF641 /* ProofPredicateInfo.swift */,
+				BBB4E5D428A4D51C007DF641 /* ProofRequest.swift */,
+				BBB4E5CC28A4A0B1007DF641 /* ProofState.swift */,
+				BBB4E5DA28A4DC49007DF641 /* RevocationInterval.swift */,
+				BBB4E5E028A4F252007DF641 /* RequestedAttribute.swift */,
+				BBB4E5E228A4F261007DF641 /* RequestedCredentials.swift */,
+				BBB4E5E428A4F282007DF641 /* RequestedPredicate.swift */,
+				BBB4E5E628A4F291007DF641 /* RequestedProof.swift */,
+				BBB4E5E828A4F2A4007DF641 /* RetrievedCredentials.swift */,
+				BB655FAC28B3542300A919E8 /* RevocationRegistryDelta.swift */,
+			);
+			path = models;
+			sourceTree = "<group>";
+		};
+		BBB4E5C528A49D30007DF641 /* messages */ = {
+			isa = PBXGroup;
+			children = (
+				BB7A033D2891259500D53822 /* PresentationAckMessage.swift */,
+				BBB4E5D228A4C966007DF641 /* RequestPresentationMessage.swift */,
+				BBB4E5DE28A4EF48007DF641 /* PresentationMessage.swift */,
+			);
+			path = messages;
+			sourceTree = "<group>";
+		};
+		BBC3D05C2804290400DA3C70 /* decorators */ = {
+			isa = PBXGroup;
+			children = (
+				BB2DC65728223E9800220250 /* SignatureDecorator.swift */,
+				BBC3D05D2804292D00DA3C70 /* ThreadDecorator.swift */,
+				BBAAA626280FF05000F8AC63 /* TransportDecorator.swift */,
+				BB2549412851B56C00769958 /* Attachment.swift */,
+				BB2549432851B86800769958 /* JwsTypes.swift */,
+			);
+			path = decorators;
+			sourceTree = "<group>";
+		};
+		BBEBC563282CD7240080C2EA /* repository */ = {
+			isa = PBXGroup;
+			children = (
+				BBEBC564282CD75F0080C2EA /* MediationRecord.swift */,
+				BBEBC566282CD76D0080C2EA /* MediationRepository.swift */,
+			);
+			path = repository;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXHeadersBuildPhase section */
+		BB3F292327E3031A00D667C1 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				BB3F293927E3031A00D667C1 /* AriesFramework.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
+
+/* Begin PBXNativeTarget section */
+		BB3F292727E3031A00D667C1 /* AriesFramework */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = BB3F293C27E3031A00D667C1 /* Build configuration list for PBXNativeTarget "AriesFramework" */;
+			buildPhases = (
+				2FCAD42E3F90DC0A5425169D /* [CP] Check Pods Manifest.lock */,
+				BB3F292327E3031A00D667C1 /* Headers */,
+				BB3F292427E3031A00D667C1 /* Sources */,
+				BB3F292527E3031A00D667C1 /* Frameworks */,
+				BB3F292627E3031A00D667C1 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = AriesFramework;
+			packageProductDependencies = (
+			);
+			productName = AriesFramework;
+			productReference = BB3F292827E3031A00D667C1 /* AriesFramework.framework */;
+			productType = "com.apple.product-type.framework";
+		};
+		BB3F293127E3031A00D667C1 /* AriesFrameworkTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = BB3F293F27E3031A00D667C1 /* Build configuration list for PBXNativeTarget "AriesFrameworkTests" */;
+			buildPhases = (
+				7B0B951CB1175606B3D4E421 /* [CP] Check Pods Manifest.lock */,
+				BB3F292E27E3031A00D667C1 /* Sources */,
+				BB3F292F27E3031A00D667C1 /* Frameworks */,
+				BB3F293027E3031A00D667C1 /* Resources */,
+				7188B2E8D1A44D59C86F79C8 /* [CP] Embed Pods Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				BB3F293527E3031A00D667C1 /* PBXTargetDependency */,
+			);
+			name = AriesFrameworkTests;
+			productName = AriesFrameworkTests;
+			productReference = BB3F293227E3031A00D667C1 /* AriesFrameworkTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		BB3F291F27E3031A00D667C1 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 1330;
+				LastUpgradeCheck = 1330;
+				TargetAttributes = {
+					BB3F292727E3031A00D667C1 = {
+						CreatedOnToolsVersion = 13.3;
+						LastSwiftMigration = 1330;
+					};
+					BB3F293127E3031A00D667C1 = {
+						CreatedOnToolsVersion = 13.3;
+					};
+				};
+			};
+			buildConfigurationList = BB3F292227E3031A00D667C1 /* Build configuration list for PBXProject "AriesFramework" */;
+			compatibilityVersion = "Xcode 13.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = BB3F291E27E3031A00D667C1;
+			packageReferences = (
+			);
+			productRefGroup = BB3F292927E3031A00D667C1 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				BB3F292727E3031A00D667C1 /* AriesFramework */,
+				BB3F293127E3031A00D667C1 /* AriesFrameworkTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		BB3F292627E3031A00D667C1 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		BB3F293027E3031A00D667C1 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				BB9A04E2289A6A550054D0D2 /* local-genesis.txn in Resources */,
+				BBA00EC828BDAE050037601C /* bcovrin-genesis.txn in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		2FCAD42E3F90DC0A5425169D /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-AriesFramework-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		7188B2E8D1A44D59C86F79C8 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-AriesFrameworkTests/Pods-AriesFrameworkTests-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-AriesFrameworkTests/Pods-AriesFrameworkTests-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-AriesFrameworkTests/Pods-AriesFrameworkTests-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		7B0B951CB1175606B3D4E421 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-AriesFrameworkTests-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		BB3F292427E3031A00D667C1 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				BBB04E0428377F5100ECA48B /* BatchHandler.swift in Sources */,
+				BBB4E5ED28A500C8007DF641 /* ProofAttribute.swift in Sources */,
+				BB14AB6128571AB300C04EE0 /* OutOfBandRepository.swift in Sources */,
+				BBEBC569282CFC630080C2EA /* MediationRequestMessage.swift in Sources */,
+				BBB4E5E928A4F2A4007DF641 /* RetrievedCredentials.swift in Sources */,
+				BBB4E5E128A4F252007DF641 /* RequestedAttribute.swift in Sources */,
+				BBEBC562282CCA9F0080C2EA /* MediationDenyMessage.swift in Sources */,
+				BB1814DA285B0A4C00BD4A05 /* HandshakeReuseAcceptedMessage.swift in Sources */,
+				BB1BAB9327E97C8600F623DA /* IndyAgentService.swift in Sources */,
+				BB39E0CC2806A1C4006940A3 /* HttpOutboundTransport.swift in Sources */,
+				BB295D4D27FFD2E2004994C8 /* ConnectionRepository.swift in Sources */,
+				BB7A0338288F8FF900D53822 /* CredentialValues.swift in Sources */,
+				BB141581286AF10600235480 /* CredentialPreviewAttribute.swift in Sources */,
+				BBB4E5DB28A4DC49007DF641 /* RevocationInterval.swift in Sources */,
+				BB9A04DB2898FAA40054D0D2 /* SubjectOutboundTransport.swift in Sources */,
+				BB9A04D92898FA870054D0D2 /* OutboundTransport.swift in Sources */,
+				BBAAA627280FF05000F8AC63 /* TransportDecorator.swift in Sources */,
+				BBD436C627E9D49B005ADF30 /* PubkeyParser.swift in Sources */,
+				BB42BD2927FD4FB600880951 /* AgentDelegate.swift in Sources */,
+				BB7A03472892484C00D53822 /* CredentialAckHandler.swift in Sources */,
+				BB0EB34727E4895700B0D0E4 /* RsaSig2018.swift in Sources */,
+				BBA92EB82924D0B7007F73B2 /* MediatorPickupStrategy.swift in Sources */,
+				BBB4E5C928A49D9C007DF641 /* ProofExchangeRecord.swift in Sources */,
+				BBB4E5D328A4C966007DF641 /* RequestPresentationMessage.swift in Sources */,
+				BBB4E5E328A4F261007DF641 /* RequestedCredentials.swift in Sources */,
+				BB0EB33827E42AE800B0D0E4 /* Connection.swift in Sources */,
+				BB2549442851B86800769958 /* JwsTypes.swift in Sources */,
+				BBEBC567282CD76D0080C2EA /* MediationRepository.swift in Sources */,
+				BB26AD0A28110A6F008E7C11 /* MessageReceiver.swift in Sources */,
+				BB7A0343289247B400D53822 /* RequestCredentialHandler.swift in Sources */,
+				BBC3D05B280428DE00DA3C70 /* AgentMessage.swift in Sources */,
+				BBB4E5E528A4F282007DF641 /* RequestedPredicate.swift in Sources */,
+				BB3F297327E315C600D667C1 /* AriesFrameworkError.swift in Sources */,
+				BB254935285185AA00769958 /* OutOfBandInvitation.swift in Sources */,
+				BB2DC65828223E9800220250 /* SignatureDecorator.swift in Sources */,
+				BB39897A27EC3EE000A1CA1C /* DidDocService.swift in Sources */,
+				BB2DC656281BC80200220250 /* MessageHandler.swift in Sources */,
+				BB90F26328F902560066AE87 /* KeylistUpdateResponseHandler.swift in Sources */,
+				BB63DC322897C96F00BDF91E /* TrustPingMessageHandler.swift in Sources */,
+				BB655FAF28B3668800A919E8 /* ProofCommand.swift in Sources */,
+				BB0EB33F27E44D5000B0D0E4 /* Ed25119Sig2018.swift in Sources */,
+				BB2B735F2872B5EC00C87F67 /* DidCommMessageRecord.swift in Sources */,
+				BB14157F286AF0ED00235480 /* CredentialState.swift in Sources */,
+				BB2392F8282E3DA00056B55D /* MediationGrantHandler.swift in Sources */,
+				BB90F26128F9022D0066AE87 /* KeylistUpdateResponseMessage.swift in Sources */,
+				BBB4E5CD28A4A0B1007DF641 /* ProofState.swift in Sources */,
+				BB0EB34527E488E800B0D0E4 /* EddsaSaSigSecp256k1.swift in Sources */,
+				BB3F297227E315C600D667C1 /* MediationRecipient.swift in Sources */,
+				BB1F4187286C4D980076BE60 /* CredentialServiceOptions.swift in Sources */,
+				BBADC258287C071B0099FE2C /* LedgerService.swift in Sources */,
+				BB1CB3A8286072EB008E8DA6 /* OutOfBandCommand.swift in Sources */,
+				BB2DC65A28223FE200220250 /* ConnectionResponseMessage.swift in Sources */,
+				BB5A51E928E693DC00FF2229 /* ProposeCredentialMessage.swift in Sources */,
+				BB25493A285192D900769958 /* HandshakeProtocol.swift in Sources */,
+				BBB04E0228377E0D00ECA48B /* BatchPickupMessage.swift in Sources */,
+				BB7A033E2891259500D53822 /* PresentationAckMessage.swift in Sources */,
+				BB2B735D2872AFDC00C87F67 /* CredentialPreview.swift in Sources */,
+				BB39897827EC3E5D00A1CA1C /* DidDocumentService.swift in Sources */,
+				BB39897627EC3E5A00A1CA1C /* DidCommService.swift in Sources */,
+				BB62F2C928AF1E6100B69D35 /* CredentialAckMessage.swift in Sources */,
+				BB7C769128B478CE00C1AA96 /* PresentationAckHandler.swift in Sources */,
+				BB7A03452892481800D53822 /* IssueCredentialHandler.swift in Sources */,
+				BB3F297127E315C600D667C1 /* ConnectionService.swift in Sources */,
+				BBB4E5DF28A4EF48007DF641 /* PresentationMessage.swift in Sources */,
+				BB14157B286ADD4C00235480 /* CredentialRepository.swift in Sources */,
+				BB2B73612872B61B00C87F67 /* DidCommMessageRepository.swift in Sources */,
+				BB2B735B287291B000C87F67 /* OfferCredentialMessage.swift in Sources */,
+				BB44A933283CA7B20029A7E0 /* BaseRecord.swift in Sources */,
+				BB141579286ADCC600235480 /* CredentialService.swift in Sources */,
+				BB2DC654281A8A6700220250 /* Dispatcher.swift in Sources */,
+				BB44A935283CA7D00029A7E0 /* Repository.swift in Sources */,
+				BB7C769B28B7410F00C1AA96 /* WsOutboundTransport.swift in Sources */,
+				BBEBC565282CD75F0080C2EA /* MediationRecord.swift in Sources */,
+				BB3F297427E315C600D667C1 /* Types.swift in Sources */,
+				BB3F296B27E315C600D667C1 /* Wallet.swift in Sources */,
+				BBC3D05E2804292D00DA3C70 /* ThreadDecorator.swift in Sources */,
+				BB2549422851B56C00769958 /* Attachment.swift in Sources */,
+				BB1814E1285B0E6500BD4A05 /* OutOfBandService.swift in Sources */,
+				BB3F296E27E315C600D667C1 /* Agent.swift in Sources */,
+				BB2F06C627EB1BF6002C8F38 /* ReferencedAuthentication.swift in Sources */,
+				BBB4E5CB28A4A090007DF641 /* AutoAcceptProof.swift in Sources */,
+				BBB4E5D128A4A3FC007DF641 /* RevocationService.swift in Sources */,
+				BB5E99A8282A53D300746E0F /* TrustPingMessage.swift in Sources */,
+				BB1F4185286C25CE0076BE60 /* IndyCredentialView.swift in Sources */,
+				BB141583286AF11400235480 /* AutoAcceptCredential.swift in Sources */,
+				BB0EB34127E44E1500B0D0E4 /* PublicKey.swift in Sources */,
+				BB7C768D28B46FF200C1AA96 /* RequestPresentationHandler.swift in Sources */,
+				BB3F296D27E315C600D667C1 /* MessageSender.swift in Sources */,
+				BB14AB5F28571A9E00C04EE0 /* OutOfBandRecord.swift in Sources */,
+				BB90F25F28F902080066AE87 /* KeylistUpdateMessage.swift in Sources */,
+				BB2549402851966400769958 /* OutOfBandDidCommService.swift in Sources */,
+				BB14AB6628573BC300C04EE0 /* DIDParser.swift in Sources */,
+				BB0EB33B27E44C5900B0D0E4 /* EmbeddedAuthentication.swift in Sources */,
+				BB25493C285193A700769958 /* DiDExchange.swift in Sources */,
+				BBEBC560282CCA8D0080C2EA /* MediationGrantMessage.swift in Sources */,
+				BBB4E5DD28A4DDB9007DF641 /* AttributeFilter.swift in Sources */,
+				BB0EB33427E4280B00B0D0E4 /* ConnectionRecord.swift in Sources */,
+				BBADC255287BF5590099FE2C /* IssueCredentialMessage.swift in Sources */,
+				BB655FAD28B3542300A919E8 /* RevocationRegistryDelta.swift in Sources */,
+				BB0EB33627E429FD00B0D0E4 /* DidDoc.swift in Sources */,
+				BB9A04E4289B5EF40054D0D2 /* CredentialsCommand.swift in Sources */,
+				BB63DC302897C41A00BDF91E /* ConnectionRequestHandler.swift in Sources */,
+				BBB4E5C728A49D69007DF641 /* ProofRepository.swift in Sources */,
+				BBADC253287BF5410099FE2C /* RequestCredentialMessage.swift in Sources */,
+				BBB4E5D728A4D6B0007DF641 /* ProofAttributeInfo.swift in Sources */,
+				BB1814D8285B0A3400BD4A05 /* HandshakeReuseMessage.swift in Sources */,
+				BB3F297027E315C600D667C1 /* ConnectionCommand.swift in Sources */,
+				BB3F296F27E315C600D667C1 /* ConnectionInvitationMessage.swift in Sources */,
+				BB3F296C27E315C600D667C1 /* AgentConfig.swift in Sources */,
+				BBABFF3C28AE182600141EB2 /* PartialProof.swift in Sources */,
+				BB39897227EC30BC00A1CA1C /* Authentication.swift in Sources */,
+				BB295D4A27FFCF2D004994C8 /* ConnectionRequestMessage.swift in Sources */,
+				BB5E99A3282281AC00746E0F /* ConnectionResponseHandler.swift in Sources */,
+				BB7A0340289246FD00D53822 /* OfferCredentialHandler.swift in Sources */,
+				BBB04E0028377DEF00ECA48B /* BatchMessage.swift in Sources */,
+				BBB4E5E728A4F291007DF641 /* RequestedProof.swift in Sources */,
+				BBB4E5D928A4D79D007DF641 /* ProofPredicateInfo.swift in Sources */,
+				BBB4E5CF28A4A39F007DF641 /* ProofService.swift in Sources */,
+				BBB4E5D528A4D51C007DF641 /* ProofRequest.swift in Sources */,
+				BB14AB6328571BE200C04EE0 /* OutOfBandTypes.swift in Sources */,
+				BB7C768F28B4700E00C1AA96 /* PresentationHandler.swift in Sources */,
+				BB14157D286ADD9700235480 /* CredentialExchangeRecord.swift in Sources */,
+				BB7C769628B4B4F800C1AA96 /* IndyCredential.swift in Sources */,
+				BB7765352922215F0007B678 /* AsyncWaiter.swift in Sources */,
+				BB1814DF285B0A8A00BD4A05 /* HandshakeReuseAcceptedHandler.swift in Sources */,
+				BB2392FA282E3DB00056B55D /* MediationDenyHandler.swift in Sources */,
+				BBB4E5EB28A4FF8F007DF641 /* IndyCredentialInfo.swift in Sources */,
+				BB1814DD285B0A7F00BD4A05 /* HandshakeReuseHandler.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		BB3F292E27E3031A00D667C1 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				BB26AD0C2811415C008E7C11 /* WalletTest.swift in Sources */,
+				BB7A033A288FAD6200D53822 /* CredentialValuesTest.swift in Sources */,
+				BB081CCD2845BA3700087F92 /* RepositotyTest.swift in Sources */,
+				BB14AB68285740E100C04EE0 /* DIDParserTest.swift in Sources */,
+				BB3F295B27E3089300D667C1 /* ConnectionInvitationMessageTest.swift in Sources */,
+				BBABA79628D1BB9B001EA090 /* CredentialDefinitionController.swift in Sources */,
+				BBA00ECB28C9B4D50037601C /* CriolloTest.swift in Sources */,
+				BB9A04DF289902E80054D0D2 /* ConnectionTest.swift in Sources */,
+				BB3F295927E305F400D667C1 /* AgentTest.swift in Sources */,
+				BB076808285C38BC00BEACC9 /* OutOfBandServiceTest.swift in Sources */,
+				BB255D1E285045F200839B3A /* TestHelper.swift in Sources */,
+				BBABA79828D1BBAC001EA090 /* DidController.swift in Sources */,
+				BB39897427EC30D500A1CA1C /* DidDocTest.swift in Sources */,
+				BB2B73632872C73800C87F67 /* DidCommMessageRepositoryTest.swift in Sources */,
+				BB0F6C8B286400B900F86BB5 /* OobTest.swift in Sources */,
+				BBA2CF2627F452FB00437E58 /* ConnectionServiceTest.swift in Sources */,
+				BBABA79428D1BB67001EA090 /* CredentialController.swift in Sources */,
+				BB2549382851868500769958 /* OutOfBandInvitationTest.swift in Sources */,
+				BB5E99A62829108200746E0F /* SignatureDecoratorTest.swift in Sources */,
+				BBABA79E28D1CB12001EA090 /* ControllerUtils.swift in Sources */,
+				BB3E133727E813110064F24E /* PublicKeyTest.swift in Sources */,
+				BBABA79228D1BB42001EA090 /* ConnectionController.swift in Sources */,
+				BB7C769428B480A900C1AA96 /* ProofsTest.swift in Sources */,
+				BBABA78B28D1A107001EA090 /* AATHTest.swift in Sources */,
+				BBD15D7C28D8337E0081D2BB /* AgentInboundController.swift in Sources */,
+				BBABA78928D17C32001EA090 /* TestHarnessConfig.swift in Sources */,
+				BBFCDA7628DDA31C00100EDA /* IssueCredentialController.swift in Sources */,
+				BB081CCF2845BC6300087F92 /* TestRecord.swift in Sources */,
+				BBD15D7A28D82D0F0081D2BB /* OutOfBandController.swift in Sources */,
+				BBABA79A28D1BC05001EA090 /* PresentProofController.swift in Sources */,
+				BBABA79028D1B553001EA090 /* AgentController.swift in Sources */,
+				BB14AB5C2856EE5300C04EE0 /* AttachmentTest.swift in Sources */,
+				BBABA79C28D1BC20001EA090 /* SchemaController.swift in Sources */,
+				BB255D1C28503A8100839B3A /* CredentialsTest.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		BB3F293527E3031A00D667C1 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = BB3F292727E3031A00D667C1 /* AriesFramework */;
+			targetProxy = BB3F293427E3031A00D667C1 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		BB3F293A27E3031A00D667C1 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Debug;
+		};
+		BB3F293B27E3031A00D667C1 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = NO;
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				VALIDATE_PRODUCT = YES;
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Release;
+		};
+		BB3F293D27E3031A00D667C1 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 85951C57ED0829482532A0A2 /* Pods-AriesFramework.debug.xcconfig */;
+			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				"IPHONEOS_DEPLOYMENT_TARGET[sdk=macosx*]" = 14.2;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.naver.AriesFramework;
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				SKIP_INSTALL = YES;
+				SUPPORTS_MACCATALYST = NO;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		BB3F293E27E3031A00D667C1 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 665539ECD1EB40241981FBC7 /* Pods-AriesFramework.release.xcconfig */;
+			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				"IPHONEOS_DEPLOYMENT_TARGET[sdk=macosx*]" = 14.2;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				ONLY_ACTIVE_ARCH = NO;
+				PRODUCT_BUNDLE_IDENTIFIER = com.naver.AriesFramework;
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				SKIP_INSTALL = YES;
+				SUPPORTS_MACCATALYST = NO;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		BB3F294027E3031A00D667C1 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 4CF404074A623D7EF73AECF4 /* Pods-AriesFrameworkTests.debug.xcconfig */;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "-";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = "";
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.naver.AriesFrameworkTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		BB3F294127E3031A00D667C1 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = FF3694205ED1596568E474EF /* Pods-AriesFrameworkTests.release.xcconfig */;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "-";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = "";
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.naver.AriesFrameworkTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		BB3F292227E3031A00D667C1 /* Build configuration list for PBXProject "AriesFramework" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				BB3F293A27E3031A00D667C1 /* Debug */,
+				BB3F293B27E3031A00D667C1 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		BB3F293C27E3031A00D667C1 /* Build configuration list for PBXNativeTarget "AriesFramework" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				BB3F293D27E3031A00D667C1 /* Debug */,
+				BB3F293E27E3031A00D667C1 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		BB3F293F27E3031A00D667C1 /* Build configuration list for PBXNativeTarget "AriesFrameworkTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				BB3F294027E3031A00D667C1 /* Debug */,
+				BB3F294127E3031A00D667C1 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = BB3F291F27E3031A00D667C1 /* Project object */;
+}
