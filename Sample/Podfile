@@ -1,0 +1,9 @@
+source 'https://github.com/CocoaPods/Specs.git'
+source 'https://github.com/naver/indy-sdk.git'
+platform :ios, '15.0'
+
+target 'wallet-app-ios' do
+  use_frameworks!
+
+  pod 'AriesFramework', '~> 1.2'
+end
