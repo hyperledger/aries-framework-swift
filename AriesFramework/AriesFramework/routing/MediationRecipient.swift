@@ -48,7 +48,7 @@ class MediationRecipient {
         if let connection = await agent.connectionService.findByInvitationKey(recipientKey), connection.isReady() {
             try await requestMediationIfNecessry(connection: connection)
         } else {
-            let connection = try await agent.connectionService.processInvitation(invitation,
+            var connection = try await agent.connectionService.processInvitation(invitation,
                 outOfBandInvitation: outOfBandInvitation, routing: self.getRouting(), autoAcceptConnection: true)
             let message = try await agent.connectionService.createRequest(connectionId: connection.id)
             try await agent.messageSender.send(message: message)
@@ -59,6 +59,9 @@ class MediationRecipient {
                     throw AriesFrameworkError.frameworkError("Connection to the mediator timed out.")
                 }
             }
+
+            // Update connection record after the connection protocol.
+            connection = try await agent.connectionRepository.getById(connection.id)
             try await requestMediationIfNecessry(connection: connection)
         }
     }
