@@ -90,8 +90,7 @@ public class MessageSender {
             routingKeys: [],
             senderKey: senderKey)
 
-        // returnRoute makes acapy agent blocked on AATH
-        if agent.agentConfig.agentEndpoints == nil {
+        if message.transport == nil && message.requestResponse() {
             message.transport = TransportDecorator(returnRoute: "all")
         }
 
