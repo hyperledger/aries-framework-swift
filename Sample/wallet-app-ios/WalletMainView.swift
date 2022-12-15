@@ -42,6 +42,10 @@ struct WalletMainView: View {
                         TextField("invitation url", text: $invitation)
                             .textFieldStyle(.roundedBorder)
 
+                        Button("Clear", action: {
+                            invitation = ""
+                        })
+                        .buttonStyle(.bordered)
                         Button("Connect", action: {
                             QRCodeHandler().receiveInvitation(url: invitation)
                         })
