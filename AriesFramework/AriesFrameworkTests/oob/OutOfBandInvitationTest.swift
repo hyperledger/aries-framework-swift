@@ -60,6 +60,22 @@ class OutOfBandInvitationTest: XCTestCase {
         XCTAssertEqual(invitation.label, "Faber College")
     }
 
+    func testLegacyProtocolType() throws {
+        let json: String = """
+        {
+            "@type": "https://didcomm.org/out-of-band/1.1/invitation",
+            "@id": "69212a3a-d068-4f9d-a2dd-4741bca89af3",
+            "label": "Faber College",
+            "goal_code": "issue-vc",
+            "goal": "To issue a Faber College Graduate credential",
+            "handshake_protocols": ["did:sov:BzCbsNYhMrjHiqZDTUASHg;spec/didexchange/1.0", "did:sov:BzCbsNYhMrjHiqZDTUASHg;spec/connections/1.0"],
+            "services": ["did:sov:LjgpST2rjsoxYegQDRm7EL"]
+        }
+        """
+        let invitation = try OutOfBandInvitation.fromJson(json)
+        XCTAssertEqual(invitation.label, "Faber College")
+    }
+
     func testInvitationWithService() throws {
         let json: String = """
         {
