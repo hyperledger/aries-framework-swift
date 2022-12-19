@@ -86,8 +86,9 @@ public class OutOfBandInvitation: AgentMessage {
         if let encodedInvitation = encodedInvitation,
            let data = Data(base64Encoded: encodedInvitation.base64urlToBase64()),
            let message = String(data: data, encoding: .utf8) {
-                let replaced = replaceLegacyDidSovWithNewDidCommPrefix(message: message)
-                return try JSONDecoder().decode(OutOfBandInvitation.self, from: replaced.data(using: .utf8)!)
+            var replaced = replaceLegacyDidSovWithNewDidCommPrefix(message: message)
+            replaced = try serializeJsonAttatchments(message: replaced)
+            return try JSONDecoder().decode(OutOfBandInvitation.self, from: replaced.data(using: .utf8)!)
         } else {
             throw AriesFrameworkError.frameworkError("InvitationUrl is invalid. It needs to contain one, and only one, of the following parameters; `oob`")
         }
@@ -95,7 +96,9 @@ public class OutOfBandInvitation: AgentMessage {
 
     public static func fromJson(_ json: String) throws -> OutOfBandInvitation {
         // ACA-Py may use the legacy did:sov: prefix, especially in the handshake_protocols field.
-        let message = replaceLegacyDidSovWithNewDidCommPrefix(message: json)
+        var message = replaceLegacyDidSovWithNewDidCommPrefix(message: json)
+
+        message = try serializeJsonAttatchments(message: message)
         return try JSONDecoder().decode(OutOfBandInvitation.self, from: message.data(using: .utf8)!)
     }
 
@@ -139,5 +142,37 @@ public class OutOfBandInvitation: AgentMessage {
         let didCommPrefix = "https://didcomm.org"
 
         return message.replacingOccurrences(of: didSovPrefix, with: didCommPrefix)
+    }
+
+    static func serializeJsonAttatchments(message: String) throws -> String {
+        guard var invitation = try JSONSerialization.jsonObject(with: message.data(using: .utf8)!, options: []) as? [String: Any] else {
+            throw AriesFrameworkError.frameworkError("Invitation is not a valid json")
+        }
+        guard let type = invitation["@type"] as? String, type.starts(with: "https://didcomm.org/out-of-band/") else {
+            throw AriesFrameworkError.frameworkError("Invitation is not an out-of-band invitation. Type is \(invitation["@type"] ?? "nil")")
+        }
+
+        let attachments = invitation["requests~attach"] as? [[String: Any]] ?? []
+        var serializedRequests: [[String: Any]] = []
+        for attachment in attachments {
+            if let data = attachment["data"] as? [String: Any], let json = data["json"] as? [String: Any] {
+                var attachment = attachment
+                var data = data
+                let serialized = try JSONSerialization.data(withJSONObject: json, options: [])
+                data["json"] = String(data: serialized, encoding: .utf8)
+                attachment["data"] = data
+                serializedRequests.append(attachment)
+            } else {
+                serializedRequests.append(attachment)
+            }
+        }
+
+        invitation["requests~attach"] = serializedRequests
+        let serialized = try JSONSerialization.data(withJSONObject: invitation, options: [])
+        if let serializedMessage = String(data: serialized, encoding: .utf8) {
+            return serializedMessage
+        } else {
+            throw AriesFrameworkError.frameworkError("Failed to convert invitation message data to string.")
+        }
     }
 }
