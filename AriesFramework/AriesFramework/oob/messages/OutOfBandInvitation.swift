@@ -83,16 +83,20 @@ public class OutOfBandInvitation: AgentMessage {
     public static func fromUrl(_ invitationUrl: String) throws -> OutOfBandInvitation {
         let parsedUrl = URLComponents(string: invitationUrl)
         let encodedInvitation = parsedUrl?.queryItems?.first(where: { $0.name == "oob" })?.value
-        if let encodedInvitation = encodedInvitation, let data = Data(base64Encoded: encodedInvitation.base64urlToBase64()) {
-            let invitationJson = try JSONDecoder().decode(OutOfBandInvitation.self, from: data)
-            return invitationJson
+        if let encodedInvitation = encodedInvitation,
+           let data = Data(base64Encoded: encodedInvitation.base64urlToBase64()),
+           let message = String(data: data, encoding: .utf8) {
+                let replaced = replaceLegacyDidSovWithNewDidCommPrefix(message: message)
+                return try JSONDecoder().decode(OutOfBandInvitation.self, from: replaced.data(using: .utf8)!)
         } else {
             throw AriesFrameworkError.frameworkError("InvitationUrl is invalid. It needs to contain one, and only one, of the following parameters; `oob`")
         }
     }
 
     public static func fromJson(_ json: String) throws -> OutOfBandInvitation {
-        return try JSONDecoder().decode(OutOfBandInvitation.self, from: json.data(using: .utf8)!)
+        // ACA-Py may use the legacy did:sov: prefix, especially in the handshake_protocols field.
+        let message = replaceLegacyDidSovWithNewDidCommPrefix(message: json)
+        return try JSONDecoder().decode(OutOfBandInvitation.self, from: message.data(using: .utf8)!)
     }
 
     public func fingerprints() throws -> [String] {
@@ -128,5 +132,12 @@ public class OutOfBandInvitation: AgentMessage {
         } else {
             return .Unknown
         }
+    }
+
+    public static func replaceLegacyDidSovWithNewDidCommPrefix(message: String) -> String {
+        let didSovPrefix = "did:sov:BzCbsNYhMrjHiqZDTUASHg;spec"
+        let didCommPrefix = "https://didcomm.org"
+
+        return message.replacingOccurrences(of: didSovPrefix, with: didCommPrefix)
     }
 }
