@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		98386810AD5B8B97C1BDBD0F /* Pods_wallet_app_ios.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 02A1815FAC5D54A24918BFED /* Pods_wallet_app_ios.framework */; };
+		BB53D9E92952C958007D9952 /* CodeScanner in Frameworks */ = {isa = PBXBuildFile; productRef = BB53D9E82952C958007D9952 /* CodeScanner */; };
 		BB5C467F270C1501008D77AE /* wallet_app_iosApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB5C467E270C1501008D77AE /* wallet_app_iosApp.swift */; };
 		BB5C4681270C1501008D77AE /* WalletMainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB5C4680270C1501008D77AE /* WalletMainView.swift */; };
 		BB5C4683270C1506008D77AE /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BB5C4682270C1506008D77AE /* Assets.xcassets */; };
@@ -20,8 +21,6 @@
 		BBB509D628ED680700A6405A /* WalletOpener.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBB509D528ED680700A6405A /* WalletOpener.swift */; };
 		BBB509D828ED682000A6405A /* OpenWalletView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBB509D728ED681F00A6405A /* OpenWalletView.swift */; };
 		BBD7B25127181C4300C3FB6C /* QRCodeHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBD7B25027181C4300C3FB6C /* QRCodeHandler.swift */; };
-		BBD95B08270D6AE300A48BB8 /* QRScanner in Frameworks */ = {isa = PBXBuildFile; productRef = BBD95B07270D6AE300A48BB8 /* QRScanner */; };
-		BBD95B0A270D96DA00A48BB8 /* QRScanView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBD95B09270D96DA00A48BB8 /* QRScanView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -41,7 +40,6 @@
 		BBB509D528ED680700A6405A /* WalletOpener.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WalletOpener.swift; sourceTree = "<group>"; };
 		BBB509D728ED681F00A6405A /* OpenWalletView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OpenWalletView.swift; sourceTree = "<group>"; };
 		BBD7B25027181C4300C3FB6C /* QRCodeHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRCodeHandler.swift; sourceTree = "<group>"; };
-		BBD95B09270D96DA00A48BB8 /* QRScanView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRScanView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -49,7 +47,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				BBD95B08270D6AE300A48BB8 /* QRScanner in Frameworks */,
+				BB53D9E92952C958007D9952 /* CodeScanner in Frameworks */,
 				98386810AD5B8B97C1BDBD0F /* Pods_wallet_app_ios.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -92,7 +90,6 @@
 				BBB509D528ED680700A6405A /* WalletOpener.swift */,
 				BBB509D728ED681F00A6405A /* OpenWalletView.swift */,
 				BB5C468C270C390E008D77AE /* CredentialListView.swift */,
-				BBD95B09270D96DA00A48BB8 /* QRScanView.swift */,
 				BB5C468E270C4181008D77AE /* CredentialDetailView.swift */,
 				BBD7B25027181C4300C3FB6C /* QRCodeHandler.swift */,
 				BB8C9BE7272FFAAE005D9284 /* CredentialHandler.swift */,
@@ -147,7 +144,7 @@
 			);
 			name = "wallet-app-ios";
 			packageProductDependencies = (
-				BBD95B07270D6AE300A48BB8 /* QRScanner */,
+				BB53D9E82952C958007D9952 /* CodeScanner */,
 			);
 			productName = "wallet-app-ios";
 			productReference = BB5C467B270C1500008D77AE /* wallet-app-ios.app */;
@@ -178,7 +175,7 @@
 			);
 			mainGroup = BB5C4672270C1500008D77AE;
 			packageReferences = (
-				BBD95B06270D6AE300A48BB8 /* XCRemoteSwiftPackageReference "QRScanner" */,
+				BB53D9E72952C958007D9952 /* XCRemoteSwiftPackageReference "CodeScanner" */,
 			);
 			productRefGroup = BB5C467C270C1500008D77AE /* Products */;
 			projectDirPath = "";
@@ -252,7 +249,6 @@
 			files = (
 				BBB509D828ED682000A6405A /* OpenWalletView.swift in Sources */,
 				BBD7B25127181C4300C3FB6C /* QRCodeHandler.swift in Sources */,
-				BBD95B0A270D96DA00A48BB8 /* QRScanView.swift in Sources */,
 				BB5C468D270C390E008D77AE /* CredentialListView.swift in Sources */,
 				BB5C4681270C1501008D77AE /* WalletMainView.swift in Sources */,
 				BB5C468F270C4181008D77AE /* CredentialDetailView.swift in Sources */,
@@ -477,21 +473,21 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		BBD95B06270D6AE300A48BB8 /* XCRemoteSwiftPackageReference "QRScanner" */ = {
+		BB53D9E72952C958007D9952 /* XCRemoteSwiftPackageReference "CodeScanner" */ = {
 			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/mercari/QRScanner";
+			repositoryURL = "https://github.com/twostraws/CodeScanner";
 			requirement = {
 				kind = upToNextMajorVersion;
-				minimumVersion = 1.0.0;
+				minimumVersion = 2.0.0;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		BBD95B07270D6AE300A48BB8 /* QRScanner */ = {
+		BB53D9E82952C958007D9952 /* CodeScanner */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = BBD95B06270D6AE300A48BB8 /* XCRemoteSwiftPackageReference "QRScanner" */;
-			productName = QRScanner;
+			package = BB53D9E72952C958007D9952 /* XCRemoteSwiftPackageReference "CodeScanner" */;
+			productName = CodeScanner;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

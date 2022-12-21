@@ -4,9 +4,9 @@
 //
 
 import SwiftUI
-import QRScanner
+import CodeScanner
 
-class QRCodeHandler: QRScannerViewDelegate {
+class QRCodeHandler {
     let credentialHandler = CredentialHandler.shared
     
     public func receiveInvitation(url: String) {
@@ -21,13 +21,14 @@ class QRCodeHandler: QRScannerViewDelegate {
         }
     }
 
-    func qrScannerView(_ qrScannerView: QRScannerView, didFailure error: QRScannerError) {
-        print(error)
-    }
-
-    @MainActor func qrScannerView(_ qrScannerView: QRScannerView, didSuccess code: String) {
-        print(code)
-        credentialHandler.menu = nil
-        receiveInvitation(url: code)
+    @MainActor public func handleResult(_ result: Result<ScanResult, ScanError>) {
+        switch result {
+        case .success(let result):
+            print("Scanned code: [\(result.string)]")
+            credentialHandler.menu = nil
+            receiveInvitation(url: result.string.trimmingCharacters(in: .whitespacesAndNewlines))
+        case .failure(let error):
+            print("Scanning failed: \(error.localizedDescription)")
+        }
     }
 }

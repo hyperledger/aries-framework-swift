@@ -1,12 +1,12 @@
 {
   "pins" : [
     {
-      "identity" : "qrscanner",
+      "identity" : "codescanner",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/mercari/QRScanner",
+      "location" : "https://github.com/twostraws/CodeScanner",
       "state" : {
-        "revision" : "b9bbcabf8ce54974b56a63f403abc43930684314",
-        "version" : "1.9.0"
+        "revision" : "c7859712034a08bb5a018fbe8751c1f1edc4b248",
+        "version" : "2.2.1"
       }
     }
   ],

@@ -4,6 +4,7 @@
 //
 
 import SwiftUI
+import CodeScanner
 
 enum MainMenu: Identifiable {
     case qrcode, list, loading
@@ -57,7 +58,7 @@ struct WalletMainView: View {
             .sheet(item: $credentialHandler.menu) { item in
                 switch item {
                 case .qrcode:
-                    QRScanView(handler: QRCodeHandler())
+                    CodeScannerView(codeTypes: [.qr], completion: QRCodeHandler().handleResult)
                 case .list:
                     CredentialListView()
                 case .loading:
