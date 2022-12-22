@@ -35,6 +35,12 @@ And add a pod depencency to the Podfile:
 pod 'AriesFramework'
 ```
 
+You need cocoapods and cmake to install the dependencies to your app.
+```bash
+$ brew install cocoapods cmake
+```
+
+Then run `pod install` to install the dependencies.
 Building on Apple silicon Mac is not supported yet.
 
 ## Usage
