@@ -26,20 +26,9 @@ class MediationRecipient {
 
     func initialize(mediatorConnectionsInvite: String) async throws {
         logger.debug("Initialize mediation with invitation: \(mediatorConnectionsInvite)")
-        let type = OutOfBandInvitation.getInvitationType(url: mediatorConnectionsInvite)
-        var recipientKey: String?
-        var invitation: ConnectionInvitationMessage?
-        var outOfBandInvitation: OutOfBandInvitation?
-        switch type {
-        case .Connection:
-            invitation = try ConnectionInvitationMessage.fromUrl(mediatorConnectionsInvite)
-            recipientKey = invitation!.recipientKeys?.first
-        case .OOB:
-            outOfBandInvitation = try OutOfBandInvitation.fromUrl(mediatorConnectionsInvite)
-            recipientKey = try outOfBandInvitation!.invitationKey()
-        default:
-            throw AriesFrameworkError.frameworkError("Unsupported invitation message: \(mediatorConnectionsInvite)")
-        }
+
+        let (outOfBandInvitation, invitation) = try await InvitationUrlParser.parseUrl(mediatorConnectionsInvite)
+        let recipientKey = try outOfBandInvitation?.invitationKey() ?? invitation?.recipientKeys?.first
 
         guard let recipientKey = recipientKey else {
             throw AriesFrameworkError.frameworkError("Invalid mediation invitation. Invitation must have at least one recipient key.")

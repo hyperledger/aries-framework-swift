@@ -126,17 +126,6 @@ public class OutOfBandInvitation: AgentMessage {
         return try DIDParser.ConvertFingerprintToVerkey(fingerprint: fingerprints[0])
     }
 
-    public static func getInvitationType(url: String) -> InvitationType {
-        let parsedUrl = URLComponents(string: url)
-        if parsedUrl?.queryItems?.first(where: { $0.name == "oob" }) != nil {
-            return .OOB
-        } else if parsedUrl?.queryItems?.first(where: { $0.name == "c_i" || $0.name == "c_m" }) != nil {
-            return .Connection
-        } else {
-            return .Unknown
-        }
-    }
-
     public static func replaceLegacyDidSovWithNewDidCommPrefix(message: String) -> String {
         let didSovPrefix = "did:sov:BzCbsNYhMrjHiqZDTUASHg;spec"
         let didCommPrefix = "https://didcomm.org"

@@ -14,7 +14,7 @@ public class MessageReceiver {
         do {
             let decryptedMessage = try await agent.wallet.unpack(encryptedMessage: encryptedMessage)
             let connection = try await findConnectionByMessageKeys(decryptedMessage: decryptedMessage)
-            let message = try decodeAgentMessage(plaintextMessage: decryptedMessage.plaintextMessage)
+            let message = try MessageReceiver.decodeAgentMessage(plaintextMessage: decryptedMessage.plaintextMessage)
             let messageContext = InboundMessageContext(message: message,
                                                        plaintextMessage: decryptedMessage.plaintextMessage,
                                                        connection: connection,
@@ -28,7 +28,7 @@ public class MessageReceiver {
 
     func receivePlaintextMessage(_ plaintextMessage: String, connection: ConnectionRecord) async throws {
         do {
-            let message = try decodeAgentMessage(plaintextMessage: plaintextMessage)
+            let message = try MessageReceiver.decodeAgentMessage(plaintextMessage: plaintextMessage)
             let messageContext = InboundMessageContext(message: message,
                                                        plaintextMessage: plaintextMessage,
                                                        connection: connection,
@@ -46,7 +46,7 @@ public class MessageReceiver {
         return connectionRecord
     }
 
-    func decodeAgentMessage(plaintextMessage: String) throws -> AgentMessage {
+    static func decodeAgentMessage(plaintextMessage: String) throws -> AgentMessage {
         let data = plaintextMessage.data(using: .utf8)!
         let decoder = JSONDecoder()
         let agentMessage = try decoder.decode(AgentMessage.self, from: data)
