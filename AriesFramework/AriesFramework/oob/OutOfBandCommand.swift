@@ -116,18 +116,25 @@ public class OutOfBandCommand {
      - Returns: out-of-band record and connection record if one has been created.
     */
     public func receiveInvitationFromUrl(_ url: String, config: ReceiveOutOfBandInvitationConfig? = nil) async throws -> (OutOfBandRecord?, ConnectionRecord?) {
-        let type = OutOfBandInvitation.getInvitationType(url: url)
-        if type == .Unknown {
-            throw AriesFrameworkError.frameworkError("Unsupported invitation type.")
-        }
-        if type == .Connection {
-            let connection = try await self.agent.connections.receiveInvitationFromUrl(url,
+        let (outOfBandInvitation, invitation) = try await parseInvitationShortUrl(url)
+        if invitation != nil {
+            let connection = try await self.agent.connections.receiveInvitation(invitation!,
                 autoAcceptConnection: config?.autoAcceptConnection, alias: config?.alias)
             return (nil, connection)
         }
 
-        let outOfBandInvitation = try OutOfBandInvitation.fromUrl(url)
-        return try await receiveInvitation(outOfBandInvitation, config: config)
+        return try await receiveInvitation(outOfBandInvitation!, config: config)
+    }
+
+    /**
+     Parses URL containing encoded invitation and returns invitation message. Compatible with
+     parsing shortened URLs.
+
+     - Parameter url: url containing either a base64url encoded invitation or shortened URL.
+     - Returns: out-of-band invitation and connection invitation if one has been parsed.
+    */
+    public func parseInvitationShortUrl(_ url: String) async throws -> (OutOfBandInvitation?, ConnectionInvitationMessage?) {
+        return try await InvitationUrlParser.parseUrl(url)
     }
 
     /**
@@ -282,7 +289,7 @@ public class OutOfBandCommand {
 
     private func processMessages(_ messages: [String], connectionRecord: ConnectionRecord) async throws {
         let message = messages.first(where: { message in
-            guard let agentMessage = try? agent.messageReceiver.decodeAgentMessage(plaintextMessage: message) else {
+            guard let agentMessage = try? MessageReceiver.decodeAgentMessage(plaintextMessage: message) else {
                 logger.warning("Cannot decode agent message: \(message)")
                 return false
             }

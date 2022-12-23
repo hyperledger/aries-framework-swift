@@ -168,6 +168,8 @@
 		BBD15D7A28D82D0F0081D2BB /* OutOfBandController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBD15D7928D82D0D0081D2BB /* OutOfBandController.swift */; };
 		BBD15D7C28D8337E0081D2BB /* AgentInboundController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBD15D7B28D8337E0081D2BB /* AgentInboundController.swift */; };
 		BBD436C627E9D49B005ADF30 /* PubkeyParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBD436C527E9D49B005ADF30 /* PubkeyParser.swift */; };
+		BBDFD4B02953FC76000345E1 /* InvitationUrlParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBDFD4AF2953FC76000345E1 /* InvitationUrlParser.swift */; };
+		BBDFD4B22954347A000345E1 /* InvitationUrlParserTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBDFD4B12954347A000345E1 /* InvitationUrlParserTest.swift */; };
 		BBEBC560282CCA8D0080C2EA /* MediationGrantMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBEBC55F282CCA8D0080C2EA /* MediationGrantMessage.swift */; };
 		BBEBC562282CCA9F0080C2EA /* MediationDenyMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBEBC561282CCA9F0080C2EA /* MediationDenyMessage.swift */; };
 		BBEBC565282CD75F0080C2EA /* MediationRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBEBC564282CD75F0080C2EA /* MediationRecord.swift */; };
@@ -353,6 +355,8 @@
 		BBD15D7928D82D0D0081D2BB /* OutOfBandController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OutOfBandController.swift; sourceTree = "<group>"; };
 		BBD15D7B28D8337E0081D2BB /* AgentInboundController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AgentInboundController.swift; sourceTree = "<group>"; };
 		BBD436C527E9D49B005ADF30 /* PubkeyParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PubkeyParser.swift; sourceTree = "<group>"; };
+		BBDFD4AF2953FC76000345E1 /* InvitationUrlParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InvitationUrlParser.swift; sourceTree = "<group>"; };
+		BBDFD4B12954347A000345E1 /* InvitationUrlParserTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InvitationUrlParserTest.swift; sourceTree = "<group>"; };
 		BBEBC55F282CCA8D0080C2EA /* MediationGrantMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediationGrantMessage.swift; sourceTree = "<group>"; };
 		BBEBC561282CCA9F0080C2EA /* MediationDenyMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediationDenyMessage.swift; sourceTree = "<group>"; };
 		BBEBC564282CD75F0080C2EA /* MediationRecord.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediationRecord.swift; sourceTree = "<group>"; };
@@ -526,8 +530,9 @@
 		BB14AB6428573BA300C04EE0 /* util */ = {
 			isa = PBXGroup;
 			children = (
-				BB14AB6528573BC300C04EE0 /* DIDParser.swift */,
 				BB7765342922215F0007B678 /* AsyncWaiter.swift */,
+				BB14AB6528573BC300C04EE0 /* DIDParser.swift */,
+				BBDFD4AF2953FC76000345E1 /* InvitationUrlParser.swift */,
 			);
 			path = util;
 			sourceTree = "<group>";
@@ -569,8 +574,9 @@
 		BB2549362851862E00769958 /* oob */ = {
 			isa = PBXGroup;
 			children = (
-				BB2549372851868500769958 /* OutOfBandInvitationTest.swift */,
 				BB14AB67285740E000C04EE0 /* DIDParserTest.swift */,
+				BBDFD4B12954347A000345E1 /* InvitationUrlParserTest.swift */,
+				BB2549372851868500769958 /* OutOfBandInvitationTest.swift */,
 				BB076807285C38BC00BEACC9 /* OutOfBandServiceTest.swift */,
 				BB0F6C8A286400B900F86BB5 /* OobTest.swift */,
 			);
@@ -1211,6 +1217,7 @@
 				BB3F296B27E315C600D667C1 /* Wallet.swift in Sources */,
 				BBC3D05E2804292D00DA3C70 /* ThreadDecorator.swift in Sources */,
 				BB2549422851B56C00769958 /* Attachment.swift in Sources */,
+				BBDFD4B02953FC76000345E1 /* InvitationUrlParser.swift in Sources */,
 				BB1814E1285B0E6500BD4A05 /* OutOfBandService.swift in Sources */,
 				BB3F296E27E315C600D667C1 /* Agent.swift in Sources */,
 				BB2F06C627EB1BF6002C8F38 /* ReferencedAuthentication.swift in Sources */,
@@ -1280,6 +1287,7 @@
 				BB3F295927E305F400D667C1 /* AgentTest.swift in Sources */,
 				BB076808285C38BC00BEACC9 /* OutOfBandServiceTest.swift in Sources */,
 				BB255D1E285045F200839B3A /* TestHelper.swift in Sources */,
+				BBDFD4B22954347A000345E1 /* InvitationUrlParserTest.swift in Sources */,
 				BBABA79828D1BBAC001EA090 /* DidController.swift in Sources */,
 				BB39897427EC30D500A1CA1C /* DidDocTest.swift in Sources */,
 				BB2B73632872C73800C87F67 /* DidCommMessageRepositoryTest.swift in Sources */,
