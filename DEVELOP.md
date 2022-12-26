@@ -26,6 +26,8 @@ WebSockets and CollectionConcurrencyKit are distributed only as Swift packages, 
 
 Aries Framework Swift refers to [Aries Framework JavaScript](https://github.com/hyperledger/aries-framework-javascript) a lot, so the structure is similar to it.
 
+Take a look at the diagrams in the [doc](doc/dev_general.md) to understand the basics of Aries and the framework.
+
 ### Agent
 
 Agent is the main class of Aries Framework Swift. Mobile apps will use this class to create a connection, receive a credential, and so on. It helps mobile apps to become Aries agents. Agent class holds all the commands, services, repositories, and wallet instances. Agent also has a message sender and a receiver along with a dispatcher. Dispatcher dispatches messages to the corresponding `MessageHandler` by its type and sends the outbound messages back when the message handlers return them.
@@ -83,7 +85,7 @@ Select `AriesFrameworkTests` scheme in XCode, select `AllTests` test plan in Tes
 
 ```bash
 $ xcodebuild test -workspace AriesFramework.xcworkspace -scheme AriesFrameworkTests -destination 'platform=iOS Simulator,name=iPhone 14 Pro' -testPlan AllTests | xcpretty
-``` 
+```
 
 ### AgentTest preparation
 
