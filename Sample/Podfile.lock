@@ -1,5 +1,5 @@
 PODS:
-  - AriesFramework (1.2.0):
+  - AriesFramework (1.2.2):
     - Base58Swift (~> 2.1)
     - CollectionConcurrencyKit (~> 0.2.0)
     - Indy (= 1.16.2)
@@ -39,7 +39,7 @@ SPEC REPOS:
     - WebSockets
 
 SPEC CHECKSUMS:
-  AriesFramework: 8c6461a82f3261f7a2c75f9bc63e28482dcfd98e
+  AriesFramework: 85ee35e4a85cdebc40d2a39581e1dcc7518602d7
   Base58Swift: 53d551f0b33d9478fa63b3445e453a772d6b31a7
   BigInt: 74b4d88367b0e819d9f77393549226d36faeb0d8
   CollectionConcurrencyKit: 002045c2ec7e8861e14f8d817f5b68e6ce2f4d63
