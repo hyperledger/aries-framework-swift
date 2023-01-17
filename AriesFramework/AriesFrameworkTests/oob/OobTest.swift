@@ -17,16 +17,7 @@ class OobTest: XCTestCase {
     override func setUp() async throws {
         try await super.setUp()
 
-        let faberConfig = try TestHelper.getBaseConfig(name: "faber")
-        faberAgent = Agent(agentConfig: faberConfig, agentDelegate: nil)
-        try await faberAgent.initialize()
-
-        let aliceConfig = try TestHelper.getBaseConfig(name: "alice")
-        aliceAgent = Agent(agentConfig: aliceConfig, agentDelegate: nil)
-        try await aliceAgent.initialize()
-
-        faberAgent.setOutboundTransport(SubjectOutboundTransport(subject: aliceAgent))
-        aliceAgent.setOutboundTransport(SubjectOutboundTransport(subject: faberAgent))
+        try await prepareAgents(useLedgerSerivce: false)
     }
 
     override func tearDown() async throws {
@@ -35,15 +26,23 @@ class OobTest: XCTestCase {
         try await super.tearDown()
     }
 
-    func prepareForCredentialTest() async throws -> CreateOfferOptions {
-        try await faberAgent.reset()
-        let faberConfig = try TestHelper.getBaseConfig(name: "faber", useLedgerSerivce: true)
+    func prepareAgents(useLedgerSerivce: Bool) async throws {
+        let faberConfig = try TestHelper.getBaseConfig(name: "faber", useLedgerSerivce: useLedgerSerivce)
         faberAgent = Agent(agentConfig: faberConfig, agentDelegate: nil)
         try await faberAgent.initialize()
 
-        // faberAgent has changed, so reset SubjectOutboundTransports.
+        let aliceConfig = try TestHelper.getBaseConfig(name: "alice", useLedgerSerivce: useLedgerSerivce)
+        aliceAgent = Agent(agentConfig: aliceConfig, agentDelegate: nil)
+        try await aliceAgent.initialize()
+
         faberAgent.setOutboundTransport(SubjectOutboundTransport(subject: aliceAgent))
         aliceAgent.setOutboundTransport(SubjectOutboundTransport(subject: faberAgent))
+    }
+
+    func prepareForCredentialTest() async throws -> CreateOfferOptions {
+        try await faberAgent.reset()
+        try await aliceAgent.reset()
+        try await prepareAgents(useLedgerSerivce: true)
 
         let credDefId = try await TestHelper.prepareForIssuance(faberAgent, ["name", "age"])
         return CreateOfferOptions(
@@ -141,6 +140,16 @@ class OobTest: XCTestCase {
         let credentialRecord = try await aliceAgent.credentialRepository.findByThreadAndConnectionId(
             threadId: message.threadId, connectionId: connection?.id)
         XCTAssertEqual(credentialRecord?.state, .OfferReceived)
+
+        // Accept credential offer and check that credential request has proper parent thread id.
+        _ = try await aliceAgent.credentials.acceptOffer(options: AcceptOfferOptions(credentialRecordId: credentialRecord!.id))
+        let faberCredentialRecord = try await faberAgent.credentialRepository.findByThreadAndConnectionId(
+            threadId: message.threadId, connectionId: nil)
+        let requestMessageJson = try await faberAgent.didCommMessageRepository.getAgentMessage(
+            associatedRecordId: faberCredentialRecord!.id, messageType: RequestCredentialMessage.type)
+        let requestMessage = try JSONDecoder().decode(RequestCredentialMessage.self, from: Data(requestMessageJson.utf8))
+        XCTAssertEqual(faberCredentialRecord!.state, .RequestReceived)
+        XCTAssertEqual(requestMessage.thread?.parentThreadId, invitation.id)
     }
 
     func testWithHandskakeReuse() async throws {
