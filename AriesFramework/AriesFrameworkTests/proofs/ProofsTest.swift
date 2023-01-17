@@ -16,7 +16,8 @@ class ProofsTest: XCTestCase {
     override func setUp() async throws {
         try await super.setUp()
 
-        (faberAgent, aliceAgent, credDefId, faberConnection, aliceConnection) = try await TestHelper.setupCredentialTests()
+        (faberAgent, aliceAgent, faberConnection, aliceConnection) = try await TestHelper.setupCredentialTests()
+        credDefId = try await TestHelper.prepareForIssuance(faberAgent, ["name", "age"])
     }
 
     override func tearDown() async throws {

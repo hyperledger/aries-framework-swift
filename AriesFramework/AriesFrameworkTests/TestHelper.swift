@@ -152,7 +152,7 @@ class TestHelper {
         return (received.theirDid == connection.did && received.theirKey() == connection.verkey)
     }
 
-    static func setupCredentialTests() async throws -> (Agent, Agent, String, ConnectionRecord, ConnectionRecord) {
+    static func setupCredentialTests() async throws -> (Agent, Agent, ConnectionRecord, ConnectionRecord) {
         let faberConfig = try TestHelper.getBaseConfig(name: "faber", useLedgerSerivce: true)
         let aliceConfig = try TestHelper.getBaseConfig(name: "alice", useLedgerSerivce: true)
 
@@ -165,10 +165,9 @@ class TestHelper {
         try await faberAgent.initialize()
         try await aliceAgent.initialize()
 
-        let credDefId = try await prepareForIssuance(faberAgent, ["name", "age"])
         let (faberConnection, aliceConnection) = try await makeConnection(faberAgent, aliceAgent)
 
-        return (faberAgent, aliceAgent, credDefId, faberConnection, aliceConnection)
+        return (faberAgent, aliceAgent, faberConnection, aliceConnection)
     }
 
     static func prepareForIssuance(_ agent: Agent, _ attributes: [String]) async throws -> String {
