@@ -31,27 +31,50 @@ public class MessageSender {
         }
     }
 
-    public func send(message: OutboundMessage, endpointPrefix: String? = nil) async throws {
+    func decorateMessage(_ message: OutboundMessage) -> AgentMessage {
+        let agentMessage = message.payload
         if agent.agentConfig.useLegacyDidSovPrefix {
-            message.payload.replaceNewDidCommPrefixWithLegacyDidSov()
+            agentMessage.replaceNewDidCommPrefixWithLegacyDidSov()
         }
 
+        if agentMessage.transport == nil && agentMessage.requestResponse() {
+            agentMessage.transport = TransportDecorator(returnRoute: "all")
+        }
+
+        // If the message is a response to an out-of-band invitation, set the parent thread id.
+        // We should not override the parent thread id if it is already set, because it may be
+        // a response to a different invitation. For example, a handshake-reuse message sent
+        // over an existing connection created from a different out-of-band invitation.
+        if let oobInvitation = message.connection.outOfBandInvitation {
+            var thread = agentMessage.thread ?? ThreadDecorator()
+            if thread.parentThreadId == nil {
+                thread.parentThreadId = oobInvitation.id
+                agentMessage.thread = thread
+            }
+        }
+
+        return agentMessage
+    }
+
+    public func send(message: OutboundMessage, endpointPrefix: String? = nil) async throws {
+        let agentMessage = decorateMessage(message)
         let services = try findDidCommServices(connection: message.connection)
         if services.isEmpty {
-            logger.error("Cannot find services for message of type \(message.payload.type)")
+            logger.error("Cannot find services for message of type \(agentMessage.type)")
         }
+
         for service in services {
             if endpointPrefix != nil && !service.serviceEndpoint.hasPrefix(endpointPrefix!) {
                 continue
             }
-            logger.debug("Send outbound message of type \(message.payload.type) to endpoint \(service.serviceEndpoint)")
+            logger.debug("Send outbound message of type \(agentMessage.type) to endpoint \(service.serviceEndpoint)")
             if endpointPrefix == nil && outboundTransportForEndpoint(service.serviceEndpoint) == nil {
                 logger.debug("endpoint is not supported")
                 continue
             }
             do {
                 try await sendMessageToService(
-                    message: message.payload, service: service,
+                    message: agentMessage, service: service,
                     senderKey: message.connection.verkey,
                     connectionId: message.connection.id)
                 return
@@ -89,10 +112,6 @@ public class MessageSender {
             recipientKeys: service.recipientKeys,
             routingKeys: [],
             senderKey: senderKey)
-
-        if message.transport == nil && message.requestResponse() {
-            message.transport = TransportDecorator(returnRoute: "all")
-        }
 
         let outboundPackage = try await packMessage(message, keys: keys, endpoint: service.serviceEndpoint, connectionId: connectionId)
         guard let outboundTransport = outboundTransportForEndpoint(service.serviceEndpoint) else {
