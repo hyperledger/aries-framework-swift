@@ -4,7 +4,6 @@
 //
 
 import SwiftUI
-import Indy
 
 class CredentialList: ObservableObject {
     @Published var list: [Credential] = []
@@ -34,7 +33,7 @@ struct CredentialListView: View {
             .listStyle(.plain)
             .navigationTitle("Credential List")
             .task {
-                if let credentialsJson = try! await IndyAnoncreds.proverGetCredentials(forFilter: "{}", walletHandle: agent!.wallet.handle!) {
+                if let credentialsJson = try! await agent!.proverGetCredentials(forFilter: "{}") {
                     self.credentials.list = try! JSONDecoder().decode([Credential].self, from: credentialsJson.data(using: .utf8)!)
                 }
             }

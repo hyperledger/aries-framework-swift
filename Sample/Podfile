@@ -1,5 +1,4 @@
 source 'https://github.com/CocoaPods/Specs.git'
-source 'https://github.com/naver/indy-sdk.git'
 platform :ios, '15.0'
 
 target 'wallet-app-ios' do

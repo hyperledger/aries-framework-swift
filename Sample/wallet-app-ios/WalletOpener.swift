@@ -4,7 +4,6 @@
 //
 
 import SwiftUI
-import Indy
 import AriesFramework
 
 final class WalletState: ObservableObject {
@@ -20,7 +19,7 @@ class WalletOpener : ObservableObject {
         var key = userDefaults.value(forKey:"walletKey") as? String
         if (key == nil) {
             do {
-                key = try await IndyWallet.generateKey(forConfig: nil)
+                key = try await Agent.generateKey()
                 userDefaults.set(key, forKey: "walletKey")
             } catch {
                 if let err = error as NSError? {

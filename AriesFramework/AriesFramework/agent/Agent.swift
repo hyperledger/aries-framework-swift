@@ -3,6 +3,11 @@ import Foundation
 import Indy
 
 public class Agent {
+
+    public class func generateKey(forConfig: String = "{}") async throws -> String? {
+        return try await IndyWallet.generateKey(forConfig: forConfig)
+    }
+
     public var agentConfig: AgentConfig
     public var agentDelegate: AgentDelegate?
 
@@ -126,5 +131,9 @@ public class Agent {
     */
     public func setOutboundTransport(_ outboundTransport: OutboundTransport) {
         self.messageSender.setOutboundTransport(outboundTransport)
+    }
+
+    public func proverGetCredentials(forFilter: String = "{}") async throws -> String? {
+        return try await IndyAnoncreds.proverGetCredentials(forFilter: forFilter, walletHandle: wallet.handle!)
     }
 }
