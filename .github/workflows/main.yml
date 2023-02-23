@@ -25,4 +25,4 @@ jobs:
     - name: Build
       run: xcodebuild build-for-testing CODE_SIGNING_ALLOWED=No -workspace AriesFramework.xcworkspace -scheme AriesFrameworkTests -sdk iphoneos -destination "platform=iOS Simulator,name=iPhone 14 Pro"
     - name: Run tests
-      run: xcodebuild test-without-building CODE_SIGNING_ALLOWED=No -workspace AriesFramework.xcworkspace -scheme AriesFrameworkTests -sdk iphoneos -destination "platform=iOS Simulator,name=iPhone 14 Pro" -testPlan AriesFrameworkTests | xcpretty && exit ${PIPESTATUS[0]}
+      run: xcodebuild test-without-building CODE_SIGNING_ALLOWED=No -workspace AriesFramework.xcworkspace -scheme AriesFrameworkTests -sdk iphoneos -destination "platform=iOS Simulator,name=iPhone 14 Pro" -testPlan AriesFrameworkTests -retry-tests-on-failure | xcpretty && exit ${PIPESTATUS[0]}

@@ -96,12 +96,17 @@ public class Wallet {
         if indyWallet != nil {
             try? await close()
         }
-        if !userDefaults.bool(forKey: walletExistKey) {
-            logger.info("Nothing to delete: walley does not exist")
-            return
-        }
+
         walletCredentials = ["key": agent.agentConfig.walletKey, "key_derivation_method": "RAW"].toString()
-        try await wallet.delete(withConfig: ["id": agent.agentConfig.walletId].toString(), credentials: walletCredentials!)
+        do {
+            try await wallet.delete(withConfig: ["id": agent.agentConfig.walletId].toString(), credentials: walletCredentials!)
+        } catch {
+            let documentDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
+            let walletPath = documentDirectory.appendingPathComponent(".indy_client/wallet")
+                                              .appendingPathComponent(agent.agentConfig.walletId)
+                                              .appendingPathComponent("sqlite.db")
+            try? FileManager.default.removeItem(at: walletPath)
+        }
         walletCredentials = nil
 
         userDefaults.removeObject(forKey: walletExistKey)
