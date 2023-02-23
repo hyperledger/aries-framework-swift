@@ -41,8 +41,8 @@ class ConnectionServiceTest: XCTestCase {
     }
 
     override func tearDown() async throws {
-        try await super.tearDown()
         try await agent.reset()
+        try await super.tearDown()
     }
 
     func testProcessInvitation() async throws {
