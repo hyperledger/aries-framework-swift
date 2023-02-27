@@ -3,7 +3,7 @@ import Foundation
 
 let DID_COMM_TRANSPORT_QUEUE = "didcomm:transport/queue"
 
-public struct AgentConfig {
+public struct AgentConfig: Codable {
     public init(
         walletId: String = "AFSDefaultWallet",
         walletKey: String,
