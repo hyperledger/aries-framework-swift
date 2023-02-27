@@ -20,6 +20,12 @@ jobs:
         working-directory: AriesFramework
     steps:
     - uses: actions/checkout@v3
+    - uses: actions/cache@v3
+      with:
+        path: AriesFramework/Pods
+        key: ${{ runner.os }}-pods-${{ hashFiles('AriesFramework/Podfile.lock') }}
+        restore-keys: |
+          ${{ runner.os }}-pods-
     - name: Install Dependencies
       run: pod install
     - name: Build
