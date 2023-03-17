@@ -39,7 +39,6 @@ public class LedgerService {
 
         try await IndyPool.setProtocolVersion(2)
         let poolConfig = ["genesis_txn": agent.agentConfig.genesisPath].toString()
-        print(poolConfig)
         if !poolExists() {
             do {
                 try await IndyPool.createPoolLedgerConfig(withPoolName: agent.agentConfig.poolName, poolConfig: poolConfig)
