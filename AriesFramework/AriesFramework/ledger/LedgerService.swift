@@ -26,11 +26,8 @@ public class LedgerService {
     let logger = Logger(subsystem: "AriesFramework", category: "LedgerService")
     private var indyPool: IndyHandle?
 
-    let poolExistKey: String
-
     init(agent: Agent) {
         self.agent = agent
-        poolExistKey = agent.agentConfig.label + " aries_framework_pool_exist"
     }
 
     func initialize() async throws {
@@ -42,16 +39,15 @@ public class LedgerService {
 
         try await IndyPool.setProtocolVersion(2)
         let poolConfig = ["genesis_txn": agent.agentConfig.genesisPath].toString()
-        let userDefaults = UserDefaults.standard
-        if !userDefaults.bool(forKey: poolExistKey) {
+        print(poolConfig)
+        if !poolExists() {
             do {
                 try await IndyPool.createPoolLedgerConfig(withPoolName: agent.agentConfig.poolName, poolConfig: poolConfig)
-                userDefaults.set(true, forKey: poolExistKey)
             } catch {
                 if let err = error as NSError? {
                     logger.error("Cannot create pool: \(err.userInfo["message"] as? String ?? "Unknown error")")
                 }
-                throw AriesFrameworkError.frameworkError("Pool creation failed")
+                throw AriesFrameworkError.frameworkError("Pool creation failed. config=\(poolConfig)")
             }
         }
 
@@ -61,10 +57,17 @@ public class LedgerService {
             if let err = error as NSError? {
                 logger.error("Cannot open pool: \(err.userInfo["message"] as? String ?? "Unknown error")")
             }
-            throw AriesFrameworkError.frameworkError("Pool opening failed")
+            throw AriesFrameworkError.frameworkError("Pool opening failed. config=\(poolConfig)")
         }
     }
 
+    func poolExists() -> Bool {
+        let f = FileManager.default
+        var url = f.urls(for:.documentDirectory, in:.userDomainMask)[0]
+        url.appendPathComponent(".indy_client/pool/\(agent.agentConfig.poolName)")
+        return f.fileExists(atPath: url.path)
+    }
+    
     public func registerSchema(did: String, schemaTemplate: SchemaTemplate) async throws -> String {
         let (schemaId, schema) = try await IndyAnoncreds.issuerCreateSchema(
             withName: schemaTemplate.name,
@@ -195,10 +198,8 @@ public class LedgerService {
             try? await close()
         }
 
-        let userDefaults = UserDefaults.standard
-        if userDefaults.bool(forKey: poolExistKey) {
+        if poolExists() {
             try await IndyPool.deleteLedgerConfig(withName: agent.agentConfig.poolName)
-            userDefaults.removeObject(forKey: poolExistKey)
         }
     }
 }
