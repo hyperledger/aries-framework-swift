@@ -361,7 +361,7 @@ public class ProofService {
         let indyProof = try await IndyAnoncreds.proverCreateProof(
             forRequest: proofRequest,
             requestedCredentialsJSON: requestedCredentials.toString(),
-            masterSecretID: agent.wallet.masterSecretId,
+            masterSecretID: agent.agentConfig.masterSecretId,
             schemasJSON: schemas,
             credentialDefsJSON: credentialDefinitions,
             revocStatesJSON: revocationStates,
