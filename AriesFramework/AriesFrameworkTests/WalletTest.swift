@@ -24,12 +24,10 @@ class WalletTest: XCTestCase {
     func testInitAndDelete() async throws {
         let wallet = agent.wallet!
         XCTAssertNotNil(wallet.handle)
-        XCTAssertNotNil(wallet.masterSecretId)
         XCTAssertNotNil(wallet.walletCredentials)
 
         try? await wallet.delete()
         XCTAssertNil(wallet.handle)
-        XCTAssertNil(wallet.masterSecretId)
         XCTAssertNil(wallet.walletCredentials)
     }
 
@@ -55,13 +53,11 @@ class WalletTest: XCTestCase {
     func testInitTwice() async throws {
         let wallet = agent.wallet!
         XCTAssertNotNil(wallet.handle)
-        XCTAssertNotNil(wallet.masterSecretId)
         XCTAssertNotNil(wallet.walletCredentials)
 
         // Try to initialize again. It will close the wallet and reopen it.
         try await wallet.initialize()
         XCTAssertNotNil(wallet.handle)
-        XCTAssertNotNil(wallet.masterSecretId)
         XCTAssertNotNil(wallet.walletCredentials)
     }
 }

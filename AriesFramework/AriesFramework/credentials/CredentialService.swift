@@ -174,7 +174,7 @@ public class CredentialService {
             forCredentialOffer: credentialOfferJson,
             credentialDefJSON: credentialDefinition,
             proverDID: holderDid,
-            masterSecretID: agent.wallet.masterSecretId!,
+            masterSecretID: agent.agentConfig.masterSecretId,
             walletHandle: agent.wallet.handle!)
 
         credentialRecord.indyRequestMetadata = credentialRequestMetadata

@@ -21,7 +21,8 @@ public struct AgentConfig: Codable {
         useLedgerSerivce: Bool = true,
         useLegacyDidSovPrefix: Bool = true,
         publicDidSeed: String? = nil,
-        agentEndpoints: [String]? = nil) {
+        agentEndpoints: [String]? = nil,
+        masterSecretId: String = "default") {
 
         self.walletId = walletId
         self.walletKey = walletKey
@@ -40,6 +41,7 @@ public struct AgentConfig: Codable {
         self.useLegacyDidSovPrefix = useLegacyDidSovPrefix
         self.publicDidSeed = publicDidSeed
         self.agentEndpoints = agentEndpoints
+        self.masterSecretId = masterSecretId
     }
 
     // Mandatory fields
@@ -48,7 +50,9 @@ public struct AgentConfig: Codable {
     public var walletKey: String
     /// File path to the genesis file for the indy ledger.
     public var genesisPath: String
-
+    /// The master secret id to identify the prover in AnonCreds. This will not be nil after the agent initialization.
+    public var masterSecretId: String
+    
     // Optional fields
 
     /// The wallet id to identify the wallet in an App.
