@@ -21,9 +21,10 @@ class AgentConfigTest: XCTestCase {
         UserDefaults.standard.setValue(try? PropertyListEncoder().encode(config), forKey:"testAgentConfig")
         
         if let data = UserDefaults.standard.value(forKey:"testAgentConfig") as? Data {
-            let config = try! PropertyListDecoder().decode(AgentConfig.self, from:data)
-            XCTAssertNil(config.walletKey)
-            XCTAssertEqual(config.genesisPath, genesisPath)
+            let config = try? PropertyListDecoder().decode(AgentConfig.self, from:data)
+            XCTAssertNotNil(config)
+            XCTAssertNil(config!.walletKey)
+            XCTAssertEqual(config!.genesisPath, genesisPath)
         }
     }
 }
