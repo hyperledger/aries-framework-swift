@@ -1,3 +1,4 @@
+// swiftlint:disable inclusive_language
 
 import Foundation
 
@@ -20,7 +21,7 @@ public enum AriesFrameworkError: LocalizedError {
             return "RecordNotFoundError: " + message
         }
     }
-    
+
     public var failureReason: String? {
         switch self {
         case .frameworkError(_, let reason):
@@ -37,9 +38,9 @@ public enum AriesFrameworkError: LocalizedError {
                     return reason?.localizedDescription
                 }
             }
-        case .recordDuplicateError(_):
+        case .recordDuplicateError:
             return nil
-        case .recordNotFoundError(_):
+        case .recordNotFoundError:
             return nil
         }
     }
