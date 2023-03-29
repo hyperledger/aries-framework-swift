@@ -12,7 +12,7 @@ public enum AriesFrameworkError: LocalizedError {
             if reason == nil {
                 return "FrameworkError: \(message)"
             } else {
-                return "FrameworkError: \(message), reason: \(failureReason!)"
+                return "FrameworkError: \(message) reason: \(failureReason!)"
             }
         case .recordDuplicateError(let message):
             return "RecordDuplicateError: " + message
@@ -27,7 +27,15 @@ public enum AriesFrameworkError: LocalizedError {
             if reason == nil {
                 return nil
             } else {
-                return reason?.localizedDescription
+                if let err = reason as NSError? {
+                    if let message = err.userInfo["message"] as? String {
+                        return message
+                    } else {
+                        return reason?.localizedDescription
+                    }
+                } else {
+                    return reason?.localizedDescription
+                }
             }
         case .recordDuplicateError(_):
             return nil
