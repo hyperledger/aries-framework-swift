@@ -55,10 +55,8 @@ public class Wallet {
                 try await wallet.createWallet(withConfig: walletConfig, credentials: walletCredentials)
                 userDefaults.set(true, forKey: walletExistKey)
             } catch {
-                if let err = error as NSError? {
-                    logger.error("Cannot create wallet: \(err.userInfo["message"] as? String ?? "Unknown error")")
-                }
-                throw AriesFrameworkError.frameworkError("Wallet creation failed")
+                logger.error("Cannot create wallet: \(error.localizedDescription)")
+                throw AriesFrameworkError.frameworkError("Wallet creation failed.", error)
             }
         } else {
             walletCredentials = ["key": agent.agentConfig.walletKey, "key_derivation_method": "RAW"].toString()
@@ -67,10 +65,8 @@ public class Wallet {
         do {
             indyWallet = try await wallet.open(withConfig: walletConfig, credentials: walletCredentials)
         } catch {
-            if let err = error as NSError? {
-                logger.error("Cannot open wallet: \(err.userInfo["message"] as? String ?? "Unknown error")")
-            }
-            throw AriesFrameworkError.frameworkError("Wallet opening failed")
+            logger.error("Cannot open wallet: \(error.localizedDescription)")
+            throw AriesFrameworkError.frameworkError("Wallet opening failed.", error)
         }
 
         masterSecretId = userDefaults.string(forKey: secretIdKey)
