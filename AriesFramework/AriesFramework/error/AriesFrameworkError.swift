@@ -1,5 +1,3 @@
-// swiftlint:disable inclusive_language
-
 import Foundation
 
 public enum AriesFrameworkError: LocalizedError {
