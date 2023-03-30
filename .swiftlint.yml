@@ -13,3 +13,4 @@ disabled_rules:
   - class_delegate_protocol
   - todo
   - large_tuple
+  - blanket_disable_command
