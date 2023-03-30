@@ -62,11 +62,11 @@ public class LedgerService {
 
     func poolExists() -> Bool {
         let f = FileManager.default
-        var url = f.urls(for:.documentDirectory, in:.userDomainMask)[0]
+        var url = f.urls(for: .documentDirectory, in: .userDomainMask)[0]
         url.appendPathComponent(".indy_client/pool/\(agent.agentConfig.poolName)")
         return f.fileExists(atPath: url.path)
     }
-    
+
     public func registerSchema(did: String, schemaTemplate: SchemaTemplate) async throws -> String {
         let (schemaId, schema) = try await IndyAnoncreds.issuerCreateSchema(
             withName: schemaTemplate.name,
