@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		0233A18A249B8CDB80DDDFDA /* Pods_AriesFrameworkTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EC84AE11C175D3BF0C8C6B5F /* Pods_AriesFrameworkTests.framework */; };
+		9198279029CBCE5A00A6CCB1 /* AgentConfigTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9198278F29CBCE5A00A6CCB1 /* AgentConfigTest.swift */; };
 		BB076808285C38BC00BEACC9 /* OutOfBandServiceTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB076807285C38BC00BEACC9 /* OutOfBandServiceTest.swift */; };
 		BB081CCD2845BA3700087F92 /* RepositotyTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB081CCC2845BA3700087F92 /* RepositotyTest.swift */; };
 		BB081CCF2845BC6300087F92 /* TestRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB081CCE2845BC6300087F92 /* TestRecord.swift */; };
@@ -194,6 +195,7 @@
 		4CF404074A623D7EF73AECF4 /* Pods-AriesFrameworkTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AriesFrameworkTests.debug.xcconfig"; path = "Target Support Files/Pods-AriesFrameworkTests/Pods-AriesFrameworkTests.debug.xcconfig"; sourceTree = "<group>"; };
 		665539ECD1EB40241981FBC7 /* Pods-AriesFramework.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AriesFramework.release.xcconfig"; path = "Target Support Files/Pods-AriesFramework/Pods-AriesFramework.release.xcconfig"; sourceTree = "<group>"; };
 		85951C57ED0829482532A0A2 /* Pods-AriesFramework.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AriesFramework.debug.xcconfig"; path = "Target Support Files/Pods-AriesFramework/Pods-AriesFramework.debug.xcconfig"; sourceTree = "<group>"; };
+		9198278F29CBCE5A00A6CCB1 /* AgentConfigTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AgentConfigTest.swift; sourceTree = "<group>"; };
 		BB076807285C38BC00BEACC9 /* OutOfBandServiceTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OutOfBandServiceTest.swift; sourceTree = "<group>"; };
 		BB081CCC2845BA3700087F92 /* RepositotyTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RepositotyTest.swift; sourceTree = "<group>"; };
 		BB081CCE2845BC6300087F92 /* TestRecord.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestRecord.swift; sourceTree = "<group>"; };
@@ -772,6 +774,7 @@
 		BB5E99A42829105200746E0F /* agent */ = {
 			isa = PBXGroup;
 			children = (
+				9198278F29CBCE5A00A6CCB1 /* AgentConfigTest.swift */,
 				BB3F295527E305F400D667C1 /* AgentTest.swift */,
 				BB5E99A52829108200746E0F /* SignatureDecoratorTest.swift */,
 				BB14AB5B2856EE5300C04EE0 /* AttachmentTest.swift */,
@@ -1309,6 +1312,7 @@
 				BBABA79A28D1BC05001EA090 /* PresentProofController.swift in Sources */,
 				BBABA79028D1B553001EA090 /* AgentController.swift in Sources */,
 				BB14AB5C2856EE5300C04EE0 /* AttachmentTest.swift in Sources */,
+				9198279029CBCE5A00A6CCB1 /* AgentConfigTest.swift in Sources */,
 				BBABA79C28D1BC20001EA090 /* SchemaController.swift in Sources */,
 				BB255D1C28503A8100839B3A /* CredentialsTest.swift in Sources */,
 			);
