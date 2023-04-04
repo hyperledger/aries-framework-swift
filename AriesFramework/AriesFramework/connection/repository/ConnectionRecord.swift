@@ -32,11 +32,19 @@ public struct ConnectionRecord: BaseRecord {
     public static let type = "ConnectionRecord"
 }
 
-extension ConnectionRecord: Codable {
+extension ConnectionRecord: Codable, Hashable {
     enum CodingKeys: String, CodingKey {
         case id, createdAt, updatedAt, state, role, didDoc, did, verkey, theirDidDoc, theirDid, theirLabel, invitation, outOfBandInvitation, alias, autoAcceptConnection, imageUrl, multiUseInvitation, threadId, mediatorId, errorMessage
     }
 
+    public static func == (lhs: ConnectionRecord, rhs: ConnectionRecord) -> Bool {
+        return lhs.id == rhs.id
+    }
+
+    public func hash(into hasher: inout Hasher) {
+        hasher.combine(id)
+    }
+    
     init(
         tags: Tags? = nil,
         state: ConnectionState,

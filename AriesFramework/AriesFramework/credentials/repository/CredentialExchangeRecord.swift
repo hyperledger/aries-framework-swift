@@ -26,9 +26,17 @@ public struct CredentialExchangeRecord: BaseRecord {
     public static let type = "CredentialRecord"
 }
 
-extension CredentialExchangeRecord: Codable {
+extension CredentialExchangeRecord: Codable, Hashable {
     enum CodingKeys: String, CodingKey {
         case id, createdAt, updatedAt, tags, connectionId, threadId, state, autoAcceptCredential, errorMessage, protocolVersion, credentials, credentialAttributes, indyRequestMetadata, credentialDefinitionId
+    }
+    
+    public static func == (lhs: CredentialExchangeRecord, rhs: CredentialExchangeRecord) -> Bool {
+        lhs.id == rhs.id
+    }
+    
+    public func hash(into hasher: inout Hasher) {
+        hasher.combine(id)
     }
 
     init(

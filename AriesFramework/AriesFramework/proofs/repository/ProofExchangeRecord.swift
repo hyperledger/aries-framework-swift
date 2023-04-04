@@ -18,7 +18,7 @@ public struct ProofExchangeRecord: BaseRecord {
     public static let type = "ProofRecord"
 }
 
-extension ProofExchangeRecord: Codable {
+extension ProofExchangeRecord: Codable, Hashable {
     enum CodingKeys: String, CodingKey {
         case id, createdAt, updatedAt, tags, connectionId, threadId, isVerified, presentationId, state, autoAcceptProof, errorMessage
     }
