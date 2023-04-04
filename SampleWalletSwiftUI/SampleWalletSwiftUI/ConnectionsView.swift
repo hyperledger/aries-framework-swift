@@ -17,7 +17,7 @@ struct ConnectionsView: View {
                     List (self.agent.connectionList, id: \.self, selection: $agent.selectedConnection) { c in
                         ConnectionItemView(connection: c)
                     }
-                    .navigationTitle("AliceWallet2")
+                    .navigationTitle("SampleWalletSwiftUI")
                     .listStyle(.plain)
 
                     Spacer()

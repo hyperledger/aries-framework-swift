@@ -58,7 +58,7 @@ extension AriesAgentFacade: AgentDelegate {
 
 class AriesAgentFacade : ObservableObject {
     
-    private let logger = Logger(subsystem: "AliceWallet2", category: "AriesAgentFacade")
+    private let logger = Logger(subsystem: "SampleWalletSwiftUI", category: "AriesAgentFacade")
     
     var agent: Agent?
     @Published var isProvisioned = false
@@ -159,7 +159,7 @@ class AriesAgentFacade : ObservableObject {
             logger.debug("agent provisioned and initialized.")
             
             // Optional: you can save walletKey into Keychain
-            // try KeychainHelper.standard.save(walletKey, service: "AliceWallet2", account: config.walletId)
+            // try KeychainHelper.standard.save(walletKey, service: "SampleWalletSwiftUI", account: config.walletId)
             
             try saveAgentConfigToPropertyList(config:agentConfig)
             
@@ -176,7 +176,7 @@ class AriesAgentFacade : ObservableObject {
             agentConfig.walletKey = try await walletKeyFromSeed()!
             
             // Optional: you can read walletKey from Keychain
-            // agentConfig.walletKey = KeychainHelper.standard.read(service: "AliceWallet2", account: agentConfig.walletId)
+            // agentConfig.walletKey = KeychainHelper.standard.read(service: "SampleWalletSwiftUI", account: agentConfig.walletId)
             
             logger.debug("agent start with config=\(String(describing: agentConfig))")
             self.agent = Agent(agentConfig:agentConfig, agentDelegate:self)
