@@ -8,9 +8,9 @@
 
 /* Begin PBXBuildFile section */
 		58FCD06DFCF698A27EBFF4D3 /* Pods_SampleWalletSwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F180FA85CF4F6294B9F76F61 /* Pods_SampleWalletSwiftUI.framework */; };
+		911BE74229DCEF0300BDA4AF /* PresentationsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 911BE74129DCEF0300BDA4AF /* PresentationsView.swift */; };
 		9166036B29D2BEE800E8AA80 /* ApplicationError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9166036A29D2BEE800E8AA80 /* ApplicationError.swift */; };
 		917AF7E029BAA14B00A86EBA /* CredentialsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 917AF7DF29BAA14B00A86EBA /* CredentialsView.swift */; };
-		917AF7F529BB176600A86EBA /* BaseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 917AF7F429BB176600A86EBA /* BaseView.swift */; };
 		9198279229CBF49400A6CCB1 /* KeychainHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9198279129CBF49400A6CCB1 /* KeychainHelper.swift */; };
 		91EE244F29B0A6D100A2E2C6 /* OnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91EE244E29B0A6D100A2E2C6 /* OnboardingView.swift */; };
 		91F3639029AC979000AAEE82 /* SampleWalletSwiftUIApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91F3638F29AC979000AAEE82 /* SampleWalletSwiftUIApp.swift */; };
@@ -26,10 +26,10 @@
 /* Begin PBXFileReference section */
 		5899DD1A9CE7BEA3E95D555B /* Pods-SampleWalletSwiftUI.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SampleWalletSwiftUI.debug.xcconfig"; path = "Target Support Files/Pods-SampleWalletSwiftUI/Pods-SampleWalletSwiftUI.debug.xcconfig"; sourceTree = "<group>"; };
 		698B1BA5EAD1A4A19FB9C4F6 /* Pods-SampleWalletSwiftUI.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SampleWalletSwiftUI.release.xcconfig"; path = "Target Support Files/Pods-SampleWalletSwiftUI/Pods-SampleWalletSwiftUI.release.xcconfig"; sourceTree = "<group>"; };
+		911BE74129DCEF0300BDA4AF /* PresentationsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PresentationsView.swift; sourceTree = "<group>"; };
 		912E45CF299F6B340054802D /* AriesAgentFacade.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AriesAgentFacade.swift; sourceTree = "<group>"; };
 		9166036A29D2BEE800E8AA80 /* ApplicationError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApplicationError.swift; sourceTree = "<group>"; };
 		917AF7DF29BAA14B00A86EBA /* CredentialsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CredentialsView.swift; sourceTree = "<group>"; };
-		917AF7F429BB176600A86EBA /* BaseView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseView.swift; sourceTree = "<group>"; };
 		9198279129CBF49400A6CCB1 /* KeychainHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeychainHelper.swift; sourceTree = "<group>"; };
 		91EE244E29B0A6D100A2E2C6 /* OnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingView.swift; sourceTree = "<group>"; };
 		91F3638729A86D5C00AAEE82 /* networks */ = {isa = PBXFileReference; lastKnownFileType = folder; path = networks; sourceTree = "<group>"; };
@@ -68,12 +68,12 @@
 			children = (
 				91F3638729A86D5C00AAEE82 /* networks */,
 				912E45CF299F6B340054802D /* AriesAgentFacade.swift */,
-				917AF7F429BB176600A86EBA /* BaseView.swift */,
 				91F3638F29AC979000AAEE82 /* SampleWalletSwiftUIApp.swift */,
 				91EE244E29B0A6D100A2E2C6 /* OnboardingView.swift */,
+				91F3639129AC979000AAEE82 /* ContentView.swift */,
 				BB5C4680270C1501008D77AE /* ConnectionsView.swift */,
 				917AF7DF29BAA14B00A86EBA /* CredentialsView.swift */,
-				91F3639129AC979000AAEE82 /* ContentView.swift */,
+				911BE74129DCEF0300BDA4AF /* PresentationsView.swift */,
 				9198279129CBF49400A6CCB1 /* KeychainHelper.swift */,
 				9166036A29D2BEE800E8AA80 /* ApplicationError.swift */,
 				91F3639329AC979200AAEE82 /* Assets.xcassets */,
@@ -238,12 +238,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				917AF7F529BB176600A86EBA /* BaseView.swift in Sources */,
 				91F363A129AC980100AAEE82 /* AriesAgentFacade.swift in Sources */,
 				917AF7E029BAA14B00A86EBA /* CredentialsView.swift in Sources */,
 				9198279229CBF49400A6CCB1 /* KeychainHelper.swift in Sources */,
 				91F3639C29AC97FE00AAEE82 /* ConnectionsView.swift in Sources */,
 				91EE244F29B0A6D100A2E2C6 /* OnboardingView.swift in Sources */,
+				911BE74229DCEF0300BDA4AF /* PresentationsView.swift in Sources */,
 				9166036B29D2BEE800E8AA80 /* ApplicationError.swift in Sources */,
 				91F3639229AC979000AAEE82 /* ContentView.swift in Sources */,
 				91F3639029AC979000AAEE82 /* SampleWalletSwiftUIApp.swift in Sources */,

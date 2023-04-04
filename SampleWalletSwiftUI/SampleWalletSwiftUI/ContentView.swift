@@ -13,6 +13,11 @@ struct ContentView: View {
                     Image(systemName: "list.dash")
                     Text("Credentials")
                 }
+            PresentationsView()
+                .tabItem {
+                    Image(systemName: "list.dash")
+                    Text("Presentations")
+                }
         }
         .padding()
     }
