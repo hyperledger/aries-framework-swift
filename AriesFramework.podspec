@@ -9,7 +9,7 @@ Pod::Spec.new do |spec|
   spec.homepage     = "https://github.com/hyperledger/aries-framework-swift"
   spec.author       = { "conanoc" => "conanoc@gmail.com" }
 
-  spec.source       = { :git => "https://github.com/hyperledger/aries-framework-swift.git", :tag => 'v1.2.1' }
+  spec.source       = { :git => "" }
   spec.source_files = "AriesFramework/AriesFramework/**/*.{h,swift}"
 
   spec.dependency   "Indy", "1.16.2"
