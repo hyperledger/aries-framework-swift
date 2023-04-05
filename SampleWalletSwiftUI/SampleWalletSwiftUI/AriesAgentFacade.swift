@@ -143,7 +143,7 @@ class AriesAgentFacade : ObservableObject {
             let networkName = url.lastPathComponent
             logger.debug(" * [\(index)] \(networkName)")
         }
-        return networks
+        return networks.sorted { $0.lastPathComponent < $1.lastPathComponent }
     }
     
     func provisionAndStart() async throws {
