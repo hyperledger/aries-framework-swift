@@ -14,7 +14,7 @@ struct OnboardingView: View {
             Text("Verifiable Data Registries").font(.title)
                 List (self.agent.availableNetworks, id: \.self, selection: $agent.selectedNetwork) { url in
                     VerifiableDataRegistryView(url: url)
-                }.background(Color.blue).frame(maxHeight: 200)
+                }.background(Color.blue).frame(maxHeight: 300)
             }.background(Color.yellow)
             
             VStack(alignment:.center) {
