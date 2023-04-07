@@ -133,7 +133,7 @@ class AriesAgentFacade : ObservableObject {
             autoAcceptCredential: .always,
             autoAcceptProof: .always,
             useLedgerSerivce: true,
-            useLegacyDidSovPrefix: true,
+            useLegacyDidSovPrefix: false,
             publicDidSeed: nil,
             agentEndpoints: nil)
     }
@@ -272,17 +272,42 @@ class AriesAgentFacade : ObservableObject {
         }
     }
     
+    func issueCredentialPropose() async throws -> CredentialExchangeRecord? {
+        let preview = CredentialPreview(attributes: [
+            CredentialPreviewAttribute(name: "name", value: "Alice"),
+            CredentialPreviewAttribute(name: "degree", value: "A++"),
+            CredentialPreviewAttribute(name: "birthdate_dateint", value: "19980101"),
+            CredentialPreviewAttribute(name: "date", value: "20010101"),
+            CredentialPreviewAttribute(name: "timestamp", value: "<timestamp>")
+        ])
+        
+        let options = CreateProposalOptions(
+            connection: self.selectedConnection!,
+            credentialPreview: preview,
+            schemaIssuerDid: "6sYe1y3zXhmyrBkgHgAgaq",
+            schemaId: "6sYe1y3zXhmyrBkgHgAgaq:2:transacript:23.01.26",
+            schemaName: "transacript",
+            schemaVersion: "23.01.26",
+            credentialDefinitionId: "6sYe1y3zXhmyrBkgHgAgaq:3:CL:758423:4",
+            issuerDid: "6sYe1y3zXhmyrBkgHgAgaq",
+            autoAcceptCredential: AutoAcceptCredential.always,
+            comment: ""
+        )
+        
+        return try? await self.agent?.credentials.proposeCredential(options: options)
+    }
+    
     func credentialsUpdate() async throws {
         do {
-//            if let credentialsJson = try await IndyAnoncreds.proverGetCredentials(forFilter: "{}", walletHandle: agent!.wallet.handle!) {
-//                self.credentials = try! JSONDecoder().decode([CredentialRecord].self, from: credentialsJson.data(using: .utf8)!)
-//            }
-//            if self.credentials.isEmpty {
+            if let credentialsJson = try await IndyAnoncreds.proverGetCredentials(forFilter: "{}", walletHandle: agent!.wallet.handle!) {
+                self.credentials = try! JSONDecoder().decode([CredentialRecord].self, from: credentialsJson.data(using: .utf8)!)
+            }
+            if self.credentials.isEmpty {
                 self.credentials = [
                     CredentialRecord(referent: "aaaa", attrs: [:], schema_id: "1111", cred_def_id: "a1a1a"),
                     CredentialRecord(referent: "bbbb", attrs: [:], schema_id: "2222", cred_def_id: "b2b2b"),
                 ]
-//            }
+            }
         }
     }
     
