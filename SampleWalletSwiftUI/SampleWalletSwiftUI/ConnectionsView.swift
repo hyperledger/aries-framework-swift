@@ -81,8 +81,8 @@ struct ConnectionItemView: View {
     var body: some View {
         HStack {
             Image(systemName:"phone.fill.connection")
-            Text(connection.id).frame(width:220).background(Color.blue)
-            Text(connection.state.rawValue).frame(width:80, alignment: .leading).background(Color.red)
+            Text(connection.id).frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading).background(Color.blue)
+            Text(connection.state.rawValue).frame(maxWidth: 80, maxHeight: .infinity, alignment: .center).background(Color.red)
         }
     }
 }

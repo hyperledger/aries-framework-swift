@@ -32,9 +32,19 @@ struct CredentialsView: View {
     
     func IssueCredentialControlView() -> some View {
         return HStack {
-            
-            Image(systemName: "icloud.and.arrow.down")
-            
+            Button(action: {
+                Task {
+                    do {
+                        _ = try await agent.issueCredentialPropose()
+                        try await agent.credentialsUpdate()
+                    } catch {
+                        self.error = error
+                        self.showingAlert = true
+                    }
+                }
+            }) {
+                Image(systemName: "icloud.and.arrow.down")
+            }
             .buttonStyle(.bordered)
             .alert(isPresented: $showingAlert) {
                 Alert(title: Text("Error"), message: Text(error!.localizedDescription), dismissButton: .default(Text("Dismiss")))
@@ -48,9 +58,8 @@ struct CredentialRecordView: View {
     
     var body: some View {
         HStack {
-            Image(systemName:"phone.fill.connection")
-            Text(credential.referent).frame(width:220).background(Color.blue)
-            Text(credential.cred_def_id).frame(width:80, alignment: .leading).background(Color.red)
+            Image(systemName:"text.badge.checkmark")
+            Text(credential.referent).frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading).background(Color.blue)
         }
     }
 }
