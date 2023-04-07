@@ -137,13 +137,14 @@ class AriesAgentFacade : ObservableObject {
     
     func getGenesisTxnURLs() -> [URL] {
         logger.debug("listing genesis txn urls.")
-        let networks = Bundle.main.urls(forResourcesWithExtension:"json", subdirectory:"networks")!
+        var networks = Bundle.main.urls(forResourcesWithExtension:"json", subdirectory:"networks")!
+        networks.sort{ $0.lastPathComponent < $1.lastPathComponent }
         logger.debug("networks:")
         for (index, url) in networks.enumerated() {
             let networkName = url.lastPathComponent
             logger.debug(" * [\(index)] \(networkName)")
         }
-        return networks.sorted { $0.lastPathComponent < $1.lastPathComponent }
+        return networks
     }
     
     func provisionAndStart() async throws {
