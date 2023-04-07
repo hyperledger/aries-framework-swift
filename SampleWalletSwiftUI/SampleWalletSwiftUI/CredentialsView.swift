@@ -1,25 +1,43 @@
 import SwiftUI
-import CodeScanner
 import AriesFramework
 
 struct CredentialsView: View {
     
     @EnvironmentObject var agent: AriesAgentFacade
     
+    @State var showingAlert = false
+    @State var error: Error? = nil
+    
     var body: some View {
-        NavigationView {
-            VStack {
-                List (self.agent.credentials, id: \.self, selection: $agent.selectedConnection) { c in
-                    CredentialRecordView(credential: c)
+        ZStack {
+            NavigationView {
+                VStack {
+                    List (self.agent.credentials, id: \.self) { c in
+                        CredentialRecordView(credential: c)
+                    }
+                    .navigationTitle("Credentials")
+                    .listStyle(.plain)
+                    .background(Color.green)
+                    .task {
+                        do {
+                            try? await agent.credentialsUpdate()
+                        }
+                    }
+                    Spacer()
+                    IssueCredentialControlView()
                 }
             }
-            .navigationTitle("Credential List")
-            .listStyle(.plain)
+        }
+    }
+    
+    func IssueCredentialControlView() -> some View {
+        return HStack {
             
-            .task {
-                do {
-                    try? await agent.credentialsUpdate()
-                }
+            Image(systemName: "icloud.and.arrow.down")
+            
+            .buttonStyle(.bordered)
+            .alert(isPresented: $showingAlert) {
+                Alert(title: Text("Error"), message: Text(error!.localizedDescription), dismissButton: .default(Text("Dismiss")))
             }
         }
     }

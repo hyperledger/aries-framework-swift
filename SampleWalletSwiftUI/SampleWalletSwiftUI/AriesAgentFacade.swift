@@ -3,6 +3,8 @@ import os
 import Security
 import AriesFramework
 import Indy
+import Alamofire
+import SwiftyJSON
 
 enum AgentMenu: Identifiable {
     case qrcode, list, loading
@@ -18,13 +20,27 @@ enum ActionType: Identifiable {
     }
 }
 
-struct CredentialRecord : Codable, Hashable {
+struct CredentialRecord {
     var referent: String
     var attrs: [String: String]
     var schema_id: String
     var cred_def_id: String
     var rev_reg_id: String?
     var cred_rev_id: String?
+}
+
+extension CredentialRecord : Codable, Hashable {
+    enum CodingKeys: String, CodingKey {
+        case referent, attrs, schema_id, cred_def_id, rev_reg_id, cred_rev_id
+    }
+
+    public static func == (lhs: CredentialRecord, rhs: CredentialRecord) -> Bool {
+        return lhs.referent == rhs.referent
+    }
+
+    public func hash(into hasher: inout Hasher) {
+        hasher.combine(referent)
+    }
 }
 
 extension Data {
@@ -87,10 +103,10 @@ class AriesAgentFacade : ObservableObject {
     @Published var alertMessage = ""
     @Published var showAlert = false
     @Published var menu: AgentMenu?
-    @Published var connectionList: [ConnectionRecord] = []
-    @Published var selectedConnection: ConnectionRecord?
     @Published var connectionInvitation: String = ""
     
+    @Published var connections: [ConnectionRecord] = []
+    @Published var selectedConnection: ConnectionRecord?
     @Published var credentials: [CredentialRecord] = []
     
     init() {
@@ -183,7 +199,6 @@ class AriesAgentFacade : ObservableObject {
             self.agent = Agent(agentConfig:agentConfig, agentDelegate:self)
             try await agent!.initialize()
             logger.debug("agent initialized.")
-            
             logger.debug("agent ready.")
             self.isReady = agent!.isInitialized()
         }
@@ -208,6 +223,33 @@ class AriesAgentFacade : ObservableObject {
         return result
     }
     
+    func connectionRequestInvitation() {
+        let url = "http://localhost:8080/connections/create-invitation"
+        let params = [
+            "auto_accept": "true",
+            "multi_use": "false",
+            "public": "false"] as Dictionary
+        AF.request(url,
+                   method: .post,
+                   parameters: params,
+                   encoding: URLEncoding(destination: .queryString),
+                   headers: ["Content-Type":"application/json", "Accept":"application/json"])
+            .validate(statusCode: 200..<300)
+            .responseJSON { response in
+                switch response.result {
+                case .success(let result):
+                    let json = JSON(result)
+                    //여기서 가져온 데이터를 자유롭게 활용하세요.
+                    print(json)
+                    if let invitation_url = json["invitation_url"].string {
+                        self.connectionInvitation = invitation_url
+                    }
+                default:
+                    print("none")
+                }
+        }
+    }
+    
     func connectionReceiveInvitation() async throws -> ConnectionRecord {
         logger.info("receiveInvitationAsync begin")
         if self.connectionInvitation == "" {
@@ -226,15 +268,21 @@ class AriesAgentFacade : ObservableObject {
     
     func connectionsUpdate() async throws {
         if let list = await agent?.connectionRepository.getAll() {
-            self.connectionList = list
+            self.connections = list
         }
     }
     
     func credentialsUpdate() async throws {
         do {
-            if let credentialsJson = try await IndyAnoncreds.proverGetCredentials(forFilter: "{}", walletHandle: agent!.wallet.handle!) {
-                self.credentials = try! JSONDecoder().decode([CredentialRecord].self, from: credentialsJson.data(using: .utf8)!)
-            }
+//            if let credentialsJson = try await IndyAnoncreds.proverGetCredentials(forFilter: "{}", walletHandle: agent!.wallet.handle!) {
+//                self.credentials = try! JSONDecoder().decode([CredentialRecord].self, from: credentialsJson.data(using: .utf8)!)
+//            }
+//            if self.credentials.isEmpty {
+                self.credentials = [
+                    CredentialRecord(referent: "aaaa", attrs: [:], schema_id: "1111", cred_def_id: "a1a1a"),
+                    CredentialRecord(referent: "bbbb", attrs: [:], schema_id: "2222", cred_def_id: "b2b2b"),
+                ]
+//            }
         }
     }
     
