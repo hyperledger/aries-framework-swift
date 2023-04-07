@@ -20,7 +20,7 @@ public struct DidCommMessageRecord: BaseRecord {
     public static let type = "DidCommMessageRecord"
 }
 
-extension DidCommMessageRecord: Codable {
+extension DidCommMessageRecord: Codable, Hashable {
     enum CodingKeys: String, CodingKey {
         case id, createdAt, updatedAt, tags, message, role, associatedRecordId
     }
