@@ -17,7 +17,7 @@ public struct CredentialPreview: Codable {
 
     public static func fromDictionary(_ dic: [String: String]) -> CredentialPreview {
         let attributes = dic.map { (key, value) -> CredentialPreviewAttribute in
-            return CredentialPreviewAttribute(name: key, mimeType: "text/plain", value: value)
+            return CredentialPreviewAttribute(name: key, value: value)
         }
         return CredentialPreview(attributes: attributes)
     }
