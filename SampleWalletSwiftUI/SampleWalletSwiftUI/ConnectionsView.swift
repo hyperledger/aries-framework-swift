@@ -1,12 +1,10 @@
 import SwiftUI
-import CodeScanner
 import AriesFramework
 
 struct ConnectionsView: View {
     
     @EnvironmentObject var agent: AriesAgentFacade
     
-    @State var isShowingScanner = false
     @State var showingAlert = false
     @State var error: Error? = nil
     
@@ -14,19 +12,19 @@ struct ConnectionsView: View {
         ZStack {
             NavigationView {
                 VStack {
-                    List (self.agent.connectionList, id: \.self, selection: $agent.selectedConnection) { c in
+                    List (self.agent.connections, id: \.self, selection: $agent.selectedConnection) { c in
                         ConnectionItemView(connection: c)
                     }
-                    .navigationTitle("SampleWalletSwiftUI")
+                    .navigationTitle("Connections")
                     .listStyle(.plain)
-
-                    Spacer()
-
-                    HStack {
-                        ManualConnectionView()
-                        .buttonStyle(.bordered)
+                    .background(Color.yellow)
+                    .task {
+                        do {
+                            try? await agent.connectionsUpdate()
+                        }
                     }
-                    .padding()
+                    Spacer()
+                    ManualConnectionView()
                 }
             }
         }
@@ -34,6 +32,18 @@ struct ConnectionsView: View {
     
     func ManualConnectionView() -> some View {
         return HStack {
+            Button(action: {
+                Task {
+                    do {
+                        agent.connectionRequestInvitation()
+                    } catch {
+                        self.error = error
+                        self.showingAlert = true
+                    }
+                }
+            }) {
+                Image(systemName: "icloud.and.arrow.down")
+            }
             TextField("invitation url", text: $agent.connectionInvitation)
                 .textFieldStyle(.roundedBorder)
             
