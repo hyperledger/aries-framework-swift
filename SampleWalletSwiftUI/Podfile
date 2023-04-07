@@ -6,4 +6,6 @@ target 'SampleWalletSwiftUI' do
   use_frameworks!
 
   pod 'AriesFramework', :path => '../AriesFramework.podspec'
+  pod 'Alamofire', '~> 5.2'
+  pod 'SwiftyJSON', '~> 5.0'
 end

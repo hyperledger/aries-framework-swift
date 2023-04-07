@@ -1,4 +1,5 @@
 PODS:
+  - Alamofire (5.6.4)
   - AriesFramework (1.2.1):
     - Base58Swift (~> 2.1)
     - CollectionConcurrencyKit (~> 0.2.0)
@@ -19,17 +20,22 @@ PODS:
   - OpenSSL-Universal (1.0.2.20):
     - OpenSSL-Universal/Static (= 1.0.2.20)
   - OpenSSL-Universal/Static (1.0.2.20)
+  - SwiftyJSON (5.0.1)
   - WebSockets (0.5.0)
 
 DEPENDENCIES:
+  - Alamofire (~> 5.2)
   - AriesFramework (from `../AriesFramework.podspec`)
+  - SwiftyJSON (~> 5.0)
 
 SPEC REPOS:
   https://github.com/CocoaPods/Specs.git:
+    - Alamofire
     - Base58Swift
     - BigInt
     - libsodium
     - OpenSSL-Universal
+    - SwiftyJSON
   https://github.com/naver/indy-sdk.git:
     - CollectionConcurrencyKit
     - Indy
@@ -42,6 +48,7 @@ EXTERNAL SOURCES:
     :path: "../AriesFramework.podspec"
 
 SPEC CHECKSUMS:
+  Alamofire: 4e95d97098eacb88856099c4fc79b526a299e48c
   AriesFramework: e6071ed4352de7141747ed4a24c781ff15b4606d
   Base58Swift: 53d551f0b33d9478fa63b3445e453a772d6b31a7
   BigInt: 74b4d88367b0e819d9f77393549226d36faeb0d8
@@ -51,8 +58,9 @@ SPEC CHECKSUMS:
   libsodium: 9a8faa5ef2fa0d2d57bd7f7d79bf8fb7c1a9f0ea
   libzmq: fcb6b6159c43147bc04174ec93cb65e5baaf016c
   OpenSSL-Universal: ff34003318d5e1163e9529b08470708e389ffcdd
+  SwiftyJSON: 2f33a42c6fbc52764d96f13368585094bfd8aa5e
   WebSockets: 32c0aba46c23d11ad175c8da46e3f34657b17535
 
-PODFILE CHECKSUM: f64374d4ec816ba21ad55e80ef9df1db828af731
+PODFILE CHECKSUM: 00f6af1d658d9a2529be37ce406f6707f556199b
 
 COCOAPODS: 1.12.0
