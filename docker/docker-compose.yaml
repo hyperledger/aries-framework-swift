@@ -1,0 +1,69 @@
+version: '3.5'
+
+
+volumes:
+  postgres-data:
+
+services:
+  postgres:
+    image: postgres:14
+    ports:
+      - 5432:5432
+    environment:
+      - POSTGRES_PASSWORD=mysecretpassword
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+  redis:
+    image: redis:alpine
+  acapy:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - 8080:8080
+      - 8000:8000
+    environment:
+      ACAPY_LOG_LEVEL: "debug"
+      ACAPY_AUTO_PROVISION: "true"
+      ACAPY_WALLET_SEED: "12345678901234567890123456789012"
+      ACAPY_WALLET_TYPE: "askar"
+      ACAPY_WALLET_NAME: "acapy-wallet"
+      ACAPY_WALLET_KEY: "acapy-wallet-key-1234"
+      ACAPY_WALLET_STORAGE_TYPE: "postgres_storage"
+      ACAPY_WALLET_STORAGE_CONFIG: |+
+          {
+            "url":"postgres:5432",
+            "wallet_scheme":"MultiWalletSingleTable",
+            "max_connections":"5",
+            "min_idle_count":"0",
+            "connection_timeout":"5"
+          }
+      ACAPY_WALLET_STORAGE_CREDS: |+
+        {
+          "account":"postgres",
+          "password":"mysecretpassword",
+          "admin_account":"postgres",
+          "admin_password":"mysecretpassword"
+        }
+      ACAPY_ADMIN_INSECURE_MODE: "true"
+      ACAPY_EMIT_NEW_DIDCOMM_PREFIX: "true"
+      ACAPY_EMIT_NEW_DIDCOMM_MIME_TYPE: "true"
+      ACAPY_IMAGE_URL: "https://robohash.org/acapy"
+      ACAPY_ADMIN_CLIENT_MAX_REQUEST_SIZE: "16"
+      ACAPY_MAX_MESSAGE_SIZE: "16777216"
+      ACAPY_MAX_OUTBOUND_RETRY: 4
+
+      ACAPY_ENABLE_UNDELIVERED_QUEUE: "false"
+      ACAPY_AUTO_ACCEPT_REQUESTS: "true"
+      ACAPY_AUTO_RESPOND_CREDENTIAL_PROPOSAL: "true"
+      ACAPY_AUTO_RESPOND_CREDENTIAL_REQUEST: "true"
+
+      ACAPY_GENESIS_URL: "http://test.bcovrin.vonx.io/genesis"
+
+    entrypoint: [ 
+      "aca-py", "start", 
+      "--admin", "0.0.0.0", "8080",
+      "--endpoint", "http://localhost:8000",
+      "--inbound-transport", "http", "0.0.0.0", "8000",
+      "--outbound-transport", "http",
+    ]
