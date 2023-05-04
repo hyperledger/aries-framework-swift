@@ -10,7 +10,7 @@ class ProofsTest: XCTestCase {
 
     let credentialPreview = CredentialPreview.fromDictionary([
         "name": "John",
-        "sex":"Male",
+        "sex": "Male",
         "age": "99"
     ])
 
@@ -175,7 +175,7 @@ class ProofsTest: XCTestCase {
 
     func getProofRequestWithMultipleAttributeNames() async throws -> ProofRequest {
         let attributes = ["attrbutes1": ProofAttributeInfo(
-            name: nil, names: ["name","sex"], nonRevoked: nil,
+            name: nil, names: ["name", "sex"], nonRevoked: nil,
             restrictions: [AttributeFilter(credentialDefinitionId: credDefId)])]
         let predicates = ["age": ProofPredicateInfo(
             name: "age", nonRevoked: nil, predicateType: .GreaterThanOrEqualTo, predicateValue: 50,
@@ -224,12 +224,12 @@ class ProofsTest: XCTestCase {
         try await issueCredential()
         let proofRequest = try await getFailedProofRequestWithMultipleAttributeNames()
         let faberProofRecord = try await faberAgent.proofs.requestProof(connectionId: faberConnection.id, proofRequest: proofRequest)
-            
+
         try await Task.sleep(nanoseconds: UInt64(0.1 * SECOND))
 
         let threadId = faberProofRecord.threadId
         let aliceProofRecord = try await getProofRecord(for: aliceAgent, threadId: threadId)
-            
+
         XCTAssertEqual(aliceProofRecord.state, .RequestReceived)
 
         do {
