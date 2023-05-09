@@ -213,10 +213,10 @@ public class ProofService {
         var retrievedCredentials = RetrievedCredentials()
         let credentialsForProof = try await getCredentialsForProofRequest(proofRequest)
 
-        try await proofRequest.requestedAttributes.concurrentForEach { (referent, requestedAttribute) in
+        try await proofRequest.requestedAttributes.asyncForEach { (referent, requestedAttribute) in
             guard let credentials = credentialsForProof.attrs[referent] else { return }
 
-            try await retrievedCredentials.requestedAttributes[referent] = credentials.concurrentMap { credential -> RequestedAttribute in
+            try await retrievedCredentials.requestedAttributes[referent] = credentials.asyncMap { credential -> RequestedAttribute in
                 let (revoked, deltaTimestamp) = try await self.getRevocationStatusForRequestedItem(
                     proofRequest: proofRequest,
                     nonRevoked: requestedAttribute.nonRevoked,
@@ -231,10 +231,10 @@ public class ProofService {
             }
         }
 
-        try await proofRequest.requestedPredicates.concurrentForEach { (referent, requestedPredicate) in
+        try await proofRequest.requestedPredicates.asyncForEach { (referent, requestedPredicate) in
             guard let credentials = credentialsForProof.predicates[referent] else { return }
 
-            try await retrievedCredentials.requestedPredicates[referent] = credentials.concurrentMap { credential -> RequestedPredicate in
+            try await retrievedCredentials.requestedPredicates[referent] = credentials.asyncMap { credential -> RequestedPredicate in
                 let (revoked, deltaTimestamp) = try await self.getRevocationStatusForRequestedItem(
                     proofRequest: proofRequest,
                     nonRevoked: requestedPredicate.nonRevoked,
@@ -334,14 +334,14 @@ public class ProofService {
         var credentialObjects = [IndyCredentialInfo]()
         var requestedAttributes = [String: RequestedAttribute]()
         var requestedPredicates = [String: RequestedPredicate]()
-        try await requestedCredentials.requestedAttributes.concurrentForEach { (k, v) in
+        try await requestedCredentials.requestedAttributes.asyncForEach { (k, v) in
             let credentialInfo = try await self.getCredential(credentialId: v.credentialId)
             var attribute = v
             attribute.setCredentialInfo(credentialInfo)
             requestedAttributes[k] = attribute
             credentialObjects.append(credentialInfo)
         }
-        try await requestedCredentials.requestedPredicates.concurrentForEach { (k, v) in
+        try await requestedCredentials.requestedPredicates.asyncForEach { (k, v) in
             let credentialInfo = try await self.getCredential(credentialId: v.credentialId)
             var attribute = v
             attribute.setCredentialInfo(credentialInfo)
@@ -382,7 +382,7 @@ public class ProofService {
     func getSchemas(schemaIds: Set<String>) async throws -> String {
         var schemas = [String: Any]()
 
-        try await schemaIds.concurrentForEach { [self] schemaId in
+        try await schemaIds.asyncForEach { [self] schemaId in
             let schema = try await agent.ledgerService.getSchema(schemaId: schemaId)
             let schemaObj = try JSONSerialization.jsonObject(with: schema.data(using: .utf8)!, options: [])
             schemas[schemaId] = schemaObj
@@ -395,7 +395,7 @@ public class ProofService {
     func getCredentialDefinitions(credentialDefinitionIds: Set<String>) async throws -> String {
         var credentialDefinitions = [String: Any]()
 
-        try await credentialDefinitionIds.concurrentForEach { [self] credentialDefinitionId in
+        try await credentialDefinitionIds.asyncForEach { [self] credentialDefinitionId in
             let credentialDefinition = try await agent.ledgerService.getCredentialDefinition(id: credentialDefinitionId)
             let credentialDefinitionObj = try JSONSerialization.jsonObject(with: credentialDefinition.data(using: .utf8)!, options: [])
             credentialDefinitions[credentialDefinitionId] = credentialDefinitionObj
@@ -408,7 +408,7 @@ public class ProofService {
     func getRevocationRegistryDefinitions(revocationRegistryIds: Set<String>) async throws -> String {
         var revocationRegistryDefinitions = [String: Any]()
 
-        try await revocationRegistryIds.concurrentForEach { [self] revocationRegistryId in
+        try await revocationRegistryIds.asyncForEach { [self] revocationRegistryId in
             let revocationRegistryDefinition = try await agent.ledgerService.getRevocationRegistryDefinition(id: revocationRegistryId)
             let revocationRegistryDefinitionObj = try JSONSerialization.jsonObject(with: revocationRegistryDefinition.data(using: .utf8)!, options: [])
             revocationRegistryDefinitions[revocationRegistryId] = revocationRegistryDefinitionObj

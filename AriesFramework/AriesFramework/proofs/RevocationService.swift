@@ -25,7 +25,7 @@ public class RevocationService {
     public func getRevocationRegistries(proof: PartialProof) async throws -> String {
         var revocationRegistries = [String: [String: Any]]()
 
-        try await proof.identifiers.concurrentForEach { [self] (identifier) in
+        try await proof.identifiers.asyncForEach { [self] (identifier) in
             if let revocationRegistryId = identifier.revocationRegistryId,
                let timestamp = identifier.timestamp {
                 if revocationRegistries[revocationRegistryId] == nil {
@@ -69,7 +69,7 @@ public class RevocationService {
         }
 
         let proofRequest = try JSONDecoder().decode(ProofRequest.self, from: proofRequestJson.data(using: .utf8)!)
-        try await referentCredentials.concurrentForEach { [self] (credential) in
+        try await referentCredentials.asyncForEach { [self] (credential) in
             let referentRevocationInterval = credential.type == .Attribute
                 ? proofRequest.requestedAttributes[credential.referent]?.nonRevoked
                 : proofRequest.requestedPredicates[credential.referent]?.nonRevoked
