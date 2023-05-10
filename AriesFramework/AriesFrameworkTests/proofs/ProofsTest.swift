@@ -10,6 +10,7 @@ class ProofsTest: XCTestCase {
 
     let credentialPreview = CredentialPreview.fromDictionary([
         "name": "John",
+        "sex": "Male",
         "age": "99"
     ])
 
@@ -17,7 +18,7 @@ class ProofsTest: XCTestCase {
         try await super.setUp()
 
         (faberAgent, aliceAgent, faberConnection, aliceConnection) = try await TestHelper.setupCredentialTests()
-        credDefId = try await TestHelper.prepareForIssuance(faberAgent, ["name", "age"])
+        credDefId = try await TestHelper.prepareForIssuance(faberAgent, ["name", "sex", "age"])
     }
 
     override func tearDown() async throws {
@@ -167,6 +168,73 @@ class ProofsTest: XCTestCase {
         do {
             _ = try await aliceAgent.proofService.autoSelectCredentialsForProofRequest(retrievedCredentials: retrievedCredentials)
             XCTFail("Expected error")
+        } catch {
+            // Expected error
+        }
+    }
+
+    func getProofRequestWithMultipleAttributeNames() async throws -> ProofRequest {
+        let attributes = ["attrbutes1": ProofAttributeInfo(
+            name: nil, names: ["name", "sex"], nonRevoked: nil,
+            restrictions: [AttributeFilter(credentialDefinitionId: credDefId)])]
+        let predicates = ["age": ProofPredicateInfo(
+            name: "age", nonRevoked: nil, predicateType: .GreaterThanOrEqualTo, predicateValue: 50,
+            restrictions: [AttributeFilter(credentialDefinitionId: credDefId)])]
+
+        let nonce = try await ProofService.generateProofRequestNonce()
+        return ProofRequest(nonce: nonce, requestedAttributes: attributes, requestedPredicates: predicates)
+    }
+
+    func testProofRequestWithMultipleAttributeNames() async throws {
+        try await issueCredential()
+        let proofRequest = try await getProofRequestWithMultipleAttributeNames()
+        var faberProofRecord = try await faberAgent.proofs.requestProof(connectionId: faberConnection.id, proofRequest: proofRequest)
+        try await Task.sleep(nanoseconds: UInt64(0.1 * SECOND))
+
+        let threadId = faberProofRecord.threadId
+        var aliceProofRecord = try await getProofRecord(for: aliceAgent, threadId: threadId)
+        XCTAssertEqual(aliceProofRecord.state, .RequestReceived)
+
+        let retrievedCredentials = try await aliceAgent.proofs.getRequestedCredentialsForProofRequest(proofRecordId: aliceProofRecord.id)
+        let requestedCredentials = try await aliceAgent.proofService.autoSelectCredentialsForProofRequest(retrievedCredentials: retrievedCredentials)
+        aliceProofRecord = try await aliceAgent.proofs.acceptRequest(proofRecordId: aliceProofRecord.id, requestedCredentials: requestedCredentials)
+        try await Task.sleep(nanoseconds: UInt64(0.1 * SECOND))
+
+        faberProofRecord = try await getProofRecord(for: faberAgent, threadId: threadId)
+        XCTAssertEqual(faberProofRecord.state, .PresentationReceived)
+        XCTAssertEqual(faberProofRecord.isVerified, true)
+
+        faberProofRecord = try await faberAgent.proofs.acceptPresentation(proofRecordId: faberProofRecord.id)
+        try await Task.sleep(nanoseconds: UInt64(0.1 * SECOND))
+
+        aliceProofRecord = try await getProofRecord(for: aliceAgent, threadId: threadId)
+        XCTAssertEqual(aliceProofRecord.state, .Done)
+        XCTAssertEqual(faberProofRecord.state, .Done)
+    }
+
+    func getFailedProofRequestWithMultipleAttributeNames() async throws -> ProofRequest {
+        let attributes = ["attrbutes1": ProofAttributeInfo(
+            name: "name", names: ["name"], nonRevoked: nil,
+            restrictions: [AttributeFilter(credentialDefinitionId: credDefId)])]
+        let nonce = try await ProofService.generateProofRequestNonce()
+        return ProofRequest(nonce: nonce, requestedAttributes: attributes, requestedPredicates: [:])
+    }
+
+    func testProofWithFailingPredicates2() async throws {
+        try await issueCredential()
+        let proofRequest = try await getFailedProofRequestWithMultipleAttributeNames()
+        let faberProofRecord = try await faberAgent.proofs.requestProof(connectionId: faberConnection.id, proofRequest: proofRequest)
+
+        try await Task.sleep(nanoseconds: UInt64(0.1 * SECOND))
+
+        let threadId = faberProofRecord.threadId
+        let aliceProofRecord = try await getProofRecord(for: aliceAgent, threadId: threadId)
+
+        XCTAssertEqual(aliceProofRecord.state, .RequestReceived)
+
+        do {
+            let retrievedCredentials = try await aliceAgent.proofs.getRequestedCredentialsForProofRequest(proofRecordId: aliceProofRecord.id)
+            XCTFail("Error will raise because requested_attributes in the proof request has name and names both which is not allowed.")
         } catch {
             // Expected error
         }
