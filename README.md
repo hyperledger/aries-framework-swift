@@ -32,7 +32,24 @@ source 'https://github.com/naver/indy-sdk.git'
 
 And add a pod depencency to the Podfile:
 ```
-pod 'AriesFramework'
+pod 'AriesFramework', '~> 1.2'
+```
+
+Also add the following post install script to the Podfile:
+```ruby
+post_install do |installer|
+  desired_ios = '15.0'
+
+  installer.pods_project.targets.each do |target|
+      target.build_configurations.each do |config|
+          settings = config.build_settings
+          actual = Gem::Version.new(settings['IPHONEOS_DEPLOYMENT_TARGET'])
+          if actual < desired_ios
+              settings['IPHONEOS_DEPLOYMENT_TARGET'] = desired_ios
+          end
+      end
+  end
+end
 ```
 
 You need cocoapods and cmake to install the dependencies to your app.
@@ -41,7 +58,7 @@ $ brew install cocoapods cmake
 ```
 
 Then run `pod install` to install the dependencies.
-Building on Apple silicon Mac is not supported yet.
+Building on Apple silicon Mac for iOS simulator is not supported yet.
 
 ## Usage
 
