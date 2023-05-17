@@ -1,5 +1,18 @@
 # Framework Development Guide
 
+## CI related
+
+### Linting
+We are using GitHub Actions for Lint check. See .github/workflows for details.
+Run swiftlint at the root of the repo to check linting locally.
+
+### CocoaPods version
+We need to use CocoaPods 1.12.0 to be compatible with GitHub Actions macOS runner.
+```
+brew uninstall cocoapods
+sudo gem install cocoapods -v 1.12.0
+```
+
 ## Depencencies
 
 ### Indy SDK
