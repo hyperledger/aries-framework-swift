@@ -212,11 +212,12 @@ public class ProofService {
     public func getRequestedCredentialsForProofRequest(proofRequest: ProofRequest) async throws -> RetrievedCredentials {
         var retrievedCredentials = RetrievedCredentials()
         let credentialsForProof = try await getCredentialsForProofRequest(proofRequest)
+        let lock = NSLock()
 
         try await proofRequest.requestedAttributes.concurrentForEach { (referent, requestedAttribute) in
             guard let credentials = credentialsForProof.attrs[referent] else { return }
 
-            try await retrievedCredentials.requestedAttributes[referent] = credentials.concurrentMap { credential -> RequestedAttribute in
+            let attributes = try await credentials.concurrentMap { credential -> RequestedAttribute in
                 let (revoked, deltaTimestamp) = try await self.getRevocationStatusForRequestedItem(
                     proofRequest: proofRequest,
                     nonRevoked: requestedAttribute.nonRevoked,
@@ -229,12 +230,15 @@ public class ProofService {
                     credentialInfo: credential.credentialInfo,
                     revoked: revoked)
             }
+            lock.withLock {
+                retrievedCredentials.requestedAttributes[referent] = attributes
+            }
         }
 
         try await proofRequest.requestedPredicates.concurrentForEach { (referent, requestedPredicate) in
             guard let credentials = credentialsForProof.predicates[referent] else { return }
 
-            try await retrievedCredentials.requestedPredicates[referent] = credentials.concurrentMap { credential -> RequestedPredicate in
+            let predicates = try await credentials.concurrentMap { credential -> RequestedPredicate in
                 let (revoked, deltaTimestamp) = try await self.getRevocationStatusForRequestedItem(
                     proofRequest: proofRequest,
                     nonRevoked: requestedPredicate.nonRevoked,
@@ -245,6 +249,9 @@ public class ProofService {
                     timestamp: deltaTimestamp,
                     credentialInfo: credential.credentialInfo,
                     revoked: revoked)
+            }
+            lock.withLock {
+                retrievedCredentials.requestedPredicates[referent] = predicates
             }
         }
 
@@ -334,19 +341,25 @@ public class ProofService {
         var credentialObjects = [IndyCredentialInfo]()
         var requestedAttributes = [String: RequestedAttribute]()
         var requestedPredicates = [String: RequestedPredicate]()
+        let lock = NSLock()
+
         try await requestedCredentials.requestedAttributes.concurrentForEach { (k, v) in
             let credentialInfo = try await self.getCredential(credentialId: v.credentialId)
             var attribute = v
             attribute.setCredentialInfo(credentialInfo)
-            requestedAttributes[k] = attribute
-            credentialObjects.append(credentialInfo)
+            lock.withLock {
+                requestedAttributes[k] = attribute
+                credentialObjects.append(credentialInfo)
+            }
         }
         try await requestedCredentials.requestedPredicates.concurrentForEach { (k, v) in
             let credentialInfo = try await self.getCredential(credentialId: v.credentialId)
             var attribute = v
             attribute.setCredentialInfo(credentialInfo)
-            requestedPredicates[k] = attribute
-            credentialObjects.append(credentialInfo)
+            lock.withLock {
+                requestedPredicates[k] = attribute
+                credentialObjects.append(credentialInfo)
+            }
         }
         var requestedCredentials = requestedCredentials
         requestedCredentials.requestedAttributes = requestedAttributes
@@ -381,11 +394,14 @@ public class ProofService {
 
     func getSchemas(schemaIds: Set<String>) async throws -> String {
         var schemas = [String: Any]()
+        let lock = NSLock()
 
         try await schemaIds.concurrentForEach { [self] schemaId in
             let schema = try await agent.ledgerService.getSchema(schemaId: schemaId)
             let schemaObj = try JSONSerialization.jsonObject(with: schema.data(using: .utf8)!, options: [])
-            schemas[schemaId] = schemaObj
+            lock.withLock {
+                schemas[schemaId] = schemaObj
+            }
         }
 
         let schemasJson = try JSONSerialization.data(withJSONObject: schemas, options: [])
@@ -394,11 +410,14 @@ public class ProofService {
 
     func getCredentialDefinitions(credentialDefinitionIds: Set<String>) async throws -> String {
         var credentialDefinitions = [String: Any]()
+        let lock = NSLock()
 
         try await credentialDefinitionIds.concurrentForEach { [self] credentialDefinitionId in
             let credentialDefinition = try await agent.ledgerService.getCredentialDefinition(id: credentialDefinitionId)
             let credentialDefinitionObj = try JSONSerialization.jsonObject(with: credentialDefinition.data(using: .utf8)!, options: [])
-            credentialDefinitions[credentialDefinitionId] = credentialDefinitionObj
+            lock.withLock {
+                credentialDefinitions[credentialDefinitionId] = credentialDefinitionObj
+            }
         }
 
         let credentialDefinitionsJson = try JSONSerialization.data(withJSONObject: credentialDefinitions, options: [])
@@ -407,11 +426,14 @@ public class ProofService {
 
     func getRevocationRegistryDefinitions(revocationRegistryIds: Set<String>) async throws -> String {
         var revocationRegistryDefinitions = [String: Any]()
+        let lock = NSLock()
 
         try await revocationRegistryIds.concurrentForEach { [self] revocationRegistryId in
             let revocationRegistryDefinition = try await agent.ledgerService.getRevocationRegistryDefinition(id: revocationRegistryId)
             let revocationRegistryDefinitionObj = try JSONSerialization.jsonObject(with: revocationRegistryDefinition.data(using: .utf8)!, options: [])
-            revocationRegistryDefinitions[revocationRegistryId] = revocationRegistryDefinitionObj
+            lock.withLock {
+                revocationRegistryDefinitions[revocationRegistryId] = revocationRegistryDefinitionObj
+            }
         }
 
         let revocationRegistryDefinitionsJson = try JSONSerialization.data(withJSONObject: revocationRegistryDefinitions, options: [])
