@@ -233,10 +233,32 @@ class ProofsTest: XCTestCase {
         XCTAssertEqual(aliceProofRecord.state, .RequestReceived)
 
         do {
-            let retrievedCredentials = try await aliceAgent.proofs.getRequestedCredentialsForProofRequest(proofRecordId: aliceProofRecord.id)
+            _ = try await aliceAgent.proofs.getRequestedCredentialsForProofRequest(proofRecordId: aliceProofRecord.id)
             XCTFail("Error will raise because requested_attributes in the proof request has name and names both which is not allowed.")
         } catch {
             // Expected error
+        }
+    }
+
+    func getProofRequestWithMultipleAttributes() async throws -> ProofRequest {
+        let attributes = [
+            "attrbute1": ProofAttributeInfo(name: "name", names: nil, nonRevoked: nil, restrictions: [AttributeFilter(credentialDefinitionId: credDefId)]),
+            "attrbute2": ProofAttributeInfo(name: "sex", names: nil, nonRevoked: nil, restrictions: [AttributeFilter(credentialDefinitionId: credDefId)]),
+            "attrbute3": ProofAttributeInfo(name: "age", names: nil, nonRevoked: nil, restrictions: [AttributeFilter(credentialDefinitionId: credDefId)])
+        ]
+
+        let nonce = try await ProofService.generateProofRequestNonce()
+        return ProofRequest(nonce: nonce, requestedAttributes: attributes, requestedPredicates: [:])
+    }
+
+    func testConcurrency() async throws {
+        try await issueCredential()
+        let proofRequest = try await getProofRequestWithMultipleAttributes()
+
+        for _ in 0...10 {
+            let retrievedCredentials = try await aliceAgent.proofService.getRequestedCredentialsForProofRequest(proofRequest: proofRequest)
+            let requestedCredentials = try await aliceAgent.proofService.autoSelectCredentialsForProofRequest(retrievedCredentials: retrievedCredentials)
+            _ = try await aliceAgent.proofService.createProof(proofRequest: proofRequest.toString(), requestedCredentials: requestedCredentials)
         }
     }
 }
