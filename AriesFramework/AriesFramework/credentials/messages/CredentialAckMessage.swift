@@ -27,4 +27,8 @@ public class CredentialAckMessage: AgentMessage {
         try container.encode(status, forKey: .status)
         try super.encode(to: encoder)
     }
+
+    override func requestResponse() -> Bool {
+        return false
+    }
 }
