@@ -2,7 +2,7 @@
 import Foundation
 
 public struct RevocationRegistryDelta: Decodable {
-    public let version: String
+    public let ver: String
     public let value: RevocationRegistryDeltaValue
 }
 
