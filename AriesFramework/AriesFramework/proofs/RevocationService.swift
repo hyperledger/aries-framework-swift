@@ -125,16 +125,21 @@ public class RevocationService {
     func downloadTails(revocationRegistryDefinition: String) async throws -> NSNumber {
         let (tailsLocation, tailsHash) = try parseRevocationRegistryDefinition(revocationRegistryDefinition)
         let documentsDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
-        let filePath = "\(documentsDirectory.path)/tails/\(tailsHash)"
-        if !FileManager.default.fileExists(atPath: filePath) {
+        let tailsFolderPath = documentsDirectory.appendingPathComponent("tails")
+        if !FileManager.default.fileExists(atPath: tailsFolderPath.path) {
+            try FileManager.default.createDirectory(at: tailsFolderPath, withIntermediateDirectories: true)
+        }
+
+        let tailsFilePath = tailsFolderPath.appendingPathComponent(tailsHash)
+        if !FileManager.default.fileExists(atPath: tailsFilePath.path) {
             guard let url = URL(string: tailsLocation) else {
                 throw AriesFrameworkError.frameworkError("Invalid tailsLocation: \(tailsLocation)")
             }
             let tailsData = try Data(contentsOf: url)
-            try tailsData.write(to: URL(fileURLWithPath: filePath))
+            try tailsData.write(to: URL(fileURLWithPath: tailsFilePath.path))
         }
 
-        return try await createTailsReader(filePath: filePath)
+        return try await createTailsReader(filePath: tailsFilePath.path)
     }
 
     func createTailsReader(filePath: String) async throws -> NSNumber {
