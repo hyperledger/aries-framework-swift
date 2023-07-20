@@ -50,9 +50,11 @@ public class RevocationService {
         revocationInterval: RevocationInterval) async throws -> (revoked: Bool, deltaTimestamp: Int) {
 
         try assertRevocationInterval(revocationInterval)
-        let (revocationRegistryDeltaJson, deltaTimestamp) = try await agent.ledgerService.getRevocationRegistryDelta(id: revocationRegistryId, to: revocationInterval.to!, from: revocationInterval.from ?? revocationInterval.to!)
+        let (revocationRegistryDeltaJson, deltaTimestamp) = try await agent.ledgerService.getRevocationRegistryDelta(id: revocationRegistryId, to: revocationInterval.to!, from: 0)
         let revocationRegistryDelta = try JSONDecoder().decode(RevocationRegistryDelta.self, from: revocationRegistryDeltaJson.data(using: .utf8)!)
-
+        guard let credentialRevocationId = UInt32(credentialRevocationId) else {
+            throw AriesFrameworkError.frameworkError("credentialRevocationId conversion to UInt32 failed.")
+        }
         let revoked = revocationRegistryDelta.value.revoked?.contains(credentialRevocationId) ?? false
         return (revoked, deltaTimestamp)
     }

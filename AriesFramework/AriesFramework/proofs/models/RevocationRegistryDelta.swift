@@ -7,8 +7,8 @@ public struct RevocationRegistryDelta: Decodable {
 }
 
 public struct RevocationRegistryDeltaValue: Decodable {
-    public let prevAccum: String
+    public let prevAccum: String?
     public let accum: String
-    public let issued: [String]?
-    public let revoked: [String]?
+    public let issued: [UInt32]?
+    public let revoked: [UInt32]?
 }

@@ -274,9 +274,14 @@ public class ProofService {
 
             if attributeArray.count == 0 {
                 throw AriesFrameworkError.frameworkError("Cannot find credentials for attribute '\(attributeName)'.")
-            } else {
-                requestedCredentials.requestedAttributes[attributeName] = attributeArray[0]
             }
+            let nonRevokedAttributes = attributeArray.filter { attr in
+                attr.revoked != true
+            }
+            if nonRevokedAttributes.count == 0 {
+                throw AriesFrameworkError.frameworkError("Cannot find non-revoked credentials for attribute '\(attributeName)'.")
+            }
+            requestedCredentials.requestedAttributes[attributeName] = attributeArray[0]
         }
 
         try retrievedCredentials.requestedPredicates.keys.forEach { predicateName in
@@ -284,9 +289,14 @@ public class ProofService {
 
             if predicateArray.count == 0 {
                 throw AriesFrameworkError.frameworkError("Cannot find credentials for predicate '\(predicateName)'.")
-            } else {
-                requestedCredentials.requestedPredicates[predicateName] = predicateArray[0]
             }
+            let nonRevokedPredicates = predicateArray.filter { pred in
+                pred.revoked != true
+            }
+            if nonRevokedPredicates.count == 0 {
+                throw AriesFrameworkError.frameworkError("Cannot find non-revoked credentials for predicate '\(predicateName)'.")
+            }
+            requestedCredentials.requestedPredicates[predicateName] = nonRevokedPredicates[0]
         }
 
         return requestedCredentials
