@@ -21,7 +21,7 @@ class ConnectionServiceTest: XCTestCase {
             mediatorConnectionsInvite: nil, label: "Default Agent",
             autoAcceptConnections: true,
             connectionImageUrl: connectionImageUrl,
-            useLedgerSerivce: false
+            useLedgerService: false
         )
 
         routing = Routing(

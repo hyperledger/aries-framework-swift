@@ -70,7 +70,7 @@ public class Agent {
             try await wallet.initPublicDid(seed: publicDidSeed)
         }
 
-        if agentConfig.useLedgerSerivce {
+        if agentConfig.useLedgerService {
             try await ledgerService.initialize()
         }
 

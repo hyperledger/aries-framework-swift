@@ -18,7 +18,7 @@ public struct AgentConfig: Codable {
         connectionImageUrl: String? = nil,
         autoAcceptCredential: AutoAcceptCredential = .always,
         autoAcceptProof: AutoAcceptProof = .always,
-        useLedgerSerivce: Bool = true,
+        useLedgerService: Bool = true,
         useLegacyDidSovPrefix: Bool = true,
         publicDidSeed: String? = nil,
         agentEndpoints: [String]? = nil) {
@@ -36,7 +36,7 @@ public struct AgentConfig: Codable {
         self.connectionImageUrl = connectionImageUrl
         self.autoAcceptCredential = autoAcceptCredential
         self.autoAcceptProof = autoAcceptProof
-        self.useLedgerSerivce = useLedgerSerivce
+        self.useLedgerService = useLedgerService
         self.useLegacyDidSovPrefix = useLegacyDidSovPrefix
         self.publicDidSeed = publicDidSeed
         self.agentEndpoints = agentEndpoints
@@ -74,7 +74,7 @@ public struct AgentConfig: Codable {
     /// Whether to automatically accept proof requests. Default is `.always`.
     public var autoAcceptProof: AutoAcceptProof
     /// Whether to use the ledger service. Default is true.
-    public var useLedgerSerivce: Bool
+    public var useLedgerService: Bool
     /// Whether to use the legacy did sov prefix. Default is true.
     public var useLegacyDidSovPrefix: Bool
 
