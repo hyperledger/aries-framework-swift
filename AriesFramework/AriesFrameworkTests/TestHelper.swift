@@ -36,7 +36,7 @@ class TestHelper {
         }
     }
 
-    static func getBaseConfig(name: String, useLedgerSerivce: Bool = false) throws -> AgentConfig {
+    static func getBaseConfig(name: String, useLedgerService: Bool = false) throws -> AgentConfig {
         let key = "HfyxAyKK8Z2xVzWbXXy2erY32B9Bnr8WFgR5HfzjAnGx"
         guard let genesisPath = Bundle(for: TestHelper.self).path(forResource: "local-genesis", ofType: "txn") else {
             throw AriesFrameworkError.frameworkError("Cannot find local-genesis.txn")
@@ -49,7 +49,7 @@ class TestHelper {
             label: "Agent: \(name)",
             autoAcceptCredential: .never,
             autoAcceptProof: .never,
-            useLedgerSerivce: useLedgerSerivce,
+            useLedgerService: useLedgerService,
             publicDidSeed: "000000000000000000000000Trustee1")
         return config
     }
@@ -58,7 +58,7 @@ class TestHelper {
         guard let genesisPath = Bundle(for: TestHelper.self).path(forResource: "bcovrin-genesis", ofType: "txn") else {
             throw AriesFrameworkError.frameworkError("Cannot find bcovrin-genesis.txn")
         }
-        var config = try getBaseConfig(name: name, useLedgerSerivce: true)
+        var config = try getBaseConfig(name: name, useLedgerService: true)
         config.genesisPath = genesisPath
         config.autoAcceptCredential = .always
 
@@ -153,8 +153,8 @@ class TestHelper {
     }
 
     static func setupCredentialTests() async throws -> (Agent, Agent, ConnectionRecord, ConnectionRecord) {
-        let faberConfig = try TestHelper.getBaseConfig(name: "faber", useLedgerSerivce: true)
-        let aliceConfig = try TestHelper.getBaseConfig(name: "alice", useLedgerSerivce: true)
+        let faberConfig = try TestHelper.getBaseConfig(name: "faber", useLedgerService: true)
+        let aliceConfig = try TestHelper.getBaseConfig(name: "alice", useLedgerService: true)
 
         let faberAgent = Agent(agentConfig: faberConfig, agentDelegate: nil)
         let aliceAgent = Agent(agentConfig: aliceConfig, agentDelegate: nil)

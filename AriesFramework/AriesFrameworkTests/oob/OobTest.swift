@@ -17,7 +17,7 @@ class OobTest: XCTestCase {
     override func setUp() async throws {
         try await super.setUp()
 
-        try await prepareAgents(useLedgerSerivce: false)
+        try await prepareAgents(useLedgerService: false)
     }
 
     override func tearDown() async throws {
@@ -26,12 +26,12 @@ class OobTest: XCTestCase {
         try await super.tearDown()
     }
 
-    func prepareAgents(useLedgerSerivce: Bool) async throws {
-        let faberConfig = try TestHelper.getBaseConfig(name: "faber", useLedgerSerivce: useLedgerSerivce)
+    func prepareAgents(useLedgerService: Bool) async throws {
+        let faberConfig = try TestHelper.getBaseConfig(name: "faber", useLedgerService: useLedgerService)
         faberAgent = Agent(agentConfig: faberConfig, agentDelegate: nil)
         try await faberAgent.initialize()
 
-        let aliceConfig = try TestHelper.getBaseConfig(name: "alice", useLedgerSerivce: useLedgerSerivce)
+        let aliceConfig = try TestHelper.getBaseConfig(name: "alice", useLedgerService: useLedgerService)
         aliceAgent = Agent(agentConfig: aliceConfig, agentDelegate: nil)
         try await aliceAgent.initialize()
 
@@ -42,7 +42,7 @@ class OobTest: XCTestCase {
     func prepareForCredentialTest() async throws -> CreateOfferOptions {
         try await faberAgent.reset()
         try await aliceAgent.reset()
-        try await prepareAgents(useLedgerSerivce: true)
+        try await prepareAgents(useLedgerService: true)
 
         let credDefId = try await TestHelper.prepareForIssuance(faberAgent, ["name", "age"])
         return CreateOfferOptions(
