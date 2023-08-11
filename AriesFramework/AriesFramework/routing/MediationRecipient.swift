@@ -34,7 +34,7 @@ class MediationRecipient {
             throw AriesFrameworkError.frameworkError("Invalid mediation invitation. Invitation must have at least one recipient key.")
         }
 
-        assertInvitationUrl()
+        try await assertInvitationUrl()
 
         if let connection = await agent.connectionService.findByInvitationKey(recipientKey), connection.isReady() {
             try await requestMediationIfNecessry(connection: connection)
