@@ -34,6 +34,8 @@ class MediationRecipient {
             throw AriesFrameworkError.frameworkError("Invalid mediation invitation. Invitation must have at least one recipient key.")
         }
 
+        assertInvitationUrl()
+
         if let connection = await agent.connectionService.findByInvitationKey(recipientKey), connection.isReady() {
             try await requestMediationIfNecessry(connection: connection)
         } else {
@@ -59,15 +61,17 @@ class MediationRecipient {
         pickupTimer?.invalidate()
     }
 
-    func requestMediationIfNecessry(connection: ConnectionRecord) async throws {
-        if let mediationRecord = try await repository.getDefault() {
-            if mediationRecord.isReady() && hasSameInvitationUrl(record: mediationRecord) {
-                try await initiateMessagePickup(mediator: mediationRecord)
-                agent.setInitialized()
-                return
-            }
-
+    func assertInvitationUrl() async throws {
+        if let mediationRecord = try await repository.getDefault(), !hasSameInvitationUrl(record: mediationRecord) {
             try await repository.delete(mediationRecord)
+        }
+    }
+
+    func requestMediationIfNecessry(connection: ConnectionRecord) async throws {
+        if let mediationRecord = try await repository.getDefault(), mediationRecord.isReady() {
+            try await initiateMessagePickup(mediator: mediationRecord)
+            agent.setInitialized()
+            return
         }
 
         // If mediation request has not been done yet, start it.
