@@ -68,10 +68,14 @@ class MediationRecipient {
     }
 
     func requestMediationIfNecessry(connection: ConnectionRecord) async throws {
-        if let mediationRecord = try await repository.getDefault(), mediationRecord.isReady() {
-            try await initiateMessagePickup(mediator: mediationRecord)
-            agent.setInitialized()
-            return
+        if let mediationRecord = try await repository.getDefault() {
+            if mediationRecord.isReady() {
+                try await initiateMessagePickup(mediator: mediationRecord)
+                agent.setInitialized()
+                return
+            }
+
+            try await repository.delete(mediationRecord)
         }
 
         // If mediation request has not been done yet, start it.
