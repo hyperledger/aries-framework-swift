@@ -120,7 +120,7 @@ class MediationRecipient {
             let message = OutboundMessage(payload: BatchPickupMessage(batchSize: 10), connection: mediatorConnection)
             try await agent.messageSender.send(message: message)
         } else if agent.agentConfig.mediatorPickupStrategy == .Implicit {
-            let message = OutboundMessage(payload: TrustPingMessage(comment: "pickup", responseRequested: false), connection: mediatorConnection)
+            let message = OutboundMessage(payload: TrustPingMessage(comment: "pickup", responseRequested: true), connection: mediatorConnection)
             try await agent.messageSender.send(message: message, endpointPrefix: "ws")
         } else {
             throw AriesFrameworkError.frameworkError("Unsupported mediator pickup strategy: \(agent.agentConfig.mediatorPickupStrategy)")
@@ -128,8 +128,8 @@ class MediationRecipient {
     }
 
     func pickupMessages() async throws {
-        guard let mediator = try await repository.getDefault() else {
-            throw AriesFrameworkError.frameworkError("Mediator is not ready.")
+        guard let mediator = try await repository.getDefault(), mediator.isReady() else {
+            return
         }
         let mediatorConnection = try await agent.connectionRepository.getById(mediator.connectionId)
         try await pickupMessages(mediatorConnection: mediatorConnection)
