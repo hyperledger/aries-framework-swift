@@ -37,7 +37,7 @@ public class MessageSender {
             agentMessage.replaceNewDidCommPrefixWithLegacyDidSov()
         }
 
-        if agentMessage.transport == nil && agentMessage.requestResponse() {
+        if agentMessage.transport == nil {
             agentMessage.transport = TransportDecorator(returnRoute: "all")
         }
 
