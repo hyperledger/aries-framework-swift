@@ -14,3 +14,4 @@ disabled_rules:
   - todo
   - large_tuple
   - blanket_disable_command
+  - unneeded_override
