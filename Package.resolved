@@ -50,8 +50,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/bhsw/concurrent-ws",
       "state" : {
-        "branch" : "f94666f",
-        "revision" : "f94666f7ac4a782eaf2888e48dcd0ca65ea7d435"
+        "revision" : "f94666f7ac4a782eaf2888e48dcd0ca65ea7d435",
+        "version" : "0.5.0"
       }
     },
     {
