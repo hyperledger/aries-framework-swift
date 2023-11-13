@@ -1,0 +1,27 @@
+{
+  "configurations" : [
+    {
+      "id" : "97E9C785-B84B-41EE-9DDA-7E1C2F39DE94",
+      "name" : "Configuration 1",
+      "options" : {
+
+      }
+    }
+  ],
+  "defaultOptions" : {
+    "testTimeoutsEnabled" : true
+  },
+  "testTargets" : [
+    {
+      "skippedTests" : [
+        "AgentTest"
+      ],
+      "target" : {
+        "containerPath" : "container:",
+        "identifier" : "AriesFrameworkTests",
+        "name" : "AriesFrameworkTests"
+      }
+    }
+  ],
+  "version" : 1
+}

@@ -6,7 +6,7 @@
 import SwiftUI
 
 struct CredentialDetailView: View {
-    var credential: Credential
+    var credential: CredentialInfo
 
     var body: some View {
         List {
@@ -21,6 +21,6 @@ struct CredentialDetailView: View {
 
 struct CredentialDetailView_Previews: PreviewProvider {
     static var previews: some View {
-        CredentialDetailView(credential: Credential(referent: "test", attrs: [:], schema_id: "", cred_def_id: ""))
+        CredentialDetailView(credential: CredentialInfo(referent: "test", attrs: [:], schema_id: "", cred_def_id: ""))
     }
 }

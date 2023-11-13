@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		98386810AD5B8B97C1BDBD0F /* Pods_wallet_app_ios.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 02A1815FAC5D54A24918BFED /* Pods_wallet_app_ios.framework */; };
+		BB06E2FF2AFA12B800C4A04A /* AriesFramework in Frameworks */ = {isa = PBXBuildFile; productRef = BB06E2FE2AFA12B800C4A04A /* AriesFramework */; };
 		BB53D9E92952C958007D9952 /* CodeScanner in Frameworks */ = {isa = PBXBuildFile; productRef = BB53D9E82952C958007D9952 /* CodeScanner */; };
 		BB5C467F270C1501008D77AE /* wallet_app_iosApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB5C467E270C1501008D77AE /* wallet_app_iosApp.swift */; };
 		BB5C4681270C1501008D77AE /* WalletMainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB5C4680270C1501008D77AE /* WalletMainView.swift */; };
@@ -24,9 +24,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		02A1815FAC5D54A24918BFED /* Pods_wallet_app_ios.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_wallet_app_ios.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		AF8D9F8C0C6069730F060EE9 /* Pods-wallet-app-ios.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-wallet-app-ios.debug.xcconfig"; path = "Target Support Files/Pods-wallet-app-ios/Pods-wallet-app-ios.debug.xcconfig"; sourceTree = "<group>"; };
-		BA2EED5AE7F17CC6D5EE7F1A /* Pods-wallet-app-ios.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-wallet-app-ios.release.xcconfig"; path = "Target Support Files/Pods-wallet-app-ios/Pods-wallet-app-ios.release.xcconfig"; sourceTree = "<group>"; };
+		BB06E2FC2AFA129700C4A04A /* aries-framework-swift */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = "aries-framework-swift"; path = ..; sourceTree = "<group>"; };
 		BB5C467B270C1500008D77AE /* wallet-app-ios.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "wallet-app-ios.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		BB5C467E270C1501008D77AE /* wallet_app_iosApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = wallet_app_iosApp.swift; sourceTree = "<group>"; };
 		BB5C4680270C1501008D77AE /* WalletMainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletMainView.swift; sourceTree = "<group>"; };
@@ -47,18 +45,25 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BB06E2FF2AFA12B800C4A04A /* AriesFramework in Frameworks */,
 				BB53D9E92952C958007D9952 /* CodeScanner in Frameworks */,
-				98386810AD5B8B97C1BDBD0F /* Pods_wallet_app_ios.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		5F8FA8F55B44BB4106ABD061 /* Frameworks */ = {
+		BB06E2FB2AFA129700C4A04A /* Packages */ = {
 			isa = PBXGroup;
 			children = (
-				02A1815FAC5D54A24918BFED /* Pods_wallet_app_ios.framework */,
+				BB06E2FC2AFA129700C4A04A /* aries-framework-swift */,
+			);
+			name = Packages;
+			sourceTree = "<group>";
+		};
+		BB06E2FD2AFA12B800C4A04A /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -66,10 +71,10 @@
 		BB5C4672270C1500008D77AE = {
 			isa = PBXGroup;
 			children = (
+				BB06E2FB2AFA129700C4A04A /* Packages */,
 				BB5C467D270C1500008D77AE /* wallet-app-ios */,
 				BB5C467C270C1500008D77AE /* Products */,
-				C4D800C484C2195A371DC8A4 /* Pods */,
-				5F8FA8F55B44BB4106ABD061 /* Frameworks */,
+				BB06E2FD2AFA12B800C4A04A /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -116,15 +121,6 @@
 			path = resources;
 			sourceTree = "<group>";
 		};
-		C4D800C484C2195A371DC8A4 /* Pods */ = {
-			isa = PBXGroup;
-			children = (
-				AF8D9F8C0C6069730F060EE9 /* Pods-wallet-app-ios.debug.xcconfig */,
-				BA2EED5AE7F17CC6D5EE7F1A /* Pods-wallet-app-ios.release.xcconfig */,
-			);
-			path = Pods;
-			sourceTree = "<group>";
-		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -132,11 +128,9 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = BB5C4689270C1506008D77AE /* Build configuration list for PBXNativeTarget "wallet-app-ios" */;
 			buildPhases = (
-				5EFE1888F5FF8824E6B7E228 /* [CP] Check Pods Manifest.lock */,
 				BB5C4677270C1500008D77AE /* Sources */,
 				BB5C4678270C1500008D77AE /* Frameworks */,
 				BB5C4679270C1500008D77AE /* Resources */,
-				83E6F5930BCD5A5837887657 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -145,6 +139,7 @@
 			name = "wallet-app-ios";
 			packageProductDependencies = (
 				BB53D9E82952C958007D9952 /* CodeScanner */,
+				BB06E2FE2AFA12B800C4A04A /* AriesFramework */,
 			);
 			productName = "wallet-app-ios";
 			productReference = BB5C467B270C1500008D77AE /* wallet-app-ios.app */;
@@ -199,48 +194,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
-
-/* Begin PBXShellScriptBuildPhase section */
-		5EFE1888F5FF8824E6B7E228 /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-wallet-app-ios-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-		83E6F5930BCD5A5837887657 /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-wallet-app-ios/Pods-wallet-app-ios-frameworks-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-wallet-app-ios/Pods-wallet-app-ios-frameworks-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-wallet-app-ios/Pods-wallet-app-ios-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		BB5C4677270C1500008D77AE /* Sources */ = {
@@ -379,15 +332,14 @@
 		};
 		BB5C468A270C1506008D77AE /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = AF8D9F8C0C6069730F060EE9 /* Pods-wallet-app-ios.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_IDENTITY = "Apple Development";
-				CODE_SIGN_STYLE = Automatic;
+				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"wallet-app-ios/Preview Content\"";
-				DEVELOPMENT_TEAM = 8KBGRZ9G69;
+				DEVELOPMENT_TEAM = "";
 				ENABLE_BITCODE = NO;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -404,7 +356,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.naver.demo.wallet-app-ios";
+				PRODUCT_BUNDLE_IDENTIFIER = "org.hyperledger.aries.demo.wallet-app-ios";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -415,15 +367,14 @@
 		};
 		BB5C468B270C1506008D77AE /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = BA2EED5AE7F17CC6D5EE7F1A /* Pods-wallet-app-ios.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_IDENTITY = "Apple Development";
-				CODE_SIGN_STYLE = Automatic;
+				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"wallet-app-ios/Preview Content\"";
-				DEVELOPMENT_TEAM = 8KBGRZ9G69;
+				DEVELOPMENT_TEAM = "";
 				ENABLE_BITCODE = NO;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -440,7 +391,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.naver.demo.wallet-app-ios";
+				PRODUCT_BUNDLE_IDENTIFIER = "org.hyperledger.aries.demo.wallet-app-ios";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -484,6 +435,10 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		BB06E2FE2AFA12B800C4A04A /* AriesFramework */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = AriesFramework;
+		};
 		BB53D9E82952C958007D9952 /* CodeScanner */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = BB53D9E72952C958007D9952 /* XCRemoteSwiftPackageReference "CodeScanner" */;
