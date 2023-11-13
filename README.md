@@ -23,43 +23,14 @@ Aries Framework Swift supports most of [AIP 1.0](https://github.com/hyperledger/
 
 ## Requirements & Installation
 
-Aries Framework Swift requires iOS 15.0+ and distributed as a CocoaPods pod.
+Aries Framework Swift requires iOS 15.0+ and distributed as a Swift package.
 
-Add the following lines at the top of the Podfile:
+Add a dependency to your `Package.swift` file:
+```swift
+dependencies: [
+    .package(url: "https://github.com/hyperledger/aries-framework-swift", from: "2.0.0")
+]
 ```
-source 'https://github.com/CocoaPods/Specs.git'
-source 'https://github.com/naver/indy-sdk.git'
-```
-
-And add a pod depencency to the Podfile:
-```
-pod 'AriesFramework', '~> 1.2'
-```
-
-Also add the following post install script to the Podfile:
-```ruby
-post_install do |installer|
-  desired_ios = '15.0'
-
-  installer.pods_project.targets.each do |target|
-      target.build_configurations.each do |config|
-          settings = config.build_settings
-          actual = Gem::Version.new(settings['IPHONEOS_DEPLOYMENT_TARGET'])
-          if actual < desired_ios
-              settings['IPHONEOS_DEPLOYMENT_TARGET'] = desired_ios
-          end
-      end
-  end
-end
-```
-
-You need cocoapods and cmake to install the dependencies to your app.
-```bash
-$ brew install cocoapods cmake
-```
-
-Then run `pod install` to install the dependencies.
-Building on Apple silicon Mac for iOS simulator is not supported yet.
 
 ## Usage
 
@@ -87,9 +58,7 @@ App development using Aries Framework Swift is done in following steps:
 
 To create an agent, first create a key to encrypt the wallet and save it in the keychain.
 ```swift
-    import Indy
-
-    let key = try await IndyWallet.generateKey(forConfig: nil)
+    let key = try Agent.generateWalletKey()
 ```
 
 A genesis file for the indy pool should be included as a resource in the app bundle and get the path to it.
@@ -171,19 +140,11 @@ Another way to handle those requests is to implement your own `MessageHandler` c
     agent.dispatcher.registerHandler(handler: messageHandler)
 ```
 
-For your information, Aries Framework Swift refers to [Aries Framework JavaScript](https://github.com/hyperledger/aries-framework-javascript) a lot, so the class name and API are almost the same.
-
 ## Sample App
 
 `Sample` directory contains an iOS sample app that demonstrates how to use Aries Framework Swift. The app receives a connection invitation from a QR code or from a URL input and handles credential offers and proof requests.
 
-To run the sample app, first install the dependencies using CocoaPods.
-```bash
-$ cd Sample
-$ pod install
-```
-
-Then open `wallet-app-ios.xcworkspace` and run the app. The agent is created in the `WalletOpener.swift` file and you can set a mediator connection invitation url there, if you want.
+The agent is created in the `WalletOpener.swift` file and you can set a mediator connection invitation url there, if you want.
 
 There are two genesis files in the `resources` directory.
 - `bcovrin-genesis.txn` is for the [GreenLight Dev Ledger](http://dev.greenlight.bcovrin.vonx.io/)

@@ -4,13 +4,14 @@
 //
 
 import SwiftUI
-import Indy
+import AriesFramework
+import Anoncreds
 
 class CredentialList: ObservableObject {
-    @Published var list: [Credential] = []
+    @Published var list: [CredentialInfo] = []
 }
 
-struct Credential : Codable {
+struct CredentialInfo : Decodable {
     var referent: String
     var attrs: [String: String]
     var schema_id: String
@@ -34,8 +35,15 @@ struct CredentialListView: View {
             .listStyle(.plain)
             .navigationTitle("Credential List")
             .task {
-                if let credentialsJson = try! await IndyAnoncreds.proverGetCredentials(forFilter: "{}", walletHandle: agent!.wallet.handle!) {
-                    self.credentials.list = try! JSONDecoder().decode([Credential].self, from: credentialsJson.data(using: .utf8)!)
+                self.credentials.list = try! (await agent!.credentialRepository.getAll()).map { record in
+                    let credential = try Credential(json: record.credential)
+                    return CredentialInfo(
+                        referent: record.credentialId,
+                        attrs: credential.values(),
+                        schema_id: credential.schemaId(),
+                        cred_def_id: credential.credDefId(),
+                        rev_reg_id: credential.revRegId(),
+                        cred_rev_id: credential.revRegIndex().map { String($0) })
                 }
             }
         }
