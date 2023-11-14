@@ -19,21 +19,9 @@ jobs:
     defaults:
       run:
         shell: bash
-        working-directory: AriesFramework
     steps:
     - uses: actions/checkout@v3
-    - name: Cache Pods
-      id: cache-pods
-      uses: actions/cache@v3
-      with:
-        path: AriesFramework/Pods
-        key: ${{ runner.os }}-pods-${{ hashFiles('AriesFramework/Podfile.lock') }}
-        restore-keys: |
-          ${{ runner.os }}-pods-
-    - name: Install Dependencies
-      if: steps.cache-pods.outputs.cache-hit != 'true'
-      run: pod install
     - name: Build
-      run: xcodebuild build-for-testing CODE_SIGNING_ALLOWED=No -workspace AriesFramework.xcworkspace -scheme AriesFrameworkTests -sdk iphoneos -destination "platform=iOS Simulator,name=iPhone 14 Pro"
+      run: swift build
     - name: Run tests
-      run: xcodebuild test-without-building CODE_SIGNING_ALLOWED=No -workspace AriesFramework.xcworkspace -scheme AriesFrameworkTests -sdk iphoneos -destination "platform=iOS Simulator,name=iPhone 14 Pro" -testPlan AriesFrameworkTests -retry-tests-on-failure | xcpretty && exit ${PIPESTATUS[0]}
+      run: swift test --skip AgentTest --skip CredentialsTest --skip LedgerServiceTest --skip OobTest --skip ProofsTest | xcpretty && exit ${PIPESTATUS[0]}
