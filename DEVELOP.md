@@ -14,6 +14,7 @@ Run swiftlint at the root of the repo to check linting locally.
 - [BigInt](https://github.com/attaswift/BigInt): Provides big interger types used in the `CredentialValues` struct to encode credential attributes as big integers. Note that `BigInt` is in the dependency of `Base58Swift`.
 - [Base58Swift](https://github.com/keefertaylor/Base58Swift): Provides Base58 encoding/decoding used in `DIDParser` to handle [did:key](https://w3c-ccg.github.io/did-method-key/) in out-of-band invitation.
 - [Criollo](https://github.com/thecatalinstan/Criollo): Provides HTTP server that can be used in unit tests. We use this library to implement a backchannel for [AATH](https://github.com/hyperledger/aries-agent-test-harness).
+- [Semaphore](https://github.com/groue/Semaphore): AsyncSemaphore used in `WsOutboundTransport`. This can lock asynchrononous functions safely and hide compile warnings.
 
 ## Framework Internals
 
