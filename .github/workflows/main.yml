@@ -23,5 +23,7 @@ jobs:
     - uses: actions/checkout@v3
     - name: Build
       run: swift build
+    - name: Install zmq
+      run: brew install zmq
     - name: Run tests
       run: swift test --skip AgentTest --skip CredentialsTest --skip LedgerServiceTest --skip OobTest --skip ProofsTest | xcpretty && exit ${PIPESTATUS[0]}
