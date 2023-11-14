@@ -2,13 +2,14 @@
 import Foundation
 import WebSockets
 import os
+import Semaphore
 
 public class WsOutboundTransport: OutboundTransport {
     let logger = Logger(subsystem: "AriesFramework", category: "WsOutboundTransport")
     let agent: Agent
     var socket: WebSocket?
     var endpoint = ""
-    let lock = NSLock()
+    let semaphore = AsyncSemaphore(value: 1)
     let CLOSE_BY_CLIENT = UInt16(3000)
 
     public init(_ agent: Agent) {
@@ -16,8 +17,8 @@ public class WsOutboundTransport: OutboundTransport {
     }
 
     public func sendPackage(_ package: OutboundPackage) async throws {
-        lock.lock()
-        defer { lock.unlock() }
+        await semaphore.wait()
+        defer { semaphore.signal() }
 
         logger.debug("Sending outbound message to endpoint \(package.endpoint)")
         if socket == nil || endpoint != package.endpoint {
