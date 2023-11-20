@@ -114,7 +114,7 @@ public class LedgerService {
         // swiftlint:disable:next force_cast
         var credDef = try JSONSerialization.jsonObject(with: credDefTuple.credDef.toJson().data(using: .utf8)!) as! [String: Any]
         credDef["id"] = credDefId
-        credDef["ver"] = "1.0"  // FIXME: necessary?
+        credDef["ver"] = "1.0"
         credDef["schemaId"] = String(credentialDefinitionTemplate.seqNo)
         let credDefJson = try JSONSerialization.data(withJSONObject: credDef)
         let request = try ledger.buildCredDefRequest(
@@ -180,6 +180,7 @@ public class LedgerService {
 
         var regDef = try JSONSerialization.jsonObject(with: regDefTuple.revRegDef.toJson().data(using: .utf8)!) as! [String: Any]
         regDef["id"] = revRegId
+        regDef["ver"] = "1.0"
         regDef["value"]?["issuanceType"] = "ISSUANCE_BY_DEFAULT"
         let regDefJson = try JSONSerialization.data(withJSONObject: regDef)
         let request = try ledger.buildRevocRegDefRequest(
