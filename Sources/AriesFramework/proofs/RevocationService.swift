@@ -53,10 +53,10 @@ public class RevocationService {
                     throw AriesFrameworkError.frameworkError("Revocation registry definition not found for id: \(revocationRegistryId)")
                 }
                 let (revocationRegistryJson, _) = try await agent.ledgerService.getRevocationRegistry(id: revocationRegistryId, timestamp: timestamp)
-                let revocationRegistry = try JSONDecoder().decode(RevocationRegistry.self, from: revocationRegistryJson.data(using: .utf8)!)
+                let revocationRegistry = try JSONDecoder().decode(RevocationRegistryDelta.self, from: revocationRegistryJson.data(using: .utf8)!)
                 let revocationStatusList = RevocationStatusList(
                     issuerId: revocationRegistryDefinition.issuerId(),
-                    currentAccumulator: revocationRegistry.accum,
+                    currentAccumulator: revocationRegistry.value.accum,
                     revRegDefId: revocationRegistryId,
                     revocationList: [],
                     timestamp: timestamp)
