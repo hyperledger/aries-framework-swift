@@ -2,6 +2,7 @@
 import Foundation
 import Anoncreds
 import CollectionConcurrencyKit
+import os
 
 enum RequestReferentType: String {
     case Attribute = "attribute"
@@ -17,6 +18,7 @@ struct ReferentCredential {
 
 public class RevocationService {
     let agent: Agent
+    let logger = Logger(subsystem: "AriesFramework", category: "RevocationService")
 
     init(agent: Agent) {
         self.agent = agent
@@ -56,7 +58,7 @@ public class RevocationService {
                 let revocationRegistry = try JSONDecoder().decode(RevocationRegistryDelta.self, from: revocationRegistryJson.data(using: .utf8)!)
                 let revocationStatusList = RevocationStatusList(
                     issuerId: revocationRegistryDefinition.issuerId(),
-                    currentAccumulator: revocationRegistry.value.accum,
+                    currentAccumulator: revocationRegistry.accum,
                     revRegDefId: revocationRegistryId,
                     revocationList: [],
                     timestamp: timestamp)
@@ -74,10 +76,10 @@ public class RevocationService {
         try assertRevocationInterval(revocationInterval)
         let (revocationRegistryDeltaJson, deltaTimestamp) = try await agent.ledgerService.getRevocationRegistryDelta(id: revocationRegistryId, to: revocationInterval.to!, from: 0)
         let revocationRegistryDelta = try JSONDecoder().decode(RevocationRegistryDelta.self, from: revocationRegistryDeltaJson.data(using: .utf8)!)
-        guard let credentialRevocationId = UInt32(credentialRevocationId) else {
-            throw AriesFrameworkError.frameworkError("credentialRevocationId conversion to UInt32 failed.")
+        guard let credentialRevocationId = Int(credentialRevocationId) else {
+            throw AriesFrameworkError.frameworkError("credentialRevocationId conversion to Int failed.")
         }
-        let revoked = revocationRegistryDelta.value.revoked?.contains(credentialRevocationId) ?? false
+        let revoked = revocationRegistryDelta.revoked?.contains(credentialRevocationId) ?? false
         return (revoked, deltaTimestamp)
     }
 
@@ -89,7 +91,7 @@ public class RevocationService {
 
         let revocationRegistryDefinition = try RevocationRegistryDefinition(json: try await agent.ledgerService.getRevocationRegistryDefinition(id: revocationRegistryId))
         let (revocationRegistryDelta, deltaTimestamp) = try await agent.ledgerService.getRevocationRegistryDelta(id: revocationRegistryId, to: timestamp, from: 0)
-        let tailsFile = try await downloadTails(revocationRegistryDefinition: revocationRegistryDefinition)
+        let tailsFile = try downloadTails(revocationRegistryDefinition: revocationRegistryDefinition)
 
         let revocationState = try Prover().createRevocationState(
             revRegDef: revocationRegistryDefinition,
@@ -100,7 +102,7 @@ public class RevocationService {
         return revocationState
     }
 
-    public func createRevocationState(proofRequestJson: String, requestedCredentials: RequestedCredentials) async throws -> String {
+    public func createRevocationStates(proofRequestJson: String, requestedCredentials: RequestedCredentials) async throws -> String {
         var revocationStates = [String: [String: Any]]()
         var referentCredentials = [ReferentCredential]()
 
@@ -156,7 +158,8 @@ public class RevocationService {
         }
     }
 
-    func downloadTails(revocationRegistryDefinition: RevocationRegistryDefinition) async throws -> URL {
+    func downloadTails(revocationRegistryDefinition: RevocationRegistryDefinition) throws -> URL {
+        logger.debug("Downloading tails file for revocation registry definition: \(revocationRegistryDefinition.revRegId())")
         let documentsDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
         let tailsFolderPath = documentsDirectory.appendingPathComponent("tails")
         if !FileManager.default.fileExists(atPath: tailsFolderPath.path) {
@@ -165,9 +168,14 @@ public class RevocationService {
 
         let tailsFilePath = tailsFolderPath.appendingPathComponent(revocationRegistryDefinition.tailsHash())
         if !FileManager.default.fileExists(atPath: tailsFilePath.path) {
-            guard let url = URL(string: revocationRegistryDefinition.tailsLocation()) else {
-                throw AriesFrameworkError.frameworkError("Invalid tailsLocation: \(revocationRegistryDefinition.tailsLocation())")
+            let tailsLocation = revocationRegistryDefinition.tailsLocation()
+            let url = tailsLocation.hasPrefix("http")
+                ? URL(string: tailsLocation)
+                : URL(fileURLWithPath: tailsLocation)
+            guard let url = url else {
+                throw AriesFrameworkError.frameworkError("Invalid tailsLocation: \(tailsLocation)")
             }
+            logger.debug("Downloading tails file from: \(url)")
             let tailsData = try Data(contentsOf: url)
             try tailsData.write(to: URL(fileURLWithPath: tailsFilePath.path))
         }

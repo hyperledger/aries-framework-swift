@@ -67,7 +67,7 @@ class RevocationTest: XCTestCase {
                 credentialDefinitionId: credDefId,
                 attributes: credentialPreview.attributes,
                 comment: "Offer to Alice"))
-        try await Task.sleep(nanoseconds: UInt64(1 * SECOND)) // Need enough time to finish exchange a credential.
+        try await Task.sleep(nanoseconds: UInt64(2 * SECOND)) // Need enough time to finish exchange a credential.
 
         let threadId = faberCredentialRecord.threadId
         let aliceCredentialRecord = try await getCredentialRecord(for: aliceAgent, threadId: threadId)

@@ -193,11 +193,11 @@ public class LedgerService {
         try await submitWriteRequest(request, did: did)
 
         let statusList = try JSONDecoder().decode(RevocationStatusList.self, from: revocationStatusList.toJson().data(using: .utf8)!)
-        let regDelta = RevocationRegistryDelta(ver: "1.0", value: RevocationRegistryDeltaValue(prevAccum: nil, accum: statusList.currentAccumulator, issued: nil, revoked: nil))
+        let regDelta = RevocationRegistryDelta(prevAccum: nil, accum: statusList.currentAccumulator, issued: nil, revoked: nil)
         request = try ledger.buildRevocRegEntryRequest(
             submitterDid: did.did,
             revRegDefId: revRegId,
-            entry: regDelta.toJsonString())
+            entry: regDelta.toVersionedJson())
         try await submitWriteRequest(request, did: did)
 
         let record = RevocationRegistryRecord(
@@ -217,10 +217,10 @@ public class LedgerService {
         let response = try await submitReadRequest(request)
         let json = try JSONSerialization.jsonObject(with: response.data(using: .utf8)!) as? [String: Any]
         guard let result = json?["result"] as? [String: Any],
-              let data = result["data"] else {
+              var data = result["data"] as? [String: Any] else {
             throw AriesFrameworkError.frameworkError("Invalid rev reg def response")
         }
-        // FIXME: formats are slightly different. ex) missing issuerId
+        data["issuerId"] = id.split(separator: ":")[0]
         let revocationRegistryDefinition = try JSONSerialization.data(withJSONObject: data)
 
         return String(data: revocationRegistryDefinition, encoding: .utf8)!
@@ -231,17 +231,13 @@ public class LedgerService {
         let request = try ledger.buildGetRevocRegDeltaRequest(submitterDid: nil, revRegId: id, from: Int64(from), to: Int64(to))
         let res = try await submitReadRequest(request)
         let response = try JSONDecoder().decode(RevRegDeltaResponse.self, from: res.data(using: .utf8)!)
-        var revocationRegistryDelta = [
-            "accum": response.result.data.value.accum_to.value.accum,
-            "issued": response.result.data.value.issued,
-            "revoked": response.result.data.value.revoked
-        ] as [String: Any]
-        if let accum_from = response.result.data.value.accum_from {
-            revocationRegistryDelta["prevAccum"] = accum_from.value.accum
-        }
-        let revocationRegistryDeltaJson = try JSONSerialization.data(withJSONObject: revocationRegistryDelta)
+        var revocationRegistryDelta = RevocationRegistryDelta(
+            prevAccum: response.result.data.value.accum_from?.value.accum,
+            accum: response.result.data.value.accum_to.value.accum,
+            issued: response.result.data.value.issued,
+            revoked: response.result.data.value.revoked)
         let deltaTimestamp = response.result.data.value.accum_to.txnTime
-        return (String(data: revocationRegistryDeltaJson, encoding: .utf8)!, deltaTimestamp)
+        return (revocationRegistryDelta.toJsonString(), deltaTimestamp)
     }
 
     public func getRevocationRegistry(id: String, timestamp: Int) async throws -> (String, Int) {
@@ -250,11 +246,12 @@ public class LedgerService {
         let response = try await submitReadRequest(request)
         let json = try JSONSerialization.jsonObject(with: response.data(using: .utf8)!) as? [String: Any]
         guard let result = json?["result"] as? [String: Any],
-              let data = result["data"],
+              let data = result["data"] as? [String: Any],
+              let value = data["value"] as? [String: String],
               let txnTime = result["txnTime"] as? Int else {
-            throw AriesFrameworkError.frameworkError("Invalid rev reg response")
+            throw AriesFrameworkError.frameworkError("Invalid rev reg response: \(response)")
         }
-        let revocationRegistry = try JSONSerialization.data(withJSONObject: data)
+        let revocationRegistry = try JSONSerialization.data(withJSONObject: value)
         return (String(data: revocationRegistry, encoding: .utf8)!, txnTime)
     }
 

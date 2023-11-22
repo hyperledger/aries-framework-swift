@@ -330,7 +330,7 @@ public class CredentialService {
         let revocationRegistry = revocationRegistryJson != nil ? try RevocationRegistryDefinition(json: revocationRegistryJson!) : nil
         if revocationRegistry != nil {
             Task {
-                _ = try await agent.revocationService.downloadTails(revocationRegistryDefinition: revocationRegistry!)
+                _ = try agent.revocationService.downloadTails(revocationRegistryDefinition: revocationRegistry!)
             }
         }
 
