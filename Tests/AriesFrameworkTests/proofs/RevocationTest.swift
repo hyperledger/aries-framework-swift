@@ -31,7 +31,7 @@ class RevocationTest: XCTestCase {
         print("Preparing for revocation test")
         let agent = faberAgent!
         guard let didInfo = agent.wallet.publicDid else {
-            throw AriesFrameworkError.frameworkError("Agent has no public DID.")
+            throw AriesFrameworkError.frameworkError("Faber has no public DID.")
         }
         let schemaId = try await agent.ledgerService.registerSchema(did: didInfo,
             schemaTemplate: SchemaTemplate(name: "schema-\(UUID().uuidString)", version: "1.0", attributes: ["name", "sex", "age"]))
@@ -58,6 +58,7 @@ class RevocationTest: XCTestCase {
     }
 
     func issueCredential() async throws {
+        print("Issuing credential...")
         aliceAgent.agentConfig.autoAcceptCredential = .always
         faberAgent.agentConfig.autoAcceptCredential = .always
 
@@ -75,6 +76,16 @@ class RevocationTest: XCTestCase {
 
         XCTAssertEqual(aliceCredentialRecord.state, .Done)
         XCTAssertEqual(faberCredentialRecord.state, .Done)
+        print("Credential issued")
+    }
+
+    func revokeCredential() async throws {
+        print("Revoking credential")
+        guard let didInfo = faberAgent.wallet.publicDid else {
+            throw AriesFrameworkError.frameworkError("Faber has no public DID.")
+        }
+        try await faberAgent.ledgerService.revokeCredential(did: didInfo, credDefId: credDefId, revocationIndex: 1)
+        print("Credential revoked")
     }
 
     func getProofRequest() async throws -> ProofRequest {
@@ -89,7 +100,7 @@ class RevocationTest: XCTestCase {
         return ProofRequest(nonce: nonce, requestedAttributes: attributes, requestedPredicates: predicates, nonRevoked: RevocationInterval(from: nil, to: Int(Date().timeIntervalSince1970)))
     }
 
-    func testProofRequest() async throws {
+    func testProofRequestWithNonRevoked() async throws {
         try await issueCredential()
         let proofRequest = try await getProofRequest()
         var faberProofRecord = try await faberAgent.proofs.requestProof(connectionId: faberConnection.id, proofRequest: proofRequest)
@@ -114,5 +125,29 @@ class RevocationTest: XCTestCase {
         aliceProofRecord = try await getProofRecord(for: aliceAgent, threadId: threadId)
         XCTAssertEqual(aliceProofRecord.state, .Done)
         XCTAssertEqual(faberProofRecord.state, .Done)
+    }
+
+    func testVerifyAfterRevocation() async throws {
+        try await issueCredential()
+
+        let proofRequest = try await getProofRequest()
+        var faberProofRecord = try await faberAgent.proofs.requestProof(connectionId: faberConnection.id, proofRequest: proofRequest)
+        try await Task.sleep(nanoseconds: UInt64(0.1 * SECOND))
+
+        let threadId = faberProofRecord.threadId
+        var aliceProofRecord = try await getProofRecord(for: aliceAgent, threadId: threadId)
+        XCTAssertEqual(aliceProofRecord.state, .RequestReceived)
+
+        let retrievedCredentials = try await aliceAgent.proofs.getRequestedCredentialsForProofRequest(proofRecordId: aliceProofRecord.id)
+        let requestedCredentials = try await aliceAgent.proofService.autoSelectCredentialsForProofRequest(retrievedCredentials: retrievedCredentials)
+
+        try await revokeCredential()
+
+        aliceProofRecord = try await aliceAgent.proofs.acceptRequest(proofRecordId: aliceProofRecord.id, requestedCredentials: requestedCredentials)
+        try await Task.sleep(nanoseconds: UInt64(0.1 * SECOND))
+
+        faberProofRecord = try await getProofRecord(for: faberAgent, threadId: threadId)
+        XCTAssertEqual(faberProofRecord.state, .PresentationReceived)
+        XCTAssertEqual(faberProofRecord.isVerified, false)
     }
 }

@@ -231,7 +231,7 @@ public class LedgerService {
         let request = try ledger.buildGetRevocRegDeltaRequest(submitterDid: nil, revRegId: id, from: Int64(from), to: Int64(to))
         let res = try await submitReadRequest(request)
         let response = try JSONDecoder().decode(RevRegDeltaResponse.self, from: res.data(using: .utf8)!)
-        var revocationRegistryDelta = RevocationRegistryDelta(
+        let revocationRegistryDelta = RevocationRegistryDelta(
             prevAccum: response.result.data.value.accum_from?.value.accum,
             accum: response.result.data.value.accum_to.value.accum,
             issued: response.result.data.value.issued,
@@ -253,6 +253,36 @@ public class LedgerService {
         }
         let revocationRegistry = try JSONSerialization.data(withJSONObject: value)
         return (String(data: revocationRegistry, encoding: .utf8)!, txnTime)
+    }
+
+    public func revokeCredential(did: DidInfo, credDefId: String, revocationIndex: Int) async throws {
+        logger.debug("Revoking credential with index: \(revocationIndex)")
+        let credentialDefinitionRecord = try await agent.credentialDefinitionRepository.getByCredDefId(credDefId)
+        guard var revocationRecord = try await agent.revocationRegistryRepository.findByCredDefId(credDefId) else {
+            throw AriesFrameworkError.frameworkError("No revocation registry found for credential definition id: \(credDefId)")
+        }
+
+        let currentStatusList = try Anoncreds.RevocationStatusList(json: revocationRecord.revocStatusList)
+        let revokedStatusList = try issuer.updateRevocationStatusList(
+            credDef: try CredentialDefinition(json: credentialDefinitionRecord.credDef),
+            timestamp: UInt64(Date().timeIntervalSince1970),
+            issued: nil,
+            revoked: [UInt32(revocationIndex)],
+            revRegDef: try RevocationRegistryDefinition(json: revocationRecord.revocRegDef),
+            revRegPriv: try RevocationRegistryDefinitionPrivate(json: revocationRecord.revocRegPrivate),
+            currentList: currentStatusList)
+
+        let currentList = try JSONDecoder().decode(RevocationStatusList.self, from: currentStatusList.toJson().data(using: .utf8)!)
+        let revokedList = try JSONDecoder().decode(RevocationStatusList.self, from: revokedStatusList.toJson().data(using: .utf8)!)
+        let regDelta = RevocationRegistryDelta(prevAccum: currentList.currentAccumulator, accum: revokedList.currentAccumulator, issued: nil, revoked: [revocationIndex])
+        let request = try ledger.buildRevocRegEntryRequest(
+            submitterDid: did.did,
+            revRegDefId: revocationRecord.revocRegId,
+            entry: regDelta.toVersionedJson())
+        try await submitWriteRequest(request, did: did)
+
+        revocationRecord.revocStatusList = revokedStatusList.toJson()
+        try await agent.revocationRegistryRepository.update(revocationRecord)
     }
 
     func validateResponse(_ response: String) throws {
