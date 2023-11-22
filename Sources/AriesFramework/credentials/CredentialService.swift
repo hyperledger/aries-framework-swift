@@ -267,7 +267,18 @@ public class CredentialService {
 
         let offer = try CredentialOffer(json: offerAttachment!.getDataAsString())
         let request = try CredentialRequest(json: requestAttachment!.getDataAsString())
-        let credentialDefinitionRecord = try await agent.credentialDefinitionRepository.getByCredDefId(offer.credDefId())
+        let credDefId = offer.credDefId()
+        let credentialDefinitionRecord = try await agent.credentialDefinitionRepository.getByCredDefId(credDefId)
+
+        var revocationConfig: CredentialRevocationConfig?
+        if let revocationRecord = try await agent.revocationRegistryRepository.findByCredDefId(credDefId) {
+            let registryIndex = try await agent.revocationRegistryRepository.incrementRegistryIndex(credDefId: credDefId)
+            revocationConfig = CredentialRevocationConfig(
+                regDef: try RevocationRegistryDefinition(json: revocationRecord.revocRegDef),
+                regDefPrivate: try RevocationRegistryDefinitionPrivate(json: revocationRecord.revocRegPrivate),
+                statusList: try Anoncreds.RevocationStatusList(json: revocationRecord.revocStatusList),
+                registryIndex: UInt32(registryIndex))
+        }
 
         let credential = try Issuer().createCredential(
             credDef: try CredentialDefinition(json: credentialDefinitionRecord.credDef),
@@ -276,7 +287,7 @@ public class CredentialService {
             credRequest: request,
             attrRawValues: credentialRecord.getCredentialInfo()!.claims,
             attrEncValues: nil,
-            revocationConfig: nil)
+            revocationConfig: revocationConfig)
 
         let attachment = Attachment.fromData(credential.toJson().data(using: .utf8)!, id: IssueCredentialMessage.INDY_CREDENTIAL_ATTACHMENT_ID)
         let issueMessage = IssueCredentialMessage( comment: options.comment, credentialAttachments: [attachment])

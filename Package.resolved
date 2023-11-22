@@ -1,15 +1,6 @@
 {
   "pins" : [
     {
-      "identity" : "aries-uniffi-wrappers",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/hyperledger/aries-uniffi-wrappers",
-      "state" : {
-        "revision" : "1b31293edaacc1b3b1fba150703527fba35754e7",
-        "version" : "0.1.0"
-      }
-    },
-    {
       "identity" : "base58swift",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/keefertaylor/Base58Swift",
