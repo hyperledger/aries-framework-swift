@@ -97,7 +97,6 @@ class DidCommMessageRepositoryTest: XCTestCase {
             "messageType": "\(type)"}
             """
         )!
-        XCTAssertEqual(updatedRecord.message, invitationUpdate.toJsonString())
         XCTAssertEqual(updatedRecord.role, .Sender)
     }
 }

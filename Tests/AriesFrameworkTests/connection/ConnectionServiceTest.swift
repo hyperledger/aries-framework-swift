@@ -91,6 +91,7 @@ class ConnectionServiceTest: XCTestCase {
         XCTAssertEqual(message.connection.did, "test-did")
 
         let encoder = JSONEncoder()
+        encoder.outputFormatting = .sortedKeys
         XCTAssertEqual(try encoder.encode(message.connection.didDoc), try encoder.encode(connection.didDoc))
         XCTAssertEqual(message.imageUrl, connectionImageUrl)
     }
