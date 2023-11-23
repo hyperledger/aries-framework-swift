@@ -22,6 +22,7 @@ public class Agent {
     public var didCommMessageRepository: DidCommMessageRepository!
     public var ledgerService: LedgerService!
     public var credentialDefinitionRepository: CredentialDefinitionRepository!
+    public var revocationRegistryRepository: RevocationRegistryRepository!
     public var anoncredsService: AnoncredsService!
     public var revocationService: RevocationService!
     public var credentialService: CredentialService!
@@ -53,6 +54,7 @@ public class Agent {
         self.didCommMessageRepository = DidCommMessageRepository(agent: self)
         self.ledgerService = LedgerService(agent: self)
         self.credentialDefinitionRepository = CredentialDefinitionRepository(agent: self)
+        self.revocationRegistryRepository = RevocationRegistryRepository(agent: self)
         self.anoncredsService = AnoncredsService(agent: self)
         self.revocationService = RevocationService(agent: self)
         self.credentialService = CredentialService(agent: self)

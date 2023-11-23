@@ -17,6 +17,7 @@ public struct AgentConfig: Codable {
         connectionImageUrl: String? = nil,
         autoAcceptCredential: AutoAcceptCredential = .always,
         autoAcceptProof: AutoAcceptProof = .always,
+        ignoreRevocationCheck: Bool = false,
         useLedgerService: Bool = true,
         useLegacyDidSovPrefix: Bool = true,
         publicDidSeed: String? = nil,
@@ -34,6 +35,7 @@ public struct AgentConfig: Codable {
         self.connectionImageUrl = connectionImageUrl
         self.autoAcceptCredential = autoAcceptCredential
         self.autoAcceptProof = autoAcceptProof
+        self.ignoreRevocationCheck = ignoreRevocationCheck
         self.useLedgerService = useLedgerService
         self.useLegacyDidSovPrefix = useLegacyDidSovPrefix
         self.publicDidSeed = publicDidSeed
@@ -80,6 +82,8 @@ public struct AgentConfig: Codable {
     public var publicDidSeed: String?
     /// The agent endpoints to use for testing.
     public var agentEndpoints: [String]?
+    /// Whether to ignore revocation checks when creating a presentation. Default is false.
+    public var ignoreRevocationCheck: Bool
 
     /// The endpoints of the agent. Read only.
     public var endpoints: [String] {

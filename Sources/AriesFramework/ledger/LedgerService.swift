@@ -17,6 +17,13 @@ public struct CredentialDefinitionTemplate {
     public let seqNo: Int
 }
 
+public struct RevocationRegistryDefinitionTemplate {
+    public let credDefId: String
+    public let tag: String
+    public let maxCredNum: Int
+    public let tailsDirPath: String? = nil
+}
+
 public class LedgerService {
     let agent: Agent
     let logger = Logger(subsystem: "AriesFramework", category: "LedgerService")
@@ -152,15 +159,69 @@ public class LedgerService {
         return String(data: credDefJson, encoding: .utf8)!
     }
 
+    public func registerRevocationRegistryDefinition(did: DidInfo, revRegDefTemplate: RevocationRegistryDefinitionTemplate) async throws -> String {
+        logger.debug("registering revocation registry definition")
+        let credentialDefinitionRecord = try await agent.credentialDefinitionRepository.getByCredDefId(revRegDefTemplate.credDefId)
+        let credDef = try CredentialDefinition(json: credentialDefinitionRecord.credDef)
+        let regDefTuple = try issuer.createRevocationRegistryDef(
+            credDef: credDef,
+            credDefId: revRegDefTemplate.credDefId,
+            tag: revRegDefTemplate.tag,
+            maxCredNum: UInt32(revRegDefTemplate.maxCredNum),
+            tailsDirPath: revRegDefTemplate.tailsDirPath)
+        let revRegId  = regDefTuple.revRegDef.revRegId()
+        let revocationStatusList = try issuer.createRevocationStatusList(
+            credDef: credDef,
+            revRegDefId: revRegId,
+            revRegDef: regDefTuple.revRegDef,
+            revRegPriv: regDefTuple.revRegDefPriv,
+            timestamp: UInt64(Date().timeIntervalSince1970),
+            issuanceByDefault: true)
+
+        // swiftlint:disable:next force_cast
+        var regDef = try JSONSerialization.jsonObject(with: regDefTuple.revRegDef.toJson().data(using: .utf8)!) as! [String: Any]
+        regDef["id"] = revRegId
+        regDef["ver"] = "1.0"
+        guard var value = regDef["value"] as? [String: Any] else {
+            throw AriesFrameworkError.frameworkError("Invalid RevocationRegistryDefinition. value is missing.")
+        }
+        value["issuanceType"] = "ISSUANCE_BY_DEFAULT"
+        regDef["value"] = value
+        let regDefJson = try JSONSerialization.data(withJSONObject: regDef)
+        var request = try ledger.buildRevocRegDefRequest(
+            submitterDid: did.did,
+            revRegDef: String(data: regDefJson, encoding: .utf8)!)
+        try await submitWriteRequest(request, did: did)
+
+        let statusList = try JSONDecoder().decode(RevocationStatusList.self, from: revocationStatusList.toJson().data(using: .utf8)!)
+        let regDelta = RevocationRegistryDelta(prevAccum: nil, accum: statusList.currentAccumulator, issued: nil, revoked: nil)
+        request = try ledger.buildRevocRegEntryRequest(
+            submitterDid: did.did,
+            revRegDefId: revRegId,
+            entry: regDelta.toVersionedJson())
+        try await submitWriteRequest(request, did: did)
+
+        let record = RevocationRegistryRecord(
+            credDefId: revRegDefTemplate.credDefId,
+            revocRegId: revRegId,
+            revocRegDef: regDefTuple.revRegDef.toJson(),
+            revocRegPrivate: regDefTuple.revRegDefPriv.toJson(),
+            revocStatusList: revocationStatusList.toJson())
+        try await agent.revocationRegistryRepository.save(record)
+
+        return revRegId
+    }
+
     public func getRevocationRegistryDefinition(id: String) async throws -> String {
         logger.debug("Get RevocationRegistryDefinition with id: \(id)")
         let request = try ledger.buildGetRevocRegDefRequest(submitterDid: nil, revRegId: id)
         let response = try await submitReadRequest(request)
         let json = try JSONSerialization.jsonObject(with: response.data(using: .utf8)!) as? [String: Any]
         guard let result = json?["result"] as? [String: Any],
-              let data = result["data"] else {
+              var data = result["data"] as? [String: Any] else {
             throw AriesFrameworkError.frameworkError("Invalid rev reg def response")
         }
+        data["issuerId"] = id.split(separator: ":")[0]
         let revocationRegistryDefinition = try JSONSerialization.data(withJSONObject: data)
 
         return String(data: revocationRegistryDefinition, encoding: .utf8)!
@@ -171,17 +232,13 @@ public class LedgerService {
         let request = try ledger.buildGetRevocRegDeltaRequest(submitterDid: nil, revRegId: id, from: Int64(from), to: Int64(to))
         let res = try await submitReadRequest(request)
         let response = try JSONDecoder().decode(RevRegDeltaResponse.self, from: res.data(using: .utf8)!)
-        var revocationRegistryDelta = [
-            "accum": response.result.data.value.accum_to.value.accum,
-            "issued": response.result.data.value.issued,
-            "revoked": response.result.data.value.revoked
-        ] as [String: Any]
-        if let accum_from = response.result.data.value.accum_from {
-            revocationRegistryDelta["prev_accum"] = accum_from.value.accum
-        }
-        let revocationRegistryDeltaJson = try JSONSerialization.data(withJSONObject: revocationRegistryDelta)
+        let revocationRegistryDelta = RevocationRegistryDelta(
+            prevAccum: response.result.data.value.accum_from?.value.accum,
+            accum: response.result.data.value.accum_to.value.accum,
+            issued: response.result.data.value.issued,
+            revoked: response.result.data.value.revoked)
         let deltaTimestamp = response.result.data.value.accum_to.txnTime
-        return (String(data: revocationRegistryDeltaJson, encoding: .utf8)!, deltaTimestamp)
+        return (revocationRegistryDelta.toJsonString(), deltaTimestamp)
     }
 
     public func getRevocationRegistry(id: String, timestamp: Int) async throws -> (String, Int) {
@@ -190,12 +247,43 @@ public class LedgerService {
         let response = try await submitReadRequest(request)
         let json = try JSONSerialization.jsonObject(with: response.data(using: .utf8)!) as? [String: Any]
         guard let result = json?["result"] as? [String: Any],
-              let data = result["data"],
+              let data = result["data"] as? [String: Any],
+              let value = data["value"] as? [String: String],
               let txnTime = result["txnTime"] as? Int else {
-            throw AriesFrameworkError.frameworkError("Invalid rev reg response")
+            throw AriesFrameworkError.frameworkError("Invalid rev reg response: \(response)")
         }
-        let revocationRegistry = try JSONSerialization.data(withJSONObject: data)
+        let revocationRegistry = try JSONSerialization.data(withJSONObject: value)
         return (String(data: revocationRegistry, encoding: .utf8)!, txnTime)
+    }
+
+    public func revokeCredential(did: DidInfo, credDefId: String, revocationIndex: Int) async throws {
+        logger.debug("Revoking credential with index: \(revocationIndex)")
+        let credentialDefinitionRecord = try await agent.credentialDefinitionRepository.getByCredDefId(credDefId)
+        guard var revocationRecord = try await agent.revocationRegistryRepository.findByCredDefId(credDefId) else {
+            throw AriesFrameworkError.frameworkError("No revocation registry found for credential definition id: \(credDefId)")
+        }
+
+        let currentStatusList = try Anoncreds.RevocationStatusList(json: revocationRecord.revocStatusList)
+        let revokedStatusList = try issuer.updateRevocationStatusList(
+            credDef: try CredentialDefinition(json: credentialDefinitionRecord.credDef),
+            timestamp: UInt64(Date().timeIntervalSince1970),
+            issued: nil,
+            revoked: [UInt32(revocationIndex)],
+            revRegDef: try RevocationRegistryDefinition(json: revocationRecord.revocRegDef),
+            revRegPriv: try RevocationRegistryDefinitionPrivate(json: revocationRecord.revocRegPrivate),
+            currentList: currentStatusList)
+
+        let currentList = try JSONDecoder().decode(RevocationStatusList.self, from: currentStatusList.toJson().data(using: .utf8)!)
+        let revokedList = try JSONDecoder().decode(RevocationStatusList.self, from: revokedStatusList.toJson().data(using: .utf8)!)
+        let regDelta = RevocationRegistryDelta(prevAccum: currentList.currentAccumulator, accum: revokedList.currentAccumulator, issued: nil, revoked: [revocationIndex])
+        let request = try ledger.buildRevocRegEntryRequest(
+            submitterDid: did.did,
+            revRegDefId: revocationRecord.revocRegId,
+            entry: regDelta.toVersionedJson())
+        try await submitWriteRequest(request, did: did)
+
+        revocationRecord.revocStatusList = revokedStatusList.toJson()
+        try await agent.revocationRegistryRepository.update(revocationRecord)
     }
 
     func validateResponse(_ response: String) throws {

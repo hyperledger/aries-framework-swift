@@ -280,7 +280,7 @@ public class ProofService {
             if nonRevokedAttributes.count == 0 {
                 throw AriesFrameworkError.frameworkError("Cannot find non-revoked credentials for attribute '\(attributeName)'.")
             }
-            requestedCredentials.requestedAttributes[attributeName] = attributeArray[0]
+            requestedCredentials.requestedAttributes[attributeName] = nonRevokedAttributes[0]
         }
 
         try retrievedCredentials.requestedPredicates.keys.forEach { predicateName in
@@ -341,6 +341,10 @@ public class ProofService {
               let credentialRevocationId = credential.credentialRevocationId,
               let revocationRegistryId = credential.revocationRegistryId else {
             return (nil, nil)
+        }
+
+        if agent.agentConfig.ignoreRevocationCheck {
+            return (false, requestNonRevoked.to)
         }
 
         return try await agent.revocationService.getRevocationStatus(
