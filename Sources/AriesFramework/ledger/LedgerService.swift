@@ -178,6 +178,7 @@ public class LedgerService {
             timestamp: UInt64(Date().timeIntervalSince1970),
             issuanceByDefault: true)
 
+        // swiftlint:disable:next force_cast
         var regDef = try JSONSerialization.jsonObject(with: regDefTuple.revRegDef.toJson().data(using: .utf8)!) as! [String: Any]
         regDef["id"] = revRegId
         regDef["ver"] = "1.0"
