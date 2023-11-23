@@ -343,7 +343,9 @@ public class ProofService {
             return (nil, nil)
         }
 
-        //TODO: check the config and return (false, requestNonRevoked.to)
+        if agent.agentConfig.ignoreRevocationCheck {
+            return (false, requestNonRevoked.to)
+        }
 
         return try await agent.revocationService.getRevocationStatus(
             credentialRevocationId: credentialRevocationId,

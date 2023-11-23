@@ -128,7 +128,10 @@ class RevocationTest: XCTestCase {
     }
 
     func testVerifyAfterRevocation() async throws {
+        aliceAgent.agentConfig.ignoreRevocationCheck = true
+
         try await issueCredential()
+        try await revokeCredential()
 
         let proofRequest = try await getProofRequest()
         var faberProofRecord = try await faberAgent.proofs.requestProof(connectionId: faberConnection.id, proofRequest: proofRequest)
@@ -140,8 +143,6 @@ class RevocationTest: XCTestCase {
 
         let retrievedCredentials = try await aliceAgent.proofs.getRequestedCredentialsForProofRequest(proofRecordId: aliceProofRecord.id)
         let requestedCredentials = try await aliceAgent.proofService.autoSelectCredentialsForProofRequest(retrievedCredentials: retrievedCredentials)
-
-        try await revokeCredential()
 
         aliceProofRecord = try await aliceAgent.proofs.acceptRequest(proofRecordId: aliceProofRecord.id, requestedCredentials: requestedCredentials)
         try await Task.sleep(nanoseconds: UInt64(0.1 * SECOND))
