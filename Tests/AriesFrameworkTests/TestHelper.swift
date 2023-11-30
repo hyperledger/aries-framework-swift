@@ -185,7 +185,7 @@ class TestHelper {
         return credDefId
     }
 
-    static func makeConnection(_ agentA: Agent, _ agentB: Agent) async throws -> (ConnectionRecord, ConnectionRecord) {
+    static func makeConnection(_ agentA: Agent, _ agentB: Agent, waitFor: Double = 0.1) async throws -> (ConnectionRecord, ConnectionRecord) {
         logger.debug("Making connection")
         let message = try await agentA.connections.createConnection()
         // swiftlint:disable:next force_cast
@@ -193,7 +193,7 @@ class TestHelper {
         var agentAConnection = message.connection
         var agentBConnection = try await agentB.connections.receiveInvitation(invitation)
 
-        try await Task.sleep(nanoseconds: UInt64(0.1 * SECOND))
+        try await Task.sleep(nanoseconds: UInt64(waitFor * SECOND))
 
         agentAConnection = try await agentA.connectionRepository.getById(agentAConnection.id)
         agentBConnection = try await agentB.connectionRepository.getById(agentBConnection.id)

@@ -5,6 +5,7 @@ import XCTest
 class AgentTest: XCTestCase {
     let mediatorInvitationUrl = "http://localhost:3001/invitation"
     let agentInvitationUrl = "http://localhost:3002/invitation"
+    let publicMediatorUrl = "https://public.mediator.indiciotech.io?c_i=eyJAdHlwZSI6ICJkaWQ6c292OkJ6Q2JzTlloTXJqSGlxWkRUVUFTSGc7c3BlYy9jb25uZWN0aW9ucy8xLjAvaW52aXRhdGlvbiIsICJAaWQiOiAiMDVlYzM5NDItYTEyOS00YWE3LWEzZDQtYTJmNDgwYzNjZThhIiwgInNlcnZpY2VFbmRwb2ludCI6ICJodHRwczovL3B1YmxpYy5tZWRpYXRvci5pbmRpY2lvdGVjaC5pbyIsICJyZWNpcGllbnRLZXlzIjogWyJDc2dIQVpxSktuWlRmc3h0MmRIR3JjN3U2M3ljeFlEZ25RdEZMeFhpeDIzYiJdLCAibGFiZWwiOiAiSW5kaWNpbyBQdWJsaWMgTWVkaWF0b3IifQ=="
     var agent: Agent!
 
     class CredentialDelegate: AgentDelegate {
@@ -30,7 +31,7 @@ class AgentTest: XCTestCase {
     func testMediatorConnect() async throws {
         var config = try TestHelper.getBaseConfig(name: "alice")
         config.mediatorPickupStrategy = .Implicit
-        config.mediatorConnectionsInvite = "https://public.mediator.indiciotech.io?c_i=eyJAdHlwZSI6ICJkaWQ6c292OkJ6Q2JzTlloTXJqSGlxWkRUVUFTSGc7c3BlYy9jb25uZWN0aW9ucy8xLjAvaW52aXRhdGlvbiIsICJAaWQiOiAiMDVlYzM5NDItYTEyOS00YWE3LWEzZDQtYTJmNDgwYzNjZThhIiwgInNlcnZpY2VFbmRwb2ludCI6ICJodHRwczovL3B1YmxpYy5tZWRpYXRvci5pbmRpY2lvdGVjaC5pbyIsICJyZWNpcGllbnRLZXlzIjogWyJDc2dIQVpxSktuWlRmc3h0MmRIR3JjN3U2M3ljeFlEZ25RdEZMeFhpeDIzYiJdLCAibGFiZWwiOiAiSW5kaWNpbyBQdWJsaWMgTWVkaWF0b3IifQ=="
+        config.mediatorConnectionsInvite = publicMediatorUrl
         class TestDelegate: AgentDelegate {
             let expectation: TestHelper.XCTestExpectation
             init(expectation: TestHelper.XCTestExpectation) {
@@ -198,5 +199,28 @@ class AgentTest: XCTestCase {
 
         _ = try await agent.oob.receiveInvitationFromUrl(oobInvitation)
         try await TestHelper.wait(for: expectation, timeout: 5)
+    }
+
+    // For two agents behind mediators to connect, message forward is needed.
+    func testMessageForward() async throws {
+        var aliceConfig = try TestHelper.getBaseConfig(name: "alice")
+        aliceConfig.mediatorPickupStrategy = .Implicit
+        aliceConfig.mediatorConnectionsInvite = publicMediatorUrl
+        let alice = Agent(agentConfig: aliceConfig, agentDelegate: nil)
+        agent = alice
+        try await alice.initialize()
+
+        var faberConfig = try TestHelper.getBaseConfig(name: "faber")
+        faberConfig.mediatorPickupStrategy = .Implicit
+        faberConfig.mediatorConnectionsInvite = publicMediatorUrl
+        let faber = Agent(agentConfig: faberConfig, agentDelegate: nil)
+        try await faber.initialize()
+
+        let (aliceConnection, faberConnection) = try await TestHelper.makeConnection(alice, faber, waitFor: 2)
+        XCTAssertEqual(aliceConnection.state, .Complete)
+        XCTAssertEqual(faberConnection.state, .Complete)
+
+        // alice will be reset on tearDown
+        try await faber.reset()
     }
 }

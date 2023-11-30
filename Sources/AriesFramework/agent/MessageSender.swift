@@ -110,7 +110,7 @@ public class MessageSender {
     func sendMessageToService(message: AgentMessage, service: DidDocService, senderKey: String, connectionId: String) async throws {
         let keys = EnvelopeKeys(
             recipientKeys: service.recipientKeys,
-            routingKeys: [],
+            routingKeys: service.routingKeys ?? [],
             senderKey: senderKey)
 
         let outboundPackage = try await packMessage(message, keys: keys, endpoint: service.serviceEndpoint, connectionId: connectionId)
@@ -121,9 +121,18 @@ public class MessageSender {
     }
 
     func packMessage(_ message: AgentMessage, keys: EnvelopeKeys, endpoint: String, connectionId: String) async throws -> OutboundPackage {
-        let encryptedMessage = try await agent.wallet.pack(message: message, recipientKeys: keys.recipientKeys, senderVerkey: keys.senderKey)
+        var encryptedMessage = try await agent.wallet.pack(message: message, recipientKeys: keys.recipientKeys, senderVerkey: keys.senderKey)
 
-        // TODO: support message forwarding
+        var recipientKeys = keys.recipientKeys
+        for routingKey in keys.routingKeys {
+            let forwardMessage = ForwardMessage(to: recipientKeys[0], message: encryptedMessage)
+            if agent.agentConfig.useLegacyDidSovPrefix {
+                forwardMessage.replaceNewDidCommPrefixWithLegacyDidSov()
+            }
+            recipientKeys = [routingKey]
+            encryptedMessage = try await agent.wallet.pack(message: forwardMessage, recipientKeys: recipientKeys, senderVerkey: keys.senderKey)
+        }
+
         return OutboundPackage(
             payload: encryptedMessage,
             responseRequested: message.requestResponse(),
