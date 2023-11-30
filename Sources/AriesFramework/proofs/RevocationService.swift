@@ -126,7 +126,7 @@ public class RevocationService {
 
                 let revocationRegistryDefinition = try RevocationRegistryDefinition(json: try await agent.ledgerService.getRevocationRegistryDefinition(id: revocationRegistryId))
                 let (revocationRegistryDelta, deltaTimestamp) = try await agent.ledgerService.getRevocationRegistryDelta(id: revocationRegistryId, to: requestRevocationInterval.to!, from: 0)
-                let tailsFile = try await downloadTails(revocationRegistryDefinition: revocationRegistryDefinition)
+                let tailsFile = try downloadTails(revocationRegistryDefinition: revocationRegistryDefinition)
 
                 let revocationState = try Prover().createRevocationState(
                     revRegDef: revocationRegistryDefinition,
