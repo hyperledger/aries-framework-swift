@@ -158,6 +158,21 @@ public class ProofService {
     }
 
     /**
+     Create a ``PresentationProblemReportMessage`` as response to a received presentation request.
+
+     - Parameters proofRecord: the proof record for which to create the presentation problem report.
+     - Returns: the presentation problem report message and an associated proof record.
+    */
+    public func createPresentationDeclinedProblemReport(proofRecord: ProofExchangeRecord) async throws -> (message: PresentationProblemReportMessage, record: ProofExchangeRecord) {
+        var proofRecord = proofRecord
+        try proofRecord.assertState(.RequestReceived)
+        let message = PresentationProblemReportMessage(threadId: proofRecord.threadId)
+        try await updateState(proofRecord: &proofRecord, newState: .Declined)
+
+        return (message, proofRecord)
+    }
+
+    /**
      Create a ``PresentationAckMessage`` as response to a received presentation.
 
      - Parameters proofRecord: the proof record for which to create the presentation acknowledgement.

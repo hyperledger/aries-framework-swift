@@ -72,9 +72,10 @@ public class CredentialsCommand {
      - Returns: credential record that was declined.
     */
     public func declineOffer(credentialRecordId: String) async throws -> CredentialExchangeRecord {
-        var credentialRecord = try await agent.credentialExchangeRepository.getById(credentialRecordId)
-        try credentialRecord.assertState(CredentialState.OfferReceived)
-        try await agent.credentialService.updateState(credentialRecord: &credentialRecord, newState: .Declined)
+        let message = try await agent.credentialService.createOfferDeclinedProblemReport(credentialRecordId: credentialRecordId)
+        let credentialRecord = try await agent.credentialExchangeRepository.getById(credentialRecordId)
+        let connection = try await agent.connectionRepository.getById(credentialRecord.connectionId)
+        try await agent.messageSender.send(message: OutboundMessage(payload: message, connection: connection))
 
         return credentialRecord
     }

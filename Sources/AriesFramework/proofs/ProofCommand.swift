@@ -73,6 +73,22 @@ public class ProofCommand {
     }
 
     /**
+     Decline a presentation request as prover (by sending a presentation problem report message) to the connection
+     associated with the proof record.
+
+     - Parameter proofRecordId: the id of the proof record for which to decline the request.
+     - Returns: proof record associated with the sent presentation problem report message.
+    */
+    public func declineRequest(proofRecordId: String) async throws -> ProofExchangeRecord {
+        let record = try await agent.proofRepository.getById(proofRecordId)
+        let (message, proofRecord) = try await agent.proofService.createPresentationDeclinedProblemReport(proofRecord: record)
+
+        let connection = try await agent.connectionRepository.getById(record.connectionId)
+        try await agent.messageSender.send(message: OutboundMessage(payload: message, connection: connection))
+        return proofRecord
+    }
+
+    /**
      Accept a presentation as verifier (by sending a presentation acknowledgement message) to the connection
      associated with the proof record.
 

@@ -405,6 +405,23 @@ public class CredentialService {
         return credentialRecord
     }
 
+    /**
+     Create a ``ProblemReportMessage`` as response to a received credential offer.
+
+     - Parameter credentialRecordId: credential record that was declined
+     - Returns: credential-problem-report message.
+    */
+    public func createOfferDeclinedProblemReport(credentialRecordId: String) async throws -> CredentialProblemReportMessage {
+        var credentialRecord = try await credentialExchangeRepository.getById(credentialRecordId)
+        try credentialRecord.assertProtocolVersion("v1")
+        try credentialRecord.assertState(CredentialState.OfferReceived)
+
+        let message = CredentialProblemReportMessage(threadId: credentialRecord.threadId)
+        try await updateState(credentialRecord: &credentialRecord, newState: .Declined)
+
+        return message
+    }
+
     func getHolderDid(credentialRecord: CredentialExchangeRecord) async throws -> String {
         let connection = try await agent.connectionRepository.getById(credentialRecord.connectionId)
         return connection.did

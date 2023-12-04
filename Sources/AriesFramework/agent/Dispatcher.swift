@@ -9,11 +9,18 @@ public class Dispatcher {
 
     init(agent: Agent) {
         self.agent = agent
+        registerProblemReportHandlers()
     }
 
     public func registerHandler(handler: MessageHandler) {
         handlers[handler.messageType] = handler
         handlers[Dispatcher.replaceNewDidCommPrefixWithLegacyDidSov(messageType: handler.messageType)] = handler
+    }
+
+    private func registerProblemReportHandlers() {
+        registerHandler(handler: ProblemReportHandler(agent: agent, messageType: PresentationProblemReportMessage.type))
+        registerHandler(handler: ProblemReportHandler(agent: agent, messageType: CredentialProblemReportMessage.type))
+        registerHandler(handler: ProblemReportHandler(agent: agent, messageType: MediationProblemReportMessage.type))
     }
 
     func dispatch(messageContext: InboundMessageContext) async throws {

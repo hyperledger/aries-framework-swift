@@ -7,6 +7,7 @@ public protocol AgentDelegate {
     func onOutOfBandStateChanged(outOfBandRecord: OutOfBandRecord)
     func onCredentialStateChanged(credentialRecord: CredentialExchangeRecord)
     func onProofStateChanged(proofRecord: ProofExchangeRecord)
+    func onProblemReportReceived(message: BaseProblemReportMessage)
 }
 
 // Default implementation of AgentDelegate
@@ -24,5 +25,8 @@ public extension AgentDelegate {
     }
 
     func onProofStateChanged(proofRecord: ProofExchangeRecord) {
+    }
+
+    func onProblemReportReceived(message: BaseProblemReportMessage) {
     }
 }
