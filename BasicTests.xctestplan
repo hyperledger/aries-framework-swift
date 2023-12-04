@@ -19,8 +19,9 @@
         "LedgerServiceTest",
         "OobTest\/testCreateWithOfferCredentialMessage()",
         "OobTest\/testCredentialOffer()",
+        "ProblemReportsTest",
         "ProofsTest",
-        "RevocationTest",
+        "RevocationTest"
       ],
       "target" : {
         "containerPath" : "container:",
