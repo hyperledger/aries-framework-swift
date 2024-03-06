@@ -36,7 +36,7 @@ class OutOfBandInvitationTest: XCTestCase {
         XCTAssertEqual(invitation.label, "Faber College")
         XCTAssertEqual(invitation.goalCode, "issue-vc")
         XCTAssertEqual(invitation.goal, "To issue a Faber College Graduate credential")
-        XCTAssertEqual(invitation.handshakeProtocols, [HandshakeProtocol.DidExchange, HandshakeProtocol.Connections])
+        XCTAssertEqual(invitation.handshakeProtocols, [HandshakeProtocol.DidExchange10, HandshakeProtocol.Connections])
         if case .did(let did) = invitation.services[0] {
             XCTAssertEqual(did, "did:sov:LjgpST2rjsoxYegQDRm7EL")
         } else {

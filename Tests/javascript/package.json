@@ -1,7 +1,20 @@
 {
   "dependencies": {
-    "@aries-framework/core": "^0.2.5",
-    "@aries-framework/node": "^0.2.5",
-    "ts-node": "^10.9.1"
+    "@hyperledger/indy-vdr-nodejs": "^0.2.0",
+    "@hyperledger/anoncreds-nodejs": "^0.2.0",
+    "@hyperledger/aries-askar-nodejs": "^0.2.0",
+    "inquirer": "^8.2.5"
+  },
+  "devDependencies": {
+    "@credo-ts/anoncreds": "*",
+    "@credo-ts/askar": "*",
+    "@credo-ts/core": "*",
+    "@credo-ts/indy-vdr": "*",
+    "@credo-ts/node": "*",
+    "@types/figlet": "^1.5.4",
+    "@types/inquirer": "^8.2.6",
+    "clear": "^0.1.0",
+    "figlet": "^1.5.2",
+    "ts-node": "^10.4.0"
   }
 }
