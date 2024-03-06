@@ -1,16 +1,36 @@
-import type { InitConfig } from '@aries-framework/core'
-import { Agent } from '@aries-framework/core'
-import { agentDependencies } from '@aries-framework/node'
-import { HttpInboundTransport } from '@aries-framework/node'
+import type { ConnectionStateChangedEvent, CredentialStateChangedEvent, InitConfig } from '@credo-ts/core'
+import type { IndyVdrPoolConfig, IndyVdrRegisterCredentialDefinitionOptions } from '@credo-ts/indy-vdr'
+
 import {
-    HttpOutboundTransport,
-    AutoAcceptCredential,
-    AutoAcceptProof,
-    V1CredentialPreview,
-    ConsoleLogger,
-    LogLevel
-} from '@aries-framework/core'
-import crypto from 'crypto'
+  AnonCredsModule,
+  LegacyIndyCredentialFormatService,
+  LegacyIndyProofFormatService,
+  V1CredentialProtocol,
+  V1ProofProtocol,
+  getUnqualifiedCredentialDefinitionId,
+  parseIndyCredentialDefinitionId,
+} from '@credo-ts/anoncreds'
+import { AskarModule } from '@credo-ts/askar'
+import {
+  ConnectionsModule,
+  ProofsModule,
+  AutoAcceptProof,
+  AutoAcceptCredential,
+  CredentialsModule,
+  Agent,
+  HttpOutboundTransport,
+  KeyType,
+  TypedArrayEncoder,
+  DidsModule,
+  ConnectionEventTypes,
+  CredentialEventTypes,
+  utils,
+} from '@credo-ts/core'
+import { IndyVdrRegisterSchemaOptions, IndyVdrAnonCredsRegistry, IndyVdrModule, IndyVdrIndyDidResolver } from '@credo-ts/indy-vdr'
+import { agentDependencies, HttpInboundTransport } from '@credo-ts/node'
+import { anoncreds } from '@hyperledger/anoncreds-nodejs'
+import { ariesAskar } from '@hyperledger/aries-askar-nodejs'
+import { indyVdr } from '@hyperledger/indy-vdr-nodejs'
 
 const bcovrin = `{"reqSignature":{},"txn":{"data":{"data":{"alias":"Node1","blskey":"4N8aUNHSgjQVgkpm8nhNEfDf6txHznoYREg9kirmJrkivgL4oSEimFF6nsQ6M41QvhM2Z33nves5vfSn9n1UwNFJBYtWVnHYMATn76vLuL3zU88KyeAYcHfsih3He6UHcXDxcaecHVz6jhCYz1P2UZn2bDVruL5wXpehgBfBaLKm3Ba","blskey_pop":"RahHYiCvoNCtPTrVtP7nMC5eTYrsUA8WjXbdhNc8debh1agE9bGiJxWBXYNFbnJXoXhWFMvyqhqhRoq737YQemH5ik9oL7R4NTTCz2LEZhkgLJzB3QRQqJyBNyv7acbdHrAT8nQ9UkLbaVL9NBpnWXBTw4LEMePaSHEw66RzPNdAX1","client_ip":"138.197.138.255","client_port":9702,"node_ip":"138.197.138.255","node_port":9701,"services":["VALIDATOR"]},"dest":"Gw6pDLhcBcoQesN72qfotTgFa7cbuqZpkX3Xo6pLhPhv"},"metadata":{"from":"Th7MpTaRZVRYnPiabds81Y"},"type":"0"},"txnMetadata":{"seqNo":1,"txnId":"fea82e10e894419fe2bea7d96296a6d46f50f93f9eeda954ec461b2ed2950b62"},"ver":"1"}
 {"reqSignature":{},"txn":{"data":{"data":{"alias":"Node2","blskey":"37rAPpXVoxzKhz7d9gkUe52XuXryuLXoM6P6LbWDB7LSbG62Lsb33sfG7zqS8TK1MXwuCHj1FKNzVpsnafmqLG1vXN88rt38mNFs9TENzm4QHdBzsvCuoBnPH7rpYYDo9DZNJePaDvRvqJKByCabubJz3XXKbEeshzpz4Ma5QYpJqjk","blskey_pop":"Qr658mWZ2YC8JXGXwMDQTzuZCWF7NK9EwxphGmcBvCh6ybUuLxbG65nsX4JvD4SPNtkJ2w9ug1yLTj6fgmuDg41TgECXjLCij3RMsV8CwewBVgVN67wsA45DFWvqvLtu4rjNnE9JbdFTc1Z4WCPA3Xan44K1HoHAq9EVeaRYs8zoF5","client_ip":"138.197.138.255","client_port":9704,"node_ip":"138.197.138.255","node_port":9703,"services":["VALIDATOR"]},"dest":"8ECVSk179mjsjKRLWiQtssMLgp6EPhWXtaYyStWPSGAb"},"metadata":{"from":"EbP4aYNeTHL6q385GuVpRV"},"type":"0"},"txnMetadata":{"seqNo":2,"txnId":"1ac8aece2a18ced660fef8694b61aac3af08ba875ce3026a160acbc3a3af35fc"},"ver":"1"}
@@ -20,82 +40,190 @@ const bcovrin = `{"reqSignature":{},"txn":{"data":{"data":{"alias":"Node1","blsk
 const port = 3000
 
 const issueCredentialConfig = {
-    goal: 'To issue a credential',
-    goalCode: 'issue-vc',
-    label: 'Faber College',
-    handshake: true,
+  goal: 'To issue a credential',
+  goalCode: 'issue-vc',
+  label: 'Faber College',
+  handshake: true,
 }
 
-const config: InitConfig = {
-    label: 'faber-oob-credential',
-    walletConfig: {
-      id: 'faber-oob-credential',
-      key: 'testkey0000000000000000000000000',
-    },
-    publicDidSeed: '6b8b882e2618fa5d45ee7229ca880083',
-    indyLedgers: [
-      {
-        genesisTransactions: bcovrin,
-        id: 'greenlights',
-        isProduction: false,
-      },
-    ],
-    endpoints: [`http://localhost:${port}`],
-    autoAcceptConnections: true,
-    autoAcceptCredentials: AutoAcceptCredential.Always,
-    autoAcceptProofs: AutoAcceptProof.Always,
-    logger: new ConsoleLogger(LogLevel.info)
-  }
+export const indyNetworkConfig = {
+  genesisTransactions: bcovrin,
+  indyNamespace: 'bcovrin:test',
+  isProduction: false,
+  connectOnStartup: true,
+} satisfies IndyVdrPoolConfig
 
-const agent = new Agent(config, agentDependencies)
+const config: InitConfig = {
+  label: 'faber-oob-credential',
+  walletConfig: {
+    id: 'faber-oob-credential',
+    key: 'testkey0000000000000000000000000',
+  },
+  endpoints: [`http://localhost:${port}`],
+}
+
+const legacyIndyCredentialFormatService = new LegacyIndyCredentialFormatService()
+const legacyIndyProofFormatService = new LegacyIndyProofFormatService()
+const legacyIndyRegistry = new IndyVdrAnonCredsRegistry()
+function getAskarAnonCredsIndyModules() {
+  return {
+    connections: new ConnectionsModule({
+      autoAcceptConnections: true,
+    }),
+    credentials: new CredentialsModule({
+      autoAcceptCredentials: AutoAcceptCredential.ContentApproved,
+      credentialProtocols: [
+        new V1CredentialProtocol({
+          indyCredentialFormat: legacyIndyCredentialFormatService,
+        }),
+      ],
+    }),
+    proofs: new ProofsModule({
+      autoAcceptProofs: AutoAcceptProof.ContentApproved,
+      proofProtocols: [
+        new V1ProofProtocol({
+          indyProofFormat: legacyIndyProofFormatService,
+        }),
+      ],
+    }),
+    anoncreds: new AnonCredsModule({
+      registries: [legacyIndyRegistry],
+      anoncreds,
+    }),
+    indyVdr: new IndyVdrModule({
+      indyVdr,
+      networks: [indyNetworkConfig],
+    }),
+    askar: new AskarModule({
+      ariesAskar,
+    }),
+    dids: new DidsModule({
+      resolvers: [new IndyVdrIndyDidResolver()],
+    }),
+  } as const
+}
+
+const agent = new Agent({
+  config,
+  dependencies: agentDependencies,
+  modules: getAskarAnonCredsIndyModules(),
+})
 agent.registerOutboundTransport(new HttpOutboundTransport())
 agent.registerInboundTransport(new HttpInboundTransport({ port: port }))
 
+var anonCredsIssuerId: string
+async function importDid() {
+  console.log("Importing DID...")
+  const unqualifiedIndyDid = '2jEvRuKmfBJTRa7QowDpNN'
+  const did = `did:indy:${indyNetworkConfig.indyNamespace}:${unqualifiedIndyDid}`
+
+  await agent.dids.import({
+    did,
+    overwrite: true,
+    privateKeys: [
+      {
+        keyType: KeyType.Ed25519,
+        privateKey: TypedArrayEncoder.fromString('afjdemoverysercure00000000000000'),
+      },
+    ],
+  })
+  anonCredsIssuerId = did
+}
+
+function legacyCredDefId(credentialDefinitionId: string) {
+  const { namespaceIdentifier, schemaSeqNo, tag } = parseIndyCredentialDefinitionId(credentialDefinitionId)
+  const legacyCredentialDefinitionId = getUnqualifiedCredentialDefinitionId(namespaceIdentifier, schemaSeqNo, tag)
+  return legacyCredentialDefinitionId
+}
+
 async function prepareForIssuance() {
-    const attributes = ['name', 'age']
-    console.log("Registering schema...")
-    const schema = await agent.ledger.registerSchema({
-        attributes,
-        name: `schema-${crypto.randomUUID()}`,
-        version: '1.0',
-    })
+  console.log("Registering schema...")
+  const schemaTemplate = {
+    name: 'Faber College' + utils.uuid(),
+    version: '1.0.0',
+    attrNames: ['name', 'degree', 'date'],
+    issuerId: anonCredsIssuerId,
+  }
+  const { schemaState } = await agent.modules.anoncreds.registerSchema<IndyVdrRegisterSchemaOptions>({
+    schema: schemaTemplate,
+    options: {
+      endorserMode: 'internal',
+      endorserDid: anonCredsIssuerId,
+    },
+  })
+  if (schemaState.state !== 'finished') {
+    throw new Error(
+      `Error registering schema: ${schemaState.state === 'failed' ? schemaState.reason : 'Not Finished'}`
+    )
+  }
 
-    console.log("Registering credential definition...")
-    const definition = await agent.ledger.registerCredentialDefinition({
-        schema,
-        supportRevocation: false,
-        tag: 'default',
-    })
+  console.log("Registering credential definition...")
+  const { credentialDefinitionState } =
+  await agent.modules.anoncreds.registerCredentialDefinition<IndyVdrRegisterCredentialDefinitionOptions>({
+    credentialDefinition: {
+      schemaId: schemaState.schemaId,
+      issuerId: anonCredsIssuerId,
+      tag: 'latest',
+    },
+    options: {
+      supportRevocation: false,
+      endorserMode: 'internal',
+      endorserDid: anonCredsIssuerId,
+    },
+  })
 
-    return { schema, definition }
+  return { schemaState, credentialDefinitionState }
 }
 
 const run = async () => {
-    console.log("Agent initializing...")
-    await agent.initialize()
-    console.log("Agent initialized")
+  console.log("Agent initializing...")
+  await agent.initialize()
+  console.log("Agent initialized")
+  await importDid()
 
-    const { definition } = await prepareForIssuance()
-    const { message } = await agent.credentials.createOffer({
-        protocolVersion: 'v1',
-        credentialFormats: {
-          indy: {
-            attributes: V1CredentialPreview.fromRecord({
-              name: 'Alice',
-              age: '20',
-            }).attributes,
-            credentialDefinitionId: definition.id,
-          },
+  const { credentialDefinitionState } = await prepareForIssuance()
+  const protocol = new V1CredentialProtocol({
+    indyCredentialFormat: legacyIndyCredentialFormatService,
+  })
+  const { message } = await protocol.createOffer(
+    agent.context,
+    { 
+      credentialFormats: {
+        indy: {
+          attributes: [
+            {
+              name: 'name',
+              value: 'Alice Smith',
+            },
+            {
+              name: 'degree',
+              value: 'Computer Science',
+            },
+            {
+              name: 'date',
+              value: '01/01/2022',
+            },
+          ],
+          credentialDefinitionId: legacyCredDefId(credentialDefinitionState.credentialDefinitionId as string),
         },
-        autoAcceptCredential: AutoAcceptCredential.ContentApproved,
-    })
-    const { outOfBandInvitation } = await agent.oob.createInvitation({
-        ...issueCredentialConfig,
-        messages: [message],
-    })
+      },
+      autoAcceptCredential: AutoAcceptCredential.ContentApproved,
+    },
+  )
+  const { outOfBandInvitation } = await agent.oob.createInvitation({
+      ...issueCredentialConfig,
+      messages: [message],
+  })
 
-    const urlMessage = outOfBandInvitation.toUrl({ domain: 'http://example.com' })
-    console.log(urlMessage)
+  const urlMessage = outOfBandInvitation.toUrl({ domain: 'http://example.com' })
+  console.log(urlMessage)
+
+  agent.events.on<ConnectionStateChangedEvent>(ConnectionEventTypes.ConnectionStateChanged, (e) => {
+    console.log("Connection state changed to " + e.payload.connectionRecord.state)
+  })
+  agent.events.on<CredentialStateChangedEvent>(CredentialEventTypes.CredentialStateChanged, (e) => {
+    console.log("Credential state changed to " + e.payload.credentialRecord.state)
+  })
 }
 
 run()
