@@ -68,7 +68,7 @@ There are several types of unit tests:
 `AllTests` plan requires a local indy pool. We need Docker Desktop or colima to run the pool.
 
 ```bash
-$ git clone https://github.com/hyperledger/aries-framework-javascript.git
+$ git clone https://github.com/conanoc/aries-framework-javascript.git
 $ cd aries-framework-javascript
 $ docker build -f network/indy-pool-arm.dockerfile -t indy_pool .
 $ docker run -itd -p 9701-9708:9701-9708 indy_pool
@@ -84,9 +84,10 @@ $ swift test --skip AgentTest | xcpretty
 
 `AgentTest` requires a mediator and another agent to offer credentials. We use Aries Framework Javascript for this purpose.
 
-Clone the Aries Framework Javascript repository.
+Clone the Aries Framework Javascript repository and checkout the `demo_swift` branch.
 ```bash
-git clone https://github.com/hyperledger/aries-framework-javascript.git
+git clone https://github.com/conanoc/aries-framework-javascript.git
+git checkout demo_swift
 ```
 
 Build and run the mediator. It requires nodejs, yarn and npx.
@@ -107,3 +108,4 @@ $ yarn faber
 
 Then, get the invitation urls from the mediator and faber agent.
 Run `testDemoFaber()` with these urls and operate the faber agent to issue a credential.
+You can also use the Sample app to interact with the faber agent.
