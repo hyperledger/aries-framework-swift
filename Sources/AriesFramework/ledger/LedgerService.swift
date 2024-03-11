@@ -49,8 +49,11 @@ public class LedgerService {
             throw AriesFrameworkError.frameworkError("Pool opening failed: \(error)")
         }
 
-        let status = try await self.pool!.getStatus()
-        logger.debug("Pool status: \(status)")
+        Task {
+            try await self.pool?.refresh()
+            let status = try await self.pool?.getStatus()
+            logger.debug("Pool status: \(status.debugDescription)")
+        }
     }
 
     public func registerSchema(did: DidInfo, schemaTemplate: SchemaTemplate) async throws -> String {
