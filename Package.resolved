@@ -5,8 +5,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/hyperledger/aries-uniffi-wrappers",
       "state" : {
-        "revision" : "f335e392d6c5b8bd4dfa65746f214b80cdc60551",
-        "version" : "0.2.0"
+        "revision" : "01def706b44a4095032cd42f0480a5bdfb809961",
+        "version" : "0.2.1"
       }
     },
     {
