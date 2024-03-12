@@ -41,17 +41,16 @@ class ProofsTest: XCTestCase {
         aliceAgent.agentConfig.autoAcceptCredential = .always
         faberAgent.agentConfig.autoAcceptCredential = .always
 
-        var faberCredentialRecord = try await faberAgent.credentials.offerCredential(
+        let threadId = try await faberAgent.credentials.offerCredential(
             options: CreateOfferOptions(
                 connection: faberConnection,
                 credentialDefinitionId: credDefId,
                 attributes: credentialPreview.attributes,
-                comment: "Offer to Alice"))
+                comment: "Offer to Alice")).threadId
         try await Task.sleep(nanoseconds: UInt64(1 * SECOND)) // Need enough time to finish exchange a credential.
 
-        let threadId = faberCredentialRecord.threadId
         let aliceCredentialRecord = try await getCredentialRecord(for: aliceAgent, threadId: threadId)
-        faberCredentialRecord = try await getCredentialRecord(for: faberAgent, threadId: threadId)
+        let faberCredentialRecord = try await getCredentialRecord(for: faberAgent, threadId: threadId)
 
         XCTAssertEqual(aliceCredentialRecord.state, .Done)
         XCTAssertEqual(faberCredentialRecord.state, .Done)
