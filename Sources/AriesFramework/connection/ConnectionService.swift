@@ -121,7 +121,7 @@ public class ConnectionService {
         return connectionRecord
     }
 
-    private func createConnection(
+    func createConnection(
         role: ConnectionRole,
         state: ConnectionState,
         invitation: ConnectionInvitationMessage? = nil,

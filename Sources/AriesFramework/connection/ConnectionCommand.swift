@@ -15,6 +15,9 @@ public class ConnectionCommand {
         dispatcher.registerHandler(handler: ConnectionRequestHandler(agent: agent))
         dispatcher.registerHandler(handler: ConnectionResponseHandler(agent: agent))
         dispatcher.registerHandler(handler: TrustPingMessageHandler(agent: agent))
+        dispatcher.registerHandler(handler: DidExchangeRequestHandler(agent: agent))
+        dispatcher.registerHandler(handler: DidExchangeResponseHandler(agent: agent))
+        dispatcher.registerHandler(handler: DidExchangeCompleteHandler(agent: agent))
     }
 
     /**
@@ -112,13 +115,21 @@ public class ConnectionCommand {
         return message.connection
     }
 
-    func acceptOutOfBandInvitation(outOfBandRecord: OutOfBandRecord, config: ReceiveOutOfBandInvitationConfig?) async throws -> ConnectionRecord {
+    func acceptOutOfBandInvitation(
+        outOfBandRecord: OutOfBandRecord,
+        handshakeProtocol: HandshakeProtocol,
+        config: ReceiveOutOfBandInvitationConfig?) async throws -> ConnectionRecord {
         let connection = try await receiveInvitation(outOfBandInvitation: outOfBandRecord.outOfBandInvitation,
             autoAcceptConnection: false, alias: config?.alias)
-        let message = try await agent.connectionService.createRequest(connectionId: connection.id,
-            label: config?.label,
-            imageUrl: config?.imageUrl,
-            autoAcceptConnection: config?.autoAcceptConnection)
+        let message: OutboundMessage
+        if handshakeProtocol == .Connections {
+            message = try await agent.connectionService.createRequest(connectionId: connection.id,
+                label: config?.label,
+                imageUrl: config?.imageUrl,
+                autoAcceptConnection: config?.autoAcceptConnection)
+        } else {
+            throw AriesFrameworkError.frameworkError("Handshake protocol \(handshakeProtocol) not implemented")
+        }
         try await agent.messageSender.send(message: message)
         return message.connection
     }
