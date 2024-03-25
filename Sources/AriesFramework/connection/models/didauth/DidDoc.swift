@@ -1,5 +1,6 @@
 
 import Foundation
+import DIDCore
 
 public struct DidDoc {
     var context: String = "https://w3id.org/did/v1"
@@ -12,6 +13,27 @@ public struct DidDoc {
 extension DidDoc: Codable {
     enum CodingKeys: String, CodingKey {
         case context = "@context", id, publicKey, service, authentication
+    }
+
+    public init(from didDocument: DIDDocument) throws {
+        let decoder = JSONDecoder()
+        id = didDocument.id
+        guard let type = didDocument.verificationMethods.first?.type else {
+            throw AriesFrameworkError.frameworkError("No verification method found in DIDDocument")
+        }
+        let keyType = decoder.decode(KnownVerificationMaterialType.self, from: type.data(using: .utf8)!)
+        let recipientKey = didDocument.verificationMethods.first!.material.convertToBase58(type: keyType)
+        service = didDocument.services.compactMap { service in
+            guard let endpoint = service.serviceEndpoint.get<ServiceEndpoint>() else {
+                return nil
+            }
+            let routingKeys = endpoint.routingKeys?.map { try DIDParser.ConvertDIDToVerkey(did: $0) } ?? []
+            DidDocService.didComm(DidCommService(
+                id: service.id,
+                serviceEndpoint: service.uri,
+                recipientKeys: [recipientKey],
+                routingKeys: routingKeys))
+        }
     }
 
     public init(from decoder: Decoder) throws {

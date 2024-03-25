@@ -2,7 +2,7 @@
 import Foundation
 
 public class DidExchangeCompleteMessage: AgentMessage {
-    public static var type: String = "https://didcomm.org/didexchange/1.0/complete"
+    public static var type: String = "https://didcomm.org/didexchange/1.1/complete"
 
     public init(id: String? = nil, threadId: String, parentThreadId: String) {
         super.init(id: id, type: DidExchangeCompleteMessage.type)

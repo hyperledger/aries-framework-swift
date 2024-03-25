@@ -6,7 +6,7 @@ public class DidExchangeRequestMessage: AgentMessage {
     var goalCode: String?
     var goal: String?
     var did: String
-    public static var type: String = "https://didcomm.org/didexchange/1.0/request"
+    public static var type: String = "https://didcomm.org/didexchange/1.1/request"
 
     private enum CodingKeys: String, CodingKey {
         case label, goalCode = "goal_code", goal, did
