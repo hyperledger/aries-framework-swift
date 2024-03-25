@@ -86,4 +86,9 @@ public class DIDParser {
         let verkey = bytes.dropFirst(2)
         return Base58.base58Encode(Array(verkey))
     }
+
+    public static func ConvertDIDToVerkey(did: String) throws -> String {
+        //TODO: support did:peer
+        return try ConvertDidKeyToVerkey(did: did)
+    }
 }

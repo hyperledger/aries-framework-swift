@@ -69,8 +69,7 @@ public class DidExchangeService {
             outOfBandRecord = outOfBandRecords[0]
         }
 
-        // TODO: get rawDid and didDoc from message.did
-        let rawDid = ""
+        // TODO: get didDoc from message.did
         let didDoc = ""
 
         var connectionRecord = try await agent.connectionService.createConnection(
@@ -91,7 +90,7 @@ public class DidExchangeService {
         connectionRecord.theirDidDoc = didDoc
         connectionRecord.theirLabel = message.label
         connectionRecord.threadId = message.id
-        connectionRecord.theirDid = rawDid
+        connectionRecord.theirDid = didDoc.id
         connectionRecord.imageUrl = message.imageUrl
 
         if connectionRecord.theirKey() == nil {
@@ -153,11 +152,10 @@ public class DidExchangeService {
             throw AriesFrameworkError.frameworkError("Invalid or missing thread ID")
         }
 
-        // TODO: get rawDid and didDoc from message.did
-        let rawDid = ""
+        // TODO: get didDoc from message.did
         let didDoc = ""
 
-        connectionRecord.theirDid = rawDid
+        connectionRecord.theirDid = didDoc.id
         connectionRecord.theirDidDoc = didDoc
 
         try await updateState(connectionRecord: &connectionRecord, newState: ConnectionState.Responded)

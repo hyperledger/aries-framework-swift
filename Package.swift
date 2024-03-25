@@ -18,7 +18,9 @@ let package = Package(
         .package(url: "https://github.com/JohnSundell/CollectionConcurrencyKit", exact: "0.2.0"),
         .package(url: "https://github.com/keefertaylor/Base58Swift", exact: "2.1.7"),
         .package(url: "https://github.com/thecatalinstan/Criollo", exact: "1.1.0"),
-        .package(url: "https://github.com/groue/Semaphore", exact: "0.0.8")
+        .package(url: "https://github.com/groue/Semaphore", exact: "0.0.8"),
+//        .package(url: "https://github.com/beatt83/didcore-swift.git", exact: "1.1.0"),
+        .package(url: "https://github.com/beatt83/peerdid-swift", exact: "2.1.0")
     ],
     targets: [
         .target(
