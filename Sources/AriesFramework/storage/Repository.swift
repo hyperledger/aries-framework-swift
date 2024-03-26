@@ -56,6 +56,10 @@ public class Repository<T: BaseRecord & Codable> {
         try await wallet.session!.update(operation: .remove, category: T.type, name: record.id, value: Data(), tags: nil, expiryMs: nil)
     }
 
+    public func deleteById(_ id: String, type: String) async throws {
+        try await wallet.session!.update(operation: .remove, category: type, name: id, value: Data(), tags: nil, expiryMs: nil)
+    }
+
     public func getById(_ id: String) async throws -> T {
         guard let record = try await wallet.session!.fetch(category: T.type, name: id, forUpdate: false) else {
             throw AriesFrameworkError.recordNotFoundError("Record not found for id \(id)")
