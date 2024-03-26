@@ -18,6 +18,7 @@ public class Wallet {
     let agent: Agent
     let logger = Logger(subsystem: "AriesFramework", category: "Wallet")
     let jsonEncoder = JSONEncoder()
+    let jsonDecoder = JSONDecoder()
     let storeManager = AskarStoreManager()
     let keyFactory = LocalKeyFactory()
     let crypto = AskarCrypto()
@@ -195,7 +196,7 @@ public class Wallet {
 
     public func unpack(encryptedMessage: EncryptedMessage) async throws -> DecryptedMessageContext {
         do {
-            let protected = try JSONDecoder().decode(ProtectedHeader.self, from: Data(base64Encoded: encryptedMessage.protected.base64urlToBase64())!)
+            let protected = try jsonDecoder.decode(ProtectedHeader.self, from: Data(base64Encoded: encryptedMessage.protected.base64urlToBase64())!)
             if protected.alg != "Anoncrypt" && protected.alg != "Authcrypt" {
                 throw AriesFrameworkError.frameworkError("Unsupported pack algorithm: \(protected.alg)")
             }
