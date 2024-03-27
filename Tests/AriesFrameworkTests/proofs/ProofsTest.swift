@@ -162,8 +162,7 @@ class ProofsTest: XCTestCase {
         let retrievedCredentials = try await aliceAgent.proofs.getRequestedCredentialsForProofRequest(proofRecordId: aliceProofRecord.id)
 
         XCTAssertEqual(retrievedCredentials.requestedAttributes["name"]!.count, 1)
-        // We do not filter out credentials that do not satisfy predicates.
-        // XCTAssertEqual(retrievedCredentials.requestedPredicates["age"]!.count, 0)
+        XCTAssertEqual(retrievedCredentials.requestedPredicates["age"]!.count, 1)
 
         let requestedCredentials = try await aliceAgent.proofService.autoSelectCredentialsForProofRequest(retrievedCredentials: retrievedCredentials)
         do {

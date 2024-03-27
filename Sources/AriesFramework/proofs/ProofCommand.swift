@@ -106,7 +106,8 @@ public class ProofCommand {
     /**
      Create a ``RetrievedCredentials`` object. Given input proof request,
      use credentials in the wallet to build indy requested credentials object for proof creation.
-
+     Note: We do not filter out credentials that do not satisfy predicates.
+     
      - Parameters proofRecordId: the id of the proof request to get the matching credentials for.
      - Returns: ``RetrievedCredentials`` object.
     */
