@@ -27,7 +27,7 @@ class ProofsTest: XCTestCase {
         try await super.tearDown()
     }
 
-    func getCredentialRecord(for agent: Agent, threadId: String) async throws -> CredentialExchangeRecord {
+    func getCredentialExchangeRecord(for agent: Agent, threadId: String) async throws -> CredentialExchangeRecord {
         let credentialRecord = try await agent.credentialExchangeRepository.getByThreadAndConnectionId(threadId: threadId, connectionId: nil)
         return credentialRecord
     }
@@ -49,11 +49,11 @@ class ProofsTest: XCTestCase {
                 comment: "Offer to Alice")).threadId
         try await Task.sleep(nanoseconds: UInt64(1 * SECOND)) // Need enough time to finish exchange a credential.
 
-        let aliceCredentialRecord = try await getCredentialRecord(for: aliceAgent, threadId: threadId)
-        let faberCredentialRecord = try await getCredentialRecord(for: faberAgent, threadId: threadId)
+        let aliceCredExRecord = try await getCredentialExchangeRecord(for: aliceAgent, threadId: threadId)
+        let faberCredExRecord = try await getCredentialExchangeRecord(for: faberAgent, threadId: threadId)
 
-        XCTAssertEqual(aliceCredentialRecord.state, .Done)
-        XCTAssertEqual(faberCredentialRecord.state, .Done)
+        XCTAssertEqual(aliceCredExRecord.state, .Done)
+        XCTAssertEqual(faberCredExRecord.state, .Done)
     }
 
     func getProofRequest() async throws -> ProofRequest {
