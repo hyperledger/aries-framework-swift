@@ -22,6 +22,7 @@ public struct AgentConfig: Codable {
         useLegacyDidSovPrefix: Bool = true,
         preferredHandshakeProtocol: HandshakeProtocol = .Connections,
         publicDidSeed: String? = nil,
+        useMediator: Bool = true,
         agentEndpoints: [String]? = nil) {
 
         self.walletId = walletId
@@ -41,6 +42,7 @@ public struct AgentConfig: Codable {
         self.useLegacyDidSovPrefix = useLegacyDidSovPrefix
         self.preferredHandshakeProtocol = preferredHandshakeProtocol
         self.publicDidSeed = publicDidSeed
+        self.useMediator = useMediator
         self.agentEndpoints = agentEndpoints
     }
 
@@ -84,6 +86,8 @@ public struct AgentConfig: Codable {
 
     /// The seed to use for the public did. The public did is used to register items on the ledger.
     public var publicDidSeed: String?
+    /// Whether to use the mediator when mediatorConnectionsInvite is set. Default is true.
+    public var useMediator: Bool
     /// The agent endpoints to use for testing.
     public var agentEndpoints: [String]?
     /// Whether to ignore revocation checks when creating a presentation. Default is false.
