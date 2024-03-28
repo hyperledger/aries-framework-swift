@@ -12,8 +12,17 @@ class DidExchangeTest: XCTestCase {
         let faberConfig = try TestHelper.getBaseConfig(name: "faber")
         let aliceConfig = try TestHelper.getBaseConfig(name: "alice")
 
-        faberAgent = Agent(agentConfig: faberConfig, agentDelegate: nil)
-        aliceAgent = Agent(agentConfig: aliceConfig, agentDelegate: nil)
+        class TestDelegate: AgentDelegate {
+            let name: String
+            init(name: String) {
+                self.name = name
+            }
+            func onConnectionStateChanged(connectionRecord: ConnectionRecord) {
+                print("\(name): connection state changed to \(connectionRecord.state)")
+            }
+        }
+        faberAgent = Agent(agentConfig: faberConfig, agentDelegate: TestDelegate(name: "faber"))
+        aliceAgent = Agent(agentConfig: aliceConfig, agentDelegate: TestDelegate(name: "alice"))
 
         faberAgent.setOutboundTransport(SubjectOutboundTransport(subject: aliceAgent))
         aliceAgent.setOutboundTransport(SubjectOutboundTransport(subject: faberAgent))

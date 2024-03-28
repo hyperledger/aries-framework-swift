@@ -116,7 +116,10 @@ extension ConnectionRecord: Codable {
 
     func theirKey() -> String? {
         guard let service = theirDidDoc?.didCommServices().first else {
-            return nil
+            guard let publicKey = theirDidDoc?.publicKey.first else {
+                return nil
+            }
+            return publicKey.value
         }
 
         return service.recipientKeys.first
