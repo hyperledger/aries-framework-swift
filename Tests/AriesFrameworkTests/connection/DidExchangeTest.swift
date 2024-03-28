@@ -32,7 +32,7 @@ class DidExchangeTest: XCTestCase {
         let outOfBandRecord = try await faberAgent.oob.createInvitation(config: CreateOutOfBandInvitationConfig())
         let invitation = outOfBandRecord.outOfBandInvitation
 
-        aliceAgent.agentConfig.preferredHandshakeProtocol = .DidExchange10
+        aliceAgent.agentConfig.preferredHandshakeProtocol = .DidExchange11
         let (_, connection) = try await aliceAgent.oob.receiveInvitation(invitation)
         guard let aliceFaberConnection = connection else {
             XCTFail("Connection is nil after receiving invitation from url")

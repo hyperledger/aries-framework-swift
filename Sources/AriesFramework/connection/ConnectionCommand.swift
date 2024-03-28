@@ -128,7 +128,9 @@ public class ConnectionCommand {
                 imageUrl: config?.imageUrl,
                 autoAcceptConnection: config?.autoAcceptConnection)
         } else {
-            throw AriesFrameworkError.frameworkError("Handshake protocol \(handshakeProtocol) not implemented")
+            message = try await agent.didExchangeService.createRequest(connectionId: connection.id,
+                label: config?.label,
+                autoAcceptConnection: config?.autoAcceptConnection)
         }
         try await agent.messageSender.send(message: message)
         return message.connection

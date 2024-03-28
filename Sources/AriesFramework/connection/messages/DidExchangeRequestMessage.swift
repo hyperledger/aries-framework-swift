@@ -12,7 +12,7 @@ public class DidExchangeRequestMessage: AgentMessage {
         case label, goalCode = "goal_code", goal, did
     }
 
-    public init(id: String, label: String, goalCode: String?, goal: String?, did: String) {
+    public init(id: String? = nil, label: String, goalCode: String? = nil, goal: String? = nil, did: String) {
         self.label = label
         self.goalCode = goalCode
         self.goal = goal

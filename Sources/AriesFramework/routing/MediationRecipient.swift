@@ -135,12 +135,17 @@ class MediationRecipient {
         try await pickupMessages(mediatorConnection: mediatorConnection)
     }
 
-    func getRouting() async throws -> Routing {
+    func getRoutingInfo() async throws -> ([String], [String]) {
         let mediator = try await repository.getDefault()
         let endpoints = mediator?.endpoint == nil ? agent.agentConfig.endpoints : [mediator!.endpoint!]
         let routingKeys = mediator?.routingKeys ?? []
+        return (endpoints, routingKeys)
+    }
 
+    func getRouting() async throws -> Routing {
+        let (endpoints, routingKeys) = try await getRoutingInfo()
         let (did, verkey) = try await agent.wallet.createDid()
+        let mediator = try await repository.getDefault()
         if mediator != nil && mediator!.isReady() {
             try await keylistUpdate(mediator: mediator!, verkey: verkey)
         }

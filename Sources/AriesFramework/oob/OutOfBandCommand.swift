@@ -327,7 +327,7 @@ public class OutOfBandCommand {
     }
 
     private func getSupportedHandshakeProtocols() -> [HandshakeProtocol] {
-        return [.Connections, .DidExchange10]
+        return [.Connections, .DidExchange11]
     }
 
     private func assertHandshakeProtocols(_ handshakeProtocols: [HandshakeProtocol]) throws {

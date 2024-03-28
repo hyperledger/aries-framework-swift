@@ -31,8 +31,7 @@ public class DidExchangeService {
         assert(connectionRecord.state == ConnectionState.Invited)
         assert(connectionRecord.role == ConnectionRole.Invitee)
 
-        // TODO: get peer did from connectionRecord.did
-        let peerDid = "did:peer:0z6MkpTHR8VNsBxYAAWHut2Geadd9jSwuBV8xRoAnwWsdvktH"
+        let peerDid = try await agent.peerDIDService.createPeerDID(verkey: connectionRecord.verkey)
         let message = DidExchangeRequestMessage(label: label ?? agent.agentConfig.label, did: peerDid)
 
         if autoAcceptConnection != nil {
@@ -69,9 +68,7 @@ public class DidExchangeService {
             outOfBandRecord = outOfBandRecords[0]
         }
 
-        // TODO: get didDoc from message.did
-        let didDoc = ""
-
+        let didDoc = try agent.peerDIDService.parsePeerDID(message.did)
         var connectionRecord = try await agent.connectionService.createConnection(
             role: .Inviter,
             state: .Invited,
@@ -82,7 +79,7 @@ public class DidExchangeService {
             theirLabel: message.label,
             autoAcceptConnection: outOfBandRecord!.autoAcceptConnection,
             multiUseInvitation: true,
-            imageUrl: message.imageUrl,
+            imageUrl: nil,
             threadId: message.threadId)
 
         try await self.connectionRepository.save(connectionRecord)
@@ -91,14 +88,13 @@ public class DidExchangeService {
         connectionRecord.theirLabel = message.label
         connectionRecord.threadId = message.id
         connectionRecord.theirDid = didDoc.id
-        connectionRecord.imageUrl = message.imageUrl
 
         if connectionRecord.theirKey() == nil {
-            throw AriesFrameworkError.frameworkError("Connection with id \(connectionRecord!.id) has no recipient keys.")
+            throw AriesFrameworkError.frameworkError("Connection with id \(connectionRecord.id) has no recipient keys.")
         }
 
         try await updateState(connectionRecord: &connectionRecord, newState: .Requested)
-        return connectionRecord!
+        return connectionRecord
     }
 
     /**
@@ -115,8 +111,7 @@ public class DidExchangeService {
             throw AriesFrameworkError.frameworkError("Connection record with id \(connectionRecord.id) has no thread id.")
         }
 
-        // TODO: get peer did from connectionRecord.did
-        let peerDid = "did:peer:0z6MkpTHR8VNsBxYAAWHut2Geadd9jSwuBV8xRoAnwWsdvktH"
+        let peerDid = try await agent.peerDIDService.createPeerDID(verkey: connectionRecord.verkey)
 
         let message = DidExchangeResponseMessage(threadId: threadId, did: peerDid)
         message.thread = ThreadDecorator(threadId: threadId)
@@ -148,13 +143,11 @@ public class DidExchangeService {
         assert(connectionRecord.state == ConnectionState.Requested)
         assert(connectionRecord.role == ConnectionRole.Invitee)
 
-        if message.thread != connectionRecord.threadId {
+        if message.threadId != connectionRecord.threadId {
             throw AriesFrameworkError.frameworkError("Invalid or missing thread ID")
         }
 
-        // TODO: get didDoc from message.did
-        let didDoc = ""
-
+        let didDoc = try agent.peerDIDService.parsePeerDID(message.did)
         connectionRecord.theirDid = didDoc.id
         connectionRecord.theirDidDoc = didDoc
 

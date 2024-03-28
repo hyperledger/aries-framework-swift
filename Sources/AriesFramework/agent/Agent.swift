@@ -89,7 +89,7 @@ public class Agent {
             try await ledgerService.initialize()
         }
 
-        if let mediatorConnectionsInvite = agentConfig.mediatorConnectionsInvite {
+        if let mediatorConnectionsInvite = agentConfig.mediatorConnectionsInvite, agentConfig.useMediator {
             try await mediationRecipient.initialize(mediatorConnectionsInvite: mediatorConnectionsInvite)
         } else {
             setInitialized()

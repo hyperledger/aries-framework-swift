@@ -15,27 +15,6 @@ extension DidDoc: Codable {
         case context = "@context", id, publicKey, service, authentication
     }
 
-    public init(from didDocument: DIDDocument) throws {
-        let decoder = JSONDecoder()
-        id = didDocument.id
-        guard let type = didDocument.verificationMethods.first?.type else {
-            throw AriesFrameworkError.frameworkError("No verification method found in DIDDocument")
-        }
-        let keyType = decoder.decode(KnownVerificationMaterialType.self, from: type.data(using: .utf8)!)
-        let recipientKey = didDocument.verificationMethods.first!.material.convertToBase58(type: keyType)
-        service = didDocument.services.compactMap { service in
-            guard let endpoint = service.serviceEndpoint.get<ServiceEndpoint>() else {
-                return nil
-            }
-            let routingKeys = endpoint.routingKeys?.map { try DIDParser.ConvertDIDToVerkey(did: $0) } ?? []
-            DidDocService.didComm(DidCommService(
-                id: service.id,
-                serviceEndpoint: service.uri,
-                recipientKeys: [recipientKey],
-                routingKeys: routingKeys))
-        }
-    }
-
     public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         id = try container.decode(String.self, forKey: .id)
@@ -65,6 +44,36 @@ extension DidDoc: Codable {
                 break
             }
         }
+    }
+}
+
+extension DidDoc {
+    public init(from didDocument: DIDDocument) throws {
+        id = didDocument.id
+        if didDocument.verificationMethods.isEmpty {
+            throw AriesFrameworkError.frameworkError("No verification method found in DIDDocument")
+        }
+        let keyData = try didDocument.verificationMethods.first!.material.convertToBase58(type: .authentication(.ed25519VerificationKey2018)).value
+        let recipientKey = String(data: keyData, encoding: .utf8)!
+
+        publicKey = [Ed25119Sig2018(
+            id: "\(id)#1",
+            controller: id,
+            publicKeyBase58: recipientKey)]
+        authentication = [Authentication.referenced(ReferencedAuthentication(type: publicKey[0].type, publicKey: publicKey[0].id))]
+        service = try didDocument.services?.compactMap { service -> DidDocService? in
+            guard let endpoint: Dictionary<AnyHashable, Any> = service.serviceEndpoint.get(),
+                let endpointUri = endpoint["uri"] as? String,
+                let routingKeys = endpoint["routing_keys"] as? [String] else {
+                throw AriesFrameworkError.frameworkError("Service endpoint cannot be decoded")
+            }
+            let parsedRoutingKeys = try routingKeys.map { try DIDParser.ConvertDIDToVerkey(did: $0) }
+            return DidDocService.didComm(DidCommService(
+                id: service.id,
+                serviceEndpoint: endpointUri,
+                recipientKeys: [recipientKey],
+                routingKeys: parsedRoutingKeys))
+        } ?? []
     }
 
     func publicKey(id: String) -> PublicKey? {
