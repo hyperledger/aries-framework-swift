@@ -44,7 +44,7 @@ class DidExchangeTest: XCTestCase {
         aliceAgent.agentConfig.preferredHandshakeProtocol = .DidExchange11
         let (_, connection) = try await aliceAgent.oob.receiveInvitation(invitation)
         guard let aliceFaberConnection = connection else {
-            XCTFail("Connection is nil after receiving invitation from url")
+            XCTFail("Connection is nil after receiving oob invitation")
             return
         }
         XCTAssertEqual(aliceFaberConnection.state, .Complete)

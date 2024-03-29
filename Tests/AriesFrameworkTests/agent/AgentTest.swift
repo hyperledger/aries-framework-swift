@@ -222,4 +222,48 @@ class AgentTest: XCTestCase {
         // alice will be reset on tearDown
         try await faber.reset()
     }
+
+    // This tests DID exchange using did:peer numAlgo 2
+    func testDidExchangeViaMediator() async throws {
+        var aliceConfig = try TestHelper.getBaseConfig(name: "alice")
+        aliceConfig.mediatorPickupStrategy = .Implicit
+        aliceConfig.mediatorConnectionsInvite = publicMediatorUrl
+        aliceConfig.mediatorPollingInterval = 1
+        let alice = Agent(agentConfig: aliceConfig, agentDelegate: nil)
+        agent = alice
+        try await alice.initialize()
+
+        var faberConfig = try TestHelper.getBaseConfig(name: "faber")
+        faberConfig.mediatorPickupStrategy = .Implicit
+        faberConfig.mediatorConnectionsInvite = publicMediatorUrl
+        faberConfig.mediatorPollingInterval = 1
+        let faber = Agent(agentConfig: faberConfig, agentDelegate: nil)
+        try await faber.initialize()
+
+        let outOfBandRecord = try await faber.oob.createInvitation(config: CreateOutOfBandInvitationConfig())
+        let invitation = outOfBandRecord.outOfBandInvitation
+
+        alice.agentConfig.preferredHandshakeProtocol = .DidExchange11
+        let (_, connection) = try await alice.oob.receiveInvitation(invitation)
+        guard let aliceFaberConnection = connection else {
+            XCTFail("Connection is nil after receiving oob invitation")
+            return
+        }
+        XCTAssertEqual(aliceFaberConnection.state, .Complete)
+
+        // Wait enough time for faber to process complete message.
+        try await Task.sleep(nanoseconds: UInt64(faberConfig.mediatorPollingInterval * 2 * SECOND))
+
+        guard let faberAliceConnection = await faber.connectionService.findByInvitationKey(try invitation.invitationKey()!) else {
+            XCTFail("Cannot find connection by invitation key")
+            return
+        }
+        XCTAssertEqual(faberAliceConnection.state, .Complete)
+
+        XCTAssertTrue(TestHelper.isConnectedWith(received: faberAliceConnection, connection: aliceFaberConnection))
+        XCTAssertTrue(TestHelper.isConnectedWith(received: aliceFaberConnection, connection: faberAliceConnection))
+
+        // alice will be reset on tearDown
+        try await faber.reset()
+    }
 }

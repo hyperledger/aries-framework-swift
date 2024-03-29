@@ -29,7 +29,7 @@ class PeerDIDServiceTest: XCTestCase {
         let didDoc = try agent.peerDIDService.parsePeerDID(peerDID)
         XCTAssertEqual(didDoc.id, peerDID)
         XCTAssertEqual(didDoc.publicKey.count, 1)
-        XCTAssertEqual(didDoc.service.count, 0)
+        XCTAssertEqual(didDoc.service.count, 1)
         XCTAssertEqual(didDoc.authentication.count, 1)
         XCTAssertEqual(didDoc.publicKey[0].value, verkey)
     }
