@@ -61,7 +61,7 @@ extension DidDoc {
             controller: id,
             publicKeyBase58: recipientKey)]
         authentication = [Authentication.referenced(ReferencedAuthentication(type: publicKey[0].type, publicKey: publicKey[0].id))]
-        service = try didDocument.services?.compactMap { service -> DidDocService? in
+        service = try didDocument.services?.map { service -> DidDocService in
             guard let endpoint: Dictionary<AnyHashable, Any> = service.serviceEndpoint.get(),
                 let endpointUri = endpoint["uri"] as? String,
                 let routingKeys = endpoint["routing_keys"] as? [String] else {
@@ -74,6 +74,16 @@ extension DidDoc {
                 recipientKeys: [recipientKey],
                 routingKeys: parsedRoutingKeys))
         } ?? []
+
+        if service.isEmpty {
+            service = [
+                DidDocService.didComm(DidCommService(
+                    id: "#IndyAgentService",
+                    serviceEndpoint: DID_COMM_TRANSPORT_QUEUE,
+                    recipientKeys: [recipientKey],
+                    routingKeys: []))
+            ]
+        }
     }
 
     func publicKey(id: String) -> PublicKey? {

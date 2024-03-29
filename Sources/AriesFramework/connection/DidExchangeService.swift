@@ -38,6 +38,7 @@ public class DidExchangeService {
             connectionRecord.autoAcceptConnection = autoAcceptConnection
         }
         connectionRecord.threadId = message.id
+        connectionRecord.did = peerDid
         try await updateState(connectionRecord: &connectionRecord, newState: ConnectionState.Requested)
 
         return OutboundMessage(payload: message, connection: connectionRecord)
@@ -56,7 +57,7 @@ public class DidExchangeService {
         let decoder = JSONDecoder()
         let message = try decoder.decode(DidExchangeRequestMessage.self, from: Data(messageContext.plaintextMessage.utf8))
 
-        guard let recipientKey = messageContext.recipientVerkey, let senderKey = messageContext.senderVerkey else {
+        guard let recipientKey = messageContext.recipientVerkey, let _ = messageContext.senderVerkey else {
             throw AriesFrameworkError.frameworkError("Unable to process connection request without senderVerkey or recipientVerkey")
         }
 
@@ -112,6 +113,7 @@ public class DidExchangeService {
         }
 
         let peerDid = try await agent.peerDIDService.createPeerDID(verkey: connectionRecord.verkey)
+        connectionRecord.did = peerDid
 
         let message = DidExchangeResponseMessage(threadId: threadId, did: peerDid)
         message.thread = ThreadDecorator(threadId: threadId)

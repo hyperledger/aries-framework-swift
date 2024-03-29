@@ -248,9 +248,9 @@ public class OutOfBandCommand {
                 }
             }
 
+            let handshakeProtocol = try selectHandshakeProtocol(handshakeProtocols)
             if connectionRecord == nil {
                 logger.debug("Creating new connection.")
-                let handshakeProtocol = try selectHandshakeProtocol(handshakeProtocols)
                 connectionRecord = try await agent.connections.acceptOutOfBandInvitation(
                     outOfBandRecord: outOfBandRecord,
                     handshakeProtocol: handshakeProtocol,
@@ -258,7 +258,12 @@ public class OutOfBandCommand {
             }
 
             if try await agent.connectionService.fetchState(connectionRecord: connectionRecord!) != .Complete {
-                let result = try await agent.connectionService.waitForConnection()
+                var result = false
+                if handshakeProtocol == .Connections {
+                    result = try await agent.connectionService.waitForConnection()
+                } else {
+                    result = try await agent.didExchangeService.waitForConnection()
+                }
                 if !result {
                     throw AriesFrameworkError.frameworkError("Connection timed out.")
                 }

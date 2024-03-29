@@ -55,7 +55,7 @@ class DidExchangeTest: XCTestCase {
         }
         XCTAssertEqual(faberAliceConnection.state, .Complete)
 
-        XCTAssertEqual(TestHelper.isConnectedWith(received: faberAliceConnection, connection: aliceFaberConnection), true)
-        XCTAssertEqual(TestHelper.isConnectedWith(received: aliceFaberConnection, connection: faberAliceConnection), true)
+        XCTAssertTrue(TestHelper.isConnectedWith(received: faberAliceConnection, connection: aliceFaberConnection))
+        XCTAssertTrue(TestHelper.isConnectedWith(received: aliceFaberConnection, connection: faberAliceConnection))
     }
 }
