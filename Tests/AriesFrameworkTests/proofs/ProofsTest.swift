@@ -143,9 +143,11 @@ class ProofsTest: XCTestCase {
 
         do {
             _ = try await aliceAgent.proofService.autoSelectCredentialsForProofRequest(retrievedCredentials: retrievedCredentials)
-            XCTFail("Expected error")
-        } catch {
+            XCTFail("This should throw an error because there are no selectable credentials.")
+        } catch is AriesFrameworkError {
             // Expected error
+        } catch {
+            XCTFail("Unexpected error occured. \(error.localizedDescription)")
         }
     }
 
@@ -167,11 +169,12 @@ class ProofsTest: XCTestCase {
 
         let requestedCredentials = try await aliceAgent.proofService.autoSelectCredentialsForProofRequest(retrievedCredentials: retrievedCredentials)
         do {
-            // This should throw an error because we cannot create a proof satisfying the predicates.
             _ = try await aliceAgent.proofs.acceptRequest(proofRecordId: aliceProofRecord.id, requestedCredentials: requestedCredentials)
-            XCTFail("Expected error")
-        } catch {
+            XCTFail("This should throw an error because we cannot create a proof satisfying the predicates.")
+        } catch is AriesFrameworkError {
             // Expected error
+        } catch {
+            XCTFail("Unexpected error occured. \(error.localizedDescription)")
         }
     }
 
@@ -237,8 +240,10 @@ class ProofsTest: XCTestCase {
         do {
             _ = try await aliceAgent.proofs.getRequestedCredentialsForProofRequest(proofRecordId: aliceProofRecord.id)
             XCTFail("Error will raise because requested_attributes in the proof request has name and names both which is not allowed.")
-        } catch {
+        } catch is AriesFrameworkError {
             // Expected error
+        } catch {
+            XCTFail("Unexpected error occured. \(error.localizedDescription)")
         }
     }
 
