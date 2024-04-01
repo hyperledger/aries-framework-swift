@@ -151,6 +151,7 @@ class AgentTest: XCTestCase {
     // Run faber in AFJ/demo/ and run mediator in AFJ/samples before this test
     func testDemoFaber() async throws {
         var config = try TestHelper.getBcovinConfig(name: "alice")
+        config.preferredHandshakeProtocol = .DidExchange11
         config.mediatorConnectionsInvite = String(data: try Data(contentsOf: URL(string: mediatorInvitationUrl)!), encoding: .utf8)!
 
         let expectation = TestHelper.expectation(description: "credential received")
@@ -162,24 +163,6 @@ class AgentTest: XCTestCase {
         let invitation = try OutOfBandInvitation.fromUrl(faberInvitationUrl)
         print("Start connecting to faber")
         _ = try await agent.oob.receiveInvitation(invitation)
-
-        try await TestHelper.wait(for: expectation, timeout: 120)
-    }
-
-    // Run faber in AFJ/demo/ in legacy_connection branch
-    func testDemoFaberWithLegacyConnection() async throws {
-        let config = try TestHelper.getBcovinConfig(name: "alice")
-        let expectation = TestHelper.expectation(description: "credential received")
-        let testDelegate = CredentialDelegate(expectation: expectation)
-        agent = Agent(agentConfig: config, agentDelegate: testDelegate)
-        try await agent.initialize()
-
-        print("Getting invitation from faber")
-        let faberInvitationUrl = "http://localhost:9001/invitation"
-        let faberInvite = String(data: try Data(contentsOf: URL(string: faberInvitationUrl)!), encoding: .utf8)!
-        let invitation = try ConnectionInvitationMessage.fromUrl(faberInvite)
-        print("Start connecting to faber")
-        _ = try await agent.connections.receiveInvitation(invitation)
 
         try await TestHelper.wait(for: expectation, timeout: 120)
     }
