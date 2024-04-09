@@ -11,33 +11,8 @@ class PeerDIDServiceTest: XCTestCase {
         try await super.tearDown()
     }
 
-    func testPeerDIDnumAlgo0() async throws {
-        let config = try TestHelper.getBaseConfig(name: "alice")
-        agent = Agent(agentConfig: config, agentDelegate: nil)
-        try await agent.initialize()
-
-        let peerDID = try await agent.peerDIDService.createPeerDID(verkey: verkey)
-        XCTAssertTrue(peerDID.starts(with: "did:peer:0"))
-        let key1 = peerDID.dropFirst(10)
-
-        let didKey = try DIDParser.ConvertVerkeyToDidKey(verkey: verkey)
-        XCTAssertTrue(didKey.starts(with: "did:key:"))
-        let key2 = didKey.dropFirst(8)
-
-        XCTAssertEqual(key1, key2)
-
-        let didDoc = try agent.peerDIDService.parsePeerDID(peerDID)
-        XCTAssertEqual(didDoc.id, peerDID)
-        XCTAssertEqual(didDoc.publicKey.count, 1)
-        XCTAssertEqual(didDoc.service.count, 1)
-        XCTAssertEqual(didDoc.authentication.count, 1)
-        XCTAssertEqual(didDoc.publicKey[0].value, verkey)
-    }
-
     func testPeerDIDnumAlgo2() async throws {
-        var config = try TestHelper.getBaseConfig(name: "alice")
-        config.mediatorConnectionsInvite = "http://mediator.example.com/connections"
-        config.useMediator = false
+        let config = try TestHelper.getBaseConfig(name: "alice")
         agent = Agent(agentConfig: config, agentDelegate: nil)
         try await agent.initialize()
 
@@ -62,8 +37,6 @@ class PeerDIDServiceTest: XCTestCase {
         XCTAssertEqual(didCommService.recipientKeys.count, 1)
         XCTAssertEqual(didCommService.recipientKeys[0], verkey)
         XCTAssertEqual(didCommService.routingKeys?.count, 0)
-        // XCTAssertEqual(didCommService.serviceEndpoint, config.mediatorConnectionsInvite)
-        // The above should be true, but the service endpoint is not set in the test with config.useMediator = false
         XCTAssertEqual(didCommService.serviceEndpoint, agent.agentConfig.endpoints[0])
     }
 }

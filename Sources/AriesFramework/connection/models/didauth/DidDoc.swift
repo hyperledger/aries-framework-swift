@@ -64,7 +64,7 @@ extension DidDoc {
         service = try didDocument.services?.map { service -> DidDocService in
             guard let endpoint: Dictionary<AnyHashable, Any> = service.serviceEndpoint.get(),
                 let endpointUri = endpoint["uri"] as? String,
-                let routingKeys = endpoint["routing_keys"] as? [String] else {
+                let routingKeys = endpoint["routingKeys"] as? [String] else {
                 throw AriesFrameworkError.frameworkError("Service endpoint cannot be decoded")
             }
             let parsedRoutingKeys = try routingKeys.map { try DIDParser.ConvertDIDToVerkey(did: $0) }

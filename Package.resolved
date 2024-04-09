@@ -73,15 +73,6 @@
       }
     },
     {
-      "identity" : "peerdid-swift",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/beatt83/peerdid-swift",
-      "state" : {
-        "revision" : "36afa080c885ca7a06a6c50a37db2da865811267",
-        "version" : "2.1.0"
-      }
-    },
-    {
       "identity" : "semaphore",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/groue/Semaphore",

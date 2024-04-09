@@ -14,8 +14,7 @@ public class PeerDIDService {
     }
 
     /**
-     Create a Peer DID for the given verkey. This use numAlgo 0 when mediator is not used,
-     otherwise it uses numAlgo 2.
+     Create a Peer DID numAlgo 2 for the given verkey.
 
      - Parameter verkey: the verkey to use for the Peer DID.
      - Returns: the Peer DID.
@@ -23,15 +22,6 @@ public class PeerDIDService {
     public func createPeerDID(verkey: String) async throws -> String {
         logger.debug("Creating Peer DID for verkey: \(verkey)")
         let verkey = Data(Base58.base58Decode(verkey)!)
-        if agent.agentConfig.mediatorConnectionsInvite == nil {
-            let material = try PeerDIDVerificationMaterial(
-                format: .base58,
-                key: verkey,
-                type: .authentication(.ed25519VerificationKey2018))
-            let did = try PeerDIDHelper.createAlgo0(key: material).string
-            logger.debug("Created Peer DID: \(did)")
-            return did
-        }
         
         let (endpoints, routingKeys) = try await agent.mediationRecipient.getRoutingInfo()
         let didRoutingKeys = try DIDParser.ConvertVerkeysToDidKeys(verkeys: routingKeys)
@@ -46,11 +36,13 @@ public class PeerDIDService {
         let service = DIDDocument.Service(
             id: "#IndyAgentService",
             type: "DIDCommMessaging",
-            serviceEndpoint: AnyCodable(dictionaryLiteral: ("uri", endpoints[0]), ("routing_keys", didRoutingKeys)))
+            serviceEndpoint: AnyCodable(dictionaryLiteral: ("uri", endpoints[0]), ("routingKeys", didRoutingKeys)))
         return try PeerDIDHelper.createAlgo2(
             authenticationKeys: [authKey],
             agreementKeys: [agreementKey],
-            services: [service]).string
+            services: [service],
+            recipientKeys: [[]])
+            .string
     }
 
     /**
