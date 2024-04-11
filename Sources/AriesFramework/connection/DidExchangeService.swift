@@ -152,6 +152,7 @@ public class DidExchangeService {
         let didDoc = try agent.peerDIDService.parsePeerDID(message.did)
         connectionRecord.theirDid = didDoc.id
         connectionRecord.theirDidDoc = didDoc
+        // TODO: Verify the signature of message.didRotate attachment
 
         try await updateState(connectionRecord: &connectionRecord, newState: ConnectionState.Responded)
         return connectionRecord

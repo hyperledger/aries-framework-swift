@@ -21,6 +21,8 @@ public class PeerDIDService {
     */
     public func createPeerDID(verkey: String) async throws -> String {
         logger.debug("Creating Peer DID for verkey: \(verkey)")
+        let didKey = try DIDParser.ConvertVerkeyToDidKey(verkey: verkey)
+        logger.debug("did:key for verkey: \(didKey)")
         let verkey = Data(Base58.base58Decode(verkey)!)
         
         let (endpoints, routingKeys) = try await agent.mediationRecipient.getRoutingInfo()
@@ -41,7 +43,7 @@ public class PeerDIDService {
             authenticationKeys: [authKey],
             agreementKeys: [agreementKey],
             services: [service],
-            recipientKeys: [[]])
+            recipientKeys: [[didKey]])
             .string
     }
 
