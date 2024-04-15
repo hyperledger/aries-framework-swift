@@ -24,7 +24,10 @@ public class PeerDIDService {
         logger.debug("Creating Peer DID for verkey: \(verkey)")
         let verkeyData = Data(Base58.base58Decode(verkey)!)
         let (endpoints, routingKeys) = try await agent.mediationRecipient.getRoutingInfo()
-        let didRoutingKeys = try DIDParser.ConvertVerkeysToDidKeys(verkeys: routingKeys)
+        let didRoutingKeys = try routingKeys.map { rawKey in
+            let key = try DIDParser.ConvertVerkeyToDidKey(verkey: rawKey)
+            return try "\(key)#\(DIDParser.getMethodId(did: key))"
+        }
         let authKey = try PeerDIDVerificationMaterial(
             format: .base58,
             key: verkeyData,
@@ -32,7 +35,7 @@ public class PeerDIDService {
         let agreementKey = try PeerDIDVerificationMaterial(
             format: .base58,
             key: verkeyData,
-            type: .agreement(.x25519KeyAgreementKey2020))
+            type: .agreement(.x25519KeyAgreementKey2019))
         let service = DIDDocument.Service(
             id: "#service-1",
             type: DidCommService.type,
@@ -41,7 +44,7 @@ public class PeerDIDService {
             authenticationKeys: [authKey],
             agreementKeys: [agreementKey],
             services: [service],
-            recipientKeys: [["#key-1"]])
+            recipientKeys: [["#key-2"]])    // peerdid-swift encodes key-agreement key first.
             .string
     }
 
