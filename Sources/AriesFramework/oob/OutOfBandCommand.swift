@@ -357,10 +357,8 @@ public class OutOfBandCommand {
             supportedProtocols.contains(agent.agentConfig.preferredHandshakeProtocol) {
             return agent.agentConfig.preferredHandshakeProtocol
         }
-        for protocolName in handshakeProtocols {
-            if supportedProtocols.contains(protocolName) {
-                return protocolName
-            }
+        for protocolName in handshakeProtocols where supportedProtocols.contains(protocolName) {
+            return protocolName
         }
         throw AriesFrameworkError.frameworkError(
             "None of the provided handshake protocols [\(handshakeProtocols)] are supported. Supported protocols are [\(supportedProtocols)]"

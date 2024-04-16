@@ -1,6 +1,7 @@
 excluded:
   - .build
   - Sample
+  - Tests/javascript
 disabled_rules:
   - line_length
   - function_body_length

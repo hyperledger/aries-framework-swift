@@ -88,7 +88,7 @@ public class DIDParser {
     }
 
     public static func ConvertDIDToVerkey(did: String) throws -> String {
-        //TODO: support did:peer
+        // TODO: support did:peer
         return try ConvertDidKeyToVerkey(did: did)
     }
 }

@@ -58,8 +58,8 @@ public class DidExchangeService {
         let decoder = JSONDecoder()
         let message = try decoder.decode(DidExchangeRequestMessage.self, from: Data(messageContext.plaintextMessage.utf8))
 
-        guard let recipientKey = messageContext.recipientVerkey, let _ = messageContext.senderVerkey else {
-            throw AriesFrameworkError.frameworkError("Unable to process connection request without senderVerkey or recipientVerkey")
+        guard let recipientKey = messageContext.recipientVerkey else {
+            throw AriesFrameworkError.frameworkError("Unable to process connection request without recipientVerkey")
         }
 
         var outOfBandRecord: OutOfBandRecord?

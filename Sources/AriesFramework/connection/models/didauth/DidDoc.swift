@@ -62,7 +62,7 @@ extension DidDoc {
             publicKeyBase58: recipientKey)]
         authentication = [Authentication.referenced(ReferencedAuthentication(type: publicKey[0].type, publicKey: publicKey[0].id))]
         service = try didDocument.services?.map { service -> DidDocService in
-            guard let endpoint: Dictionary<AnyHashable, Any> = service.serviceEndpoint.get(),
+            guard let endpoint: [AnyHashable: Any] = service.serviceEndpoint.get(),
                 let endpointUri = endpoint["uri"] as? String,
                 let routingKeys = endpoint["routingKeys"] as? [String] else {
                 throw AriesFrameworkError.frameworkError("Service endpoint cannot be decoded")
