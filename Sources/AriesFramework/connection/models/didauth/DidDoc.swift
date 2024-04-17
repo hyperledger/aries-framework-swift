@@ -48,6 +48,7 @@ extension DidDoc: Codable {
 }
 
 extension DidDoc {
+    // Construct a new DidDoc from a DIDDocument of peerdid-swift
     public init(from didDocument: DIDDocument) throws {
         id = didDocument.id
         if didDocument.verificationMethods.isEmpty {
@@ -61,24 +62,33 @@ extension DidDoc {
             controller: id,
             publicKeyBase58: recipientKey)]
         authentication = [Authentication.referenced(ReferencedAuthentication(type: publicKey[0].type, publicKey: publicKey[0].id))]
+
+        let encoder = JSONEncoder()
+        let decoder = JSONDecoder()
         service = try didDocument.services?.map { serviceItem -> DidDocService in
-            guard let service = serviceItem.value as? [String: Any],
-                let serviceId = service["id"] as? String,
-                let endpoint = service["serviceEndpoint"] as? String,
-                let routingKeys = service["routingKeys"] as? [String] else {
-                throw AriesFrameworkError.frameworkError("Service cannot be decoded")
+            let serviceData = try encoder.encode(serviceItem)
+            if let service = try? decoder.decode(DidCommService.self, from: serviceData) {
+                let parsedRoutingKeys = try service.routingKeys?.map { try DIDParser.ConvertDIDToVerkey(did: $0) }
+                return DidDocService.didComm(DidCommService(
+                    id: service.id,
+                    serviceEndpoint: service.serviceEndpoint,
+                    recipientKeys: [recipientKey],  // Ignoring service.recipientKeys
+                    routingKeys: parsedRoutingKeys))
+            } else if let service = try? decoder.decode(DidCommV2Service.self, from: serviceData) {
+                let parsedRoutingKeys = try service.serviceEndpoint.routingKeys?.map { try DIDParser.ConvertDIDToVerkey(did: $0) }
+                return DidDocService.didComm(DidCommService(
+                    id: service.id,
+                    serviceEndpoint: service.serviceEndpoint.uri,
+                    recipientKeys: [recipientKey],
+                    routingKeys: parsedRoutingKeys))
+            } else {
+                throw AriesFrameworkError.frameworkError("Unable to decode service: \(serviceItem)")
             }
-            let parsedRoutingKeys = try routingKeys.map { try DIDParser.ConvertDIDToVerkey(did: $0) }
-            return DidDocService.didComm(DidCommService(
-                id: serviceId,
-                serviceEndpoint: endpoint,
-                recipientKeys: [recipientKey],
-                routingKeys: parsedRoutingKeys))
         } ?? []
 
         if service.isEmpty {
             service = [
-                DidDocService.didComm(DidCommService(
+                DidDocService.indyAgent(IndyAgentService(
                     id: "#IndyAgentService",
                     serviceEndpoint: DID_COMM_TRANSPORT_QUEUE,
                     recipientKeys: [recipientKey],
