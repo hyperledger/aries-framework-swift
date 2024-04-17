@@ -61,16 +61,17 @@ extension DidDoc {
             controller: id,
             publicKeyBase58: recipientKey)]
         authentication = [Authentication.referenced(ReferencedAuthentication(type: publicKey[0].type, publicKey: publicKey[0].id))]
-        service = try didDocument.services?.map { service -> DidDocService in
-            guard let endpoint: [AnyHashable: Any] = service.serviceEndpoint.get(),
-                let endpointUri = endpoint["uri"] as? String,
-                let routingKeys = endpoint["routingKeys"] as? [String] else {
-                throw AriesFrameworkError.frameworkError("Service endpoint cannot be decoded")
+        service = try didDocument.services?.map { serviceItem -> DidDocService in
+            guard let service = serviceItem.value as? [String: Any],
+                let serviceId = service["id"] as? String,
+                let endpoint = service["serviceEndpoint"] as? String,
+                let routingKeys = service["routingKeys"] as? [String] else {
+                throw AriesFrameworkError.frameworkError("Service cannot be decoded")
             }
             let parsedRoutingKeys = try routingKeys.map { try DIDParser.ConvertDIDToVerkey(did: $0) }
             return DidDocService.didComm(DidCommService(
-                id: service.id,
-                serviceEndpoint: endpointUri,
+                id: serviceId,
+                serviceEndpoint: endpoint,
                 recipientKeys: [recipientKey],
                 routingKeys: parsedRoutingKeys))
         } ?? []

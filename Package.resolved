@@ -68,8 +68,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/beatt83/didcore-swift.git",
       "state" : {
-        "revision" : "3d62fc9ac4bf7d7be2958be057bb1f8f25fd15f5",
-        "version" : "1.1.0"
+        "revision" : "2503b1690e11b16a0cdc8f492e370bbd9dcbe08b",
+        "version" : "2.0.0"
       }
     },
     {

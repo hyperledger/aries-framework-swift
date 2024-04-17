@@ -20,7 +20,7 @@ let package = Package(
         .package(url: "https://github.com/thecatalinstan/Criollo", exact: "1.1.0"),
         .package(url: "https://github.com/groue/Semaphore", exact: "0.0.8"),
         // .package(url: "https://github.com/beatt83/peerdid-swift", exact: "2.1.0")
-        .package(path: "../../fork/peerdid-swift")
+        .package(path: "../../aries/peerdid-swift")
     ],
     targets: [
         .target(

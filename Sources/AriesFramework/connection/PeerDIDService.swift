@@ -36,15 +36,17 @@ public class PeerDIDService {
             format: .base58,
             key: verkeyData,
             type: .agreement(.x25519KeyAgreementKey2019))
-        let service = DIDDocument.Service(
-            id: "#service-1",
-            type: DidCommService.type,
-            serviceEndpoint: AnyCodable(dictionaryLiteral: ("uri", endpoints[0]), ("routingKeys", didRoutingKeys)))
+        let service = [
+            "id": "#service-1",
+            "type": DidCommService.type,
+            "serviceEndpoint": endpoints[0],
+            "routingKeys": didRoutingKeys,
+            "recipientKeys": [["#key-2"]]   // peerdid-swift encodes key-agreement key first.
+        ] as AnyCodable
         return try PeerDIDHelper.createAlgo2(
             authenticationKeys: [authKey],
             agreementKeys: [agreementKey],
-            services: [service],
-            recipientKeys: [["#key-2"]])    // peerdid-swift encodes key-agreement key first.
+            services: [service])
             .string
     }
 
