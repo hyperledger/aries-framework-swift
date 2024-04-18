@@ -5,10 +5,11 @@ public enum DidDocService: Codable {
     case didDocument(DidDocumentService)
     case didComm(DidCommService)
     case indyAgent(IndyAgentService)
+    case didCommV2(DidCommV2Service)
 
     var priority: Int {
         switch self {
-        case .didDocument:
+        case .didDocument, .didCommV2:
             return 0
         case .didComm(let doc):
             return doc.priority ?? 0
@@ -25,12 +26,14 @@ public enum DidDocService: Codable {
             return doc.type
         case .indyAgent(let doc):
             return doc.type
+        case .didCommV2(let doc):
+            return doc.type
         }
     }
 
     var recipientKeys: [String] {
         switch self {
-        case .didDocument:
+        case .didDocument, .didCommV2:
             return []
         case .didComm(let doc):
             return doc.recipientKeys
@@ -47,6 +50,8 @@ public enum DidDocService: Codable {
             return doc.serviceEndpoint
         case .indyAgent(let doc):
             return doc.serviceEndpoint
+        case .didCommV2(let doc):
+            return doc.serviceEndpoint.uri
         }
     }
 
@@ -58,6 +63,8 @@ public enum DidDocService: Codable {
             return doc.routingKeys
         case .indyAgent(let doc):
             return doc.routingKeys
+        case .didCommV2(let doc):
+            return doc.serviceEndpoint.routingKeys
         }
     }
 
@@ -73,6 +80,8 @@ public enum DidDocService: Codable {
             self = .didComm(try DidCommService(from: decoder))
         case IndyAgentService.type:
             self = .indyAgent(try IndyAgentService(from: decoder))
+        case DidCommV2Service.type:
+            self = .didCommV2(try DidCommV2Service(from: decoder))
         default:
             self = .didDocument(try DidDocumentService(from: decoder))
         }
@@ -86,6 +95,8 @@ public enum DidDocService: Codable {
             try didComm.encode(to: encoder)
         case .indyAgent(let indyAgent):
             try indyAgent.encode(to: encoder)
+        case .didCommV2(let didCommV2):
+            try didCommV2.encode(to: encoder)
         }
     }
 }

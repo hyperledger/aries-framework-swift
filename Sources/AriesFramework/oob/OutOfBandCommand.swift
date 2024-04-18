@@ -248,19 +248,22 @@ public class OutOfBandCommand {
                 }
             }
 
+            let handshakeProtocol = try selectHandshakeProtocol(handshakeProtocols)
             if connectionRecord == nil {
                 logger.debug("Creating new connection.")
-                if !handshakeProtocols.contains(.Connections) {
-                    throw AriesFrameworkError.frameworkError(
-                        "Unsupported handshake protocol. Supported protocols: \(handshakeProtocols)"
-                    )
-                }
-
-                connectionRecord = try await agent.connections.acceptOutOfBandInvitation(outOfBandRecord: outOfBandRecord, config: config)
+                connectionRecord = try await agent.connections.acceptOutOfBandInvitation(
+                    outOfBandRecord: outOfBandRecord,
+                    handshakeProtocol: handshakeProtocol,
+                    config: config)
             }
 
             if try await agent.connectionService.fetchState(connectionRecord: connectionRecord!) != .Complete {
-                let result = try await agent.connectionService.waitForConnection()
+                var result = false
+                if handshakeProtocol == .Connections {
+                    result = try await agent.connectionService.waitForConnection()
+                } else {
+                    result = try await agent.didExchangeService.waitForConnection()
+                }
                 if !result {
                     throw AriesFrameworkError.frameworkError("Connection timed out.")
                 }
@@ -328,9 +331,8 @@ public class OutOfBandCommand {
         return connections.first(where: { $0.isReady() })
     }
 
-    // Only Connection protocol is supported for now
     private func getSupportedHandshakeProtocols() -> [HandshakeProtocol] {
-        return [.Connections]
+        return [.Connections, .DidExchange11]
     }
 
     private func assertHandshakeProtocols(_ handshakeProtocols: [HandshakeProtocol]) throws {
@@ -347,5 +349,19 @@ public class OutOfBandCommand {
         return handshakeProtocols.allSatisfy({ (p) -> Bool in
             return supportedProtocols.contains(p)
         })
+    }
+
+    private func selectHandshakeProtocol(_ handshakeProtocols: [HandshakeProtocol]) throws -> HandshakeProtocol {
+        let supportedProtocols = getSupportedHandshakeProtocols()
+        if handshakeProtocols.contains(agent.agentConfig.preferredHandshakeProtocol) &&
+            supportedProtocols.contains(agent.agentConfig.preferredHandshakeProtocol) {
+            return agent.agentConfig.preferredHandshakeProtocol
+        }
+        for protocolName in handshakeProtocols where supportedProtocols.contains(protocolName) {
+            return protocolName
+        }
+        throw AriesFrameworkError.frameworkError(
+            "None of the provided handshake protocols [\(handshakeProtocols)] are supported. Supported protocols are [\(supportedProtocols)]"
+        )
     }
 }

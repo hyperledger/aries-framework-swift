@@ -20,6 +20,7 @@ public struct AgentConfig: Codable {
         ignoreRevocationCheck: Bool = false,
         useLedgerService: Bool = true,
         useLegacyDidSovPrefix: Bool = true,
+        preferredHandshakeProtocol: HandshakeProtocol = .Connections,
         publicDidSeed: String? = nil,
         agentEndpoints: [String]? = nil) {
 
@@ -38,6 +39,7 @@ public struct AgentConfig: Codable {
         self.ignoreRevocationCheck = ignoreRevocationCheck
         self.useLedgerService = useLedgerService
         self.useLegacyDidSovPrefix = useLegacyDidSovPrefix
+        self.preferredHandshakeProtocol = preferredHandshakeProtocol
         self.publicDidSeed = publicDidSeed
         self.agentEndpoints = agentEndpoints
     }
@@ -75,6 +77,8 @@ public struct AgentConfig: Codable {
     public var useLedgerService: Bool
     /// Whether to use the legacy did sov prefix. Default is true.
     public var useLegacyDidSovPrefix: Bool
+    /// The preferred handshake protocol to use. Default is `.Connections`.
+    public var preferredHandshakeProtocol: HandshakeProtocol
 
     // For testing
 

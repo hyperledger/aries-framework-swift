@@ -125,8 +125,8 @@ class OobTest: XCTestCase {
         XCTAssertEqual(faberAliceConnection.state, .Complete)
 
         XCTAssertEqual(faberAliceConnection.alias, makeConnectionConfig.alias)
-        XCTAssertEqual(TestHelper.isConnectedWith(received: faberAliceConnection, connection: aliceFaberConnection), true)
-        XCTAssertEqual(TestHelper.isConnectedWith(received: aliceFaberConnection, connection: faberAliceConnection), true)
+        XCTAssertTrue(TestHelper.isConnectedWith(received: faberAliceConnection, connection: aliceFaberConnection))
+        XCTAssertTrue(TestHelper.isConnectedWith(received: aliceFaberConnection, connection: faberAliceConnection))
     }
 
     func testCredentialOffer() async throws {

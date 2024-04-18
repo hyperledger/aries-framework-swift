@@ -109,3 +109,8 @@ $ yarn faber
 Then, get the invitation urls from the mediator and faber agent.
 Run `testDemoFaber()` with these urls and operate the faber agent to issue a credential.
 You can also use the Sample app to interact with the faber agent.
+
+You can see debug messages of faber agent by adding the following option to the agent config in `BaseAgent.ts`:
+```javascript
+    logger: new ConsoleLogger(LogLevel.debug),
+```

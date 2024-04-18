@@ -11,6 +11,8 @@ public class Agent {
     var mediationRecipient: MediationRecipient!
     public var connectionRepository: ConnectionRepository!
     public var connectionService: ConnectionService!
+    public var didExchangeService: DidExchangeService!
+    public var peerDIDService: PeerDIDService!
     var messageSender: MessageSender!
     var messageReceiver: MessageReceiver!
     public var dispatcher: Dispatcher!
@@ -42,6 +44,8 @@ public class Agent {
         self.wallet = Wallet(agent: self)
         self.connectionRepository = ConnectionRepository(agent: self)
         self.connectionService = ConnectionService(agent: self)
+        self.didExchangeService = DidExchangeService(agent: self)
+        self.peerDIDService = PeerDIDService(agent: self)
         self.messageSender = MessageSender(agent: self)
         self.messageReceiver = MessageReceiver(agent: self)
         self.dispatcher = Dispatcher(agent: self)

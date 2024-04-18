@@ -47,6 +47,18 @@ let diddoc = [
             "recipientKeys": ["DADEajsDSaksLng9h"],
             "routingKeys": ["DADEajsDSaksLng9h"],
             "priority": 10
+        ],
+        [
+            "id": "did:example:123456789abcdefghi#didcomm-1",
+            "type": "DIDCommMessaging",
+            "serviceEndpoint": [
+                "uri": "https://example.com/path",
+                "accept": [
+                    "didcomm/v2",
+                    "didcomm/aip2;env=rfc587"
+                ],
+                "routingKeys": ["did:example:somemediator#somekey"]
+            ]
         ]
     ],
     "authentication": [
@@ -85,10 +97,13 @@ class DidDocTest: XCTestCase {
             XCTFail("service 0 should be DidDocumentService")
         }
         if case .indyAgent = didDoc.service[1] {} else {
-            XCTFail("service 2 should be IndyAgentService")
+            XCTFail("service 1 should be IndyAgentService")
         }
         if case .didComm = didDoc.service[2] {} else {
-            XCTFail("service 1 should be DidCommService")
+            XCTFail("service 2 should be DidCommService")
+        }
+        if case .didCommV2 = didDoc.service[3] {} else {
+            XCTFail("service 3 should be DidCommV2Service")
         }
 
         if case .referenced = didDoc.authentication[0] {} else {
@@ -104,7 +119,7 @@ class DidDocTest: XCTestCase {
         XCTAssertEqual(clone.id, "did:sov:LjgpST2rjsoxYegQDRm7EL")
         XCTAssertEqual(clone.context, "https://w3id.org/did/v1")
         XCTAssertEqual(clone.publicKey.count, 3)
-        XCTAssertEqual(clone.service.count, 3)
+        XCTAssertEqual(clone.service.count, 4)
         XCTAssertEqual(clone.authentication.count, 2)
 
         XCTAssertEqual(clone.publicKey[0].id, "3")
@@ -141,6 +156,15 @@ class DidDocTest: XCTestCase {
             XCTAssertEqual(comm.priority, 10)
         } else {
             XCTFail("service 2 should be DidCommService")
+        }
+        if case .didCommV2(let service) = clone.service[3] {
+            XCTAssertEqual(service.id, "did:example:123456789abcdefghi#didcomm-1")
+            XCTAssertEqual(service.type, "DIDCommMessaging")
+            XCTAssertEqual(service.serviceEndpoint.uri, "https://example.com/path")
+            XCTAssertEqual(service.serviceEndpoint.accept, ["didcomm/v2", "didcomm/aip2;env=rfc587"])
+            XCTAssertEqual(service.serviceEndpoint.routingKeys, ["did:example:somemediator#somekey"])
+        } else {
+            XCTFail("service 3 should be DidCommV2Service")
         }
     }
 
