@@ -24,9 +24,23 @@ public struct RevocationRegistryDefinitionTemplate {
     public let tailsDirPath: String? = nil
 }
 
-public class LedgerService {
+public protocol LedgerService {
+    func initialize() async throws
+    func registerSchema(did: DidInfo, schemaTemplate: SchemaTemplate) async throws -> String
+    func getSchema(schemaId: String) async throws -> (String, Int)
+    func registerCredentialDefinition(did: DidInfo, credentialDefinitionTemplate: CredentialDefinitionTemplate) async throws -> String
+    func getCredentialDefinition(id: String) async throws -> String
+    func registerRevocationRegistryDefinition(did: DidInfo, revRegDefTemplate: RevocationRegistryDefinitionTemplate) async throws -> String
+    func getRevocationRegistryDefinition(id: String) async throws -> String
+    func getRevocationRegistryDelta(id: String, to: Int, from: Int) async throws -> (String, Int)
+    func getRevocationRegistry(id: String, timestamp: Int) async throws -> (String, Int)
+    func revokeCredential(did: DidInfo, credDefId: String, revocationIndex: Int) async throws
+    func close() async throws
+}
+
+public class IndyLedgerService: LedgerService {
     let agent: Agent
-    let logger = Logger(subsystem: "AriesFramework", category: "LedgerService")
+    let logger = Logger(subsystem: "AriesFramework", category: "IndyLedgerService")
     private var pool: Pool?
     private let ledger = Ledger()
     private let issuer = Issuer()

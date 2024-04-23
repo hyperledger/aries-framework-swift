@@ -56,7 +56,7 @@ public class Agent {
         self.oob = OutOfBandCommand(agent: self, dispatcher: self.dispatcher)
         self.credentialExchangeRepository = CredentialExchangeRepository(agent: self)
         self.didCommMessageRepository = DidCommMessageRepository(agent: self)
-        self.ledgerService = LedgerService(agent: self)
+        self.ledgerService = IndyLedgerService(agent: self)
         self.credentialDefinitionRepository = CredentialDefinitionRepository(agent: self)
         self.revocationRegistryRepository = RevocationRegistryRepository(agent: self)
         self.anoncredsService = AnoncredsService(agent: self)
