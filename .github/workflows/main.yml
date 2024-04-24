@@ -2,7 +2,8 @@ name: Check PR
 
 on:
   pull_request:
-    path: 'Sources/AriesFramework/**'
+    paths:
+      - 'Sources/AriesFramework/**'
 
 jobs:
   SwiftLint:
