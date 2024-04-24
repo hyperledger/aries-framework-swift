@@ -1,7 +1,7 @@
 
 import Foundation
 
-public protocol BaseRecord {
+public protocol BaseRecord: Identifiable {
     var id: String { get set }
     static var type: String { get }
     var tags: Tags? { get set }
