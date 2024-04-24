@@ -1,14 +1,14 @@
 name: Check PR
 
 on:
-  pull_request_target:
+  pull_request:
     path: 'Sources/AriesFramework/**'
 
 jobs:
   SwiftLint:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: GitHub Action for SwiftLint
         uses: norio-nomura/action-swiftlint@3.2.1
         with:
@@ -17,7 +17,7 @@ jobs:
   RunTests:
     runs-on: macos-13
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
     - name: Build
       run: swift build
     - name: Run tests
