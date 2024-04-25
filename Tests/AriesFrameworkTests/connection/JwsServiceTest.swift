@@ -30,7 +30,7 @@ class JwsServiceTest: XCTestCase {
         XCTAssertEqual("EdDSA", protected?["alg"] as? String)
         XCTAssertNotNil(protected?["jwk"])
 
-        let (isValid, signer) = try await agent.jwsService.verifyJws(jws: .general(jws), payload: payload)
+        let (isValid, signer) = try agent.jwsService.verifyJws(jws: .general(jws), payload: payload)
         XCTAssertTrue(isValid)
         XCTAssertEqual(signer, verkey)
     }

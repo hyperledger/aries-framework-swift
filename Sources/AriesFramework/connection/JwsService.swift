@@ -51,7 +51,7 @@ public class JwsService {
        - payload: The payload to verify the JWS against.
      - Returns: A tuple containing the validity of the JWS and the signer's verkey.
     */
-    public func verifyJws(jws: Jws, payload: Data) async throws -> (isValid: Bool, signer: String) {
+    public func verifyJws(jws: Jws, payload: Data) throws -> (isValid: Bool, signer: String) {
         logger.debug("Verifying JWS...")
         guard case let .general(jws) = jws else {
             throw AriesFrameworkError.frameworkError("Verifying multiple JWS not supported")
