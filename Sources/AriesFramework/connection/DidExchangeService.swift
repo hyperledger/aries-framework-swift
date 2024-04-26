@@ -77,7 +77,7 @@ public class DidExchangeService {
             invitation: nil,
             outOfBandInvitation: outOfBandRecord!.outOfBandInvitation,
             alias: nil,
-            routing: agent.mediationRecipient.getRouting(), // FIXME: this should be the same routing as the inviter
+            routing: agent.mediationRecipient.getRouting(),
             theirLabel: message.label,
             autoAcceptConnection: outOfBandRecord!.autoAcceptConnection,
             multiUseInvitation: true,
@@ -120,7 +120,8 @@ public class DidExchangeService {
         message.thread = ThreadDecorator(threadId: threadId)
 
         let payload = peerDid.data(using: .utf8)!
-        let jws =  try await agent.jwsService.createJws(payload: payload, verkey: connectionRecord.verkey)
+        let signingKey = connectionRecord.getTags()["invitationKey"] ?? connectionRecord.verkey
+        let jws =  try await agent.jwsService.createJws(payload: payload, verkey: signingKey)
         var attachment = Attachment.fromData(payload)
         attachment.addJws(jws)
         message.didRotate = attachment
