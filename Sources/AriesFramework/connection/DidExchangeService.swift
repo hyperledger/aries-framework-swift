@@ -174,7 +174,7 @@ public class DidExchangeService {
               let payload = Data(base64Encoded: base64Payload) else {
             throw AriesFrameworkError.frameworkError("Missing valid did_rotate in response: \(String(describing: message.didRotate))")
         }
-        
+
         let signedDid = String(data: payload, encoding: .utf8)
         if message.did != signedDid {
             throw AriesFrameworkError.frameworkError("DID Rotate attachment's did \(String(describing: signedDid)) does not correspond to message did \(message.did)")

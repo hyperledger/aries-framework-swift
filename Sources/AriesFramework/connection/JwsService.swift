@@ -24,7 +24,10 @@ public class JwsService {
             throw AriesFrameworkError.frameworkError("Unable to find key for verkey: \(verkey)")
         }
         let key = try keyEntry.loadLocalKey()
-        let jwk = try JSONSerialization.jsonObject(with: key.toJwkPublic(alg: nil).data(using: .utf8)!) as! [String: Any]
+        let jwkJson = try key.toJwkPublic(alg: nil).data(using: .utf8)!
+        guard let jwk = try JSONSerialization.jsonObject(with: jwkJson) as? [String: Any] else {
+            throw AriesFrameworkError.frameworkError("Unable to parse JWK JSON: \(jwkJson)")
+        }
         let protectedHeader = [
             "alg": "EdDSA",
             "jwk": jwk
