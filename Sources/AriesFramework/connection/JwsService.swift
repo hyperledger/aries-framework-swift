@@ -47,20 +47,27 @@ public class JwsService {
      Verifies the given JWS against the given payload.
 
      - Parameters:
-       - jws: The JWS to verify. This should be General JWS JSON Serialization Syntax.
+       - jws: The JWS to verify.
        - payload: The payload to verify the JWS against.
      - Returns: A tuple containing the validity of the JWS and the signer's verkey.
     */
     public func verifyJws(jws: Jws, payload: Data) throws -> (isValid: Bool, signer: String) {
         logger.debug("Verifying JWS...")
-        guard case let .general(jws) = jws else {
-            throw AriesFrameworkError.frameworkError("Verifying multiple JWS not supported")
+        var firstSig: JwsGeneralFormat!
+        switch jws {
+        case let .flattened(list):
+            if list.signatures.count == 0 {
+                throw AriesFrameworkError.frameworkError("No signatures found in JWS")
+            }
+            firstSig = list.signatures.first!
+        case let .general(jws):
+            firstSig = jws
         }
-        guard let protectedJson = Data(base64Encoded: jws.protected.base64urlToBase64()),
+        guard let protectedJson = Data(base64Encoded: firstSig.protected.base64urlToBase64()),
               let protected = try JSONSerialization.jsonObject(with: protectedJson) as? [String: Any],
-              let signature = Data(base64Encoded: jws.signature.base64urlToBase64()),
+              let signature = Data(base64Encoded: firstSig.signature.base64urlToBase64()),
               let jwk = protected["jwk"] else {
-            throw AriesFrameworkError.frameworkError("Invalid Jws: \(jws)")
+            throw AriesFrameworkError.frameworkError("Invalid Jws: \(firstSig)")
         }
         let jwkData = try JSONSerialization.data(withJSONObject: jwk)
         let jwkString = String(data: jwkData, encoding: .utf8)!
@@ -70,7 +77,7 @@ public class JwsService {
         let signer = Base58.base58Encode([UInt8](publicBytes))
 
         let base64Payload = payload.base64EncodedString().base64ToBase64url()
-        let message = "\(jws.protected).\(base64Payload)".data(using: .utf8)!
+        let message = "\(firstSig.protected).\(base64Payload)".data(using: .utf8)!
         let isValid = try key.verifySignature(message: message, signature: signature, sigType: nil)
 
         return (isValid, signer)

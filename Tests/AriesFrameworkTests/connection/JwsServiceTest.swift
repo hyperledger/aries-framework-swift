@@ -22,7 +22,7 @@ class JwsServiceTest: XCTestCase {
         try await super.tearDown()
     }
 
-    func testCreateJwsAndVerify() async throws {
+    func testCreateAndVerify() async throws {
         let jws = try await agent.jwsService.createJws(payload: payload, verkey: verkey)
         XCTAssertEqual("did:key:z6MkfD6ccYE22Y9pHKtixeczk92MmMi2oJCP6gmNooZVKB9A", jws.header?["kid"])
         let protectedJson = Data(base64Encoded: jws.protected.base64urlToBase64())!
@@ -32,6 +32,23 @@ class JwsServiceTest: XCTestCase {
 
         let (isValid, signer) = try agent.jwsService.verifyJws(jws: .general(jws), payload: payload)
         XCTAssertTrue(isValid)
+        XCTAssertEqual(signer, verkey)
+    }
+
+    func testFlattenedJws() async throws {
+        let jws = try await agent.jwsService.createJws(payload: payload, verkey: verkey)
+        let list: Jws = .flattened(JwsFlattenedFormat(signatures: [jws]))
+
+        let (isValid, signer) = try agent.jwsService.verifyJws(jws: list, payload: payload)
+        XCTAssertTrue(isValid)
+        XCTAssertEqual(signer, verkey)
+    }
+
+    func testVerifyFail() async throws {
+        let wrongPayload = "world".data(using: .utf8)!
+        let jws = try await agent.jwsService.createJws(payload: payload, verkey: verkey)
+        let (isValid, signer) = try agent.jwsService.verifyJws(jws: .general(jws), payload: wrongPayload)
+        XCTAssertFalse(isValid)
         XCTAssertEqual(signer, verkey)
     }
 }
