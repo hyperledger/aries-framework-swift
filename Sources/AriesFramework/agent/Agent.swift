@@ -13,6 +13,7 @@ public class Agent {
     public var connectionService: ConnectionService!
     public var didExchangeService: DidExchangeService!
     public var peerDIDService: PeerDIDService!
+    public var jwsService: JwsService!
     var messageSender: MessageSender!
     var messageReceiver: MessageReceiver!
     public var dispatcher: Dispatcher!
@@ -46,6 +47,7 @@ public class Agent {
         self.connectionService = ConnectionService(agent: self)
         self.didExchangeService = DidExchangeService(agent: self)
         self.peerDIDService = PeerDIDService(agent: self)
+        self.jwsService = JwsService(agent: self)
         self.messageSender = MessageSender(agent: self)
         self.messageReceiver = MessageReceiver(agent: self)
         self.dispatcher = Dispatcher(agent: self)

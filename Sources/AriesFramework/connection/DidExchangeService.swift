@@ -119,6 +119,13 @@ public class DidExchangeService {
         let message = DidExchangeResponseMessage(threadId: threadId, did: peerDid)
         message.thread = ThreadDecorator(threadId: threadId)
 
+        let payload = peerDid.data(using: .utf8)!
+        let signingKey = connectionRecord.getTags()["invitationKey"] ?? connectionRecord.verkey
+        let jws =  try await agent.jwsService.createJws(payload: payload, verkey: signingKey)
+        var attachment = Attachment.fromData(payload)
+        attachment.addJws(jws)
+        message.didRotate = attachment
+
         try await updateState(connectionRecord: &connectionRecord, newState: .Responded)
 
         return OutboundMessage(payload: message, connection: connectionRecord)
@@ -150,13 +157,36 @@ public class DidExchangeService {
             throw AriesFrameworkError.frameworkError("Invalid or missing thread ID")
         }
 
+        try verifyDidRotate(message: message, connectionRecord: connectionRecord)
+
         let didDoc = try agent.peerDIDService.parsePeerDID(message.did)
         connectionRecord.theirDid = didDoc.id
         connectionRecord.theirDidDoc = didDoc
-        // TODO: Verify the signature of message.didRotate attachment
 
         try await updateState(connectionRecord: &connectionRecord, newState: ConnectionState.Responded)
         return connectionRecord
+    }
+
+    func verifyDidRotate(message: DidExchangeResponseMessage, connectionRecord: ConnectionRecord) throws {
+        guard let didRotateAttachment = message.didRotate,
+              let jws = didRotateAttachment.data.jws,
+              let base64Payload = didRotateAttachment.data.base64,
+              let payload = Data(base64Encoded: base64Payload) else {
+            throw AriesFrameworkError.frameworkError("Missing valid did_rotate in response: \(String(describing: message.didRotate))")
+        }
+
+        let signedDid = String(data: payload, encoding: .utf8)
+        if message.did != signedDid {
+            throw AriesFrameworkError.frameworkError("DID Rotate attachment's did \(String(describing: signedDid)) does not correspond to message did \(message.did)")
+        }
+
+        let (isValid, signer) = try agent.jwsService.verifyJws(jws: jws, payload: payload)
+        let senderKeys = try connectionRecord.outOfBandInvitation!.fingerprints().map {
+            try DIDParser.ConvertFingerprintToVerkey(fingerprint: $0)
+        }
+        if !isValid || !senderKeys.contains(signer) {
+            throw AriesFrameworkError.frameworkError("Failed to verify did rotate signature. isValid: \(isValid), signer: \(signer), senderKeys: \(senderKeys)")
+        }
     }
 
     /**

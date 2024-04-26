@@ -51,7 +51,7 @@ public struct Attachment: Codable {
         }
     }
 
-    public static func fromData(_ data: Data, id: String) -> Attachment {
+    public static func fromData(_ data: Data, id: String = UUID().uuidString) -> Attachment {
         return Attachment(
             id: id,
             mimetype: "application/json",
