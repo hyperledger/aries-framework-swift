@@ -16,9 +16,9 @@ Aries Framework Swift supports most of [AIP 1.0](https://github.com/hyperledger/
 - ✅ HTTP & WebSocket Transport
 - ✅ ([RFC 0434](https://github.com/hyperledger/aries-rfcs/blob/main/features/0434-outofband/README.md)) Out of Band Protocol (AIP 2.0)
 - ✅ ([RFC 0035](https://github.com/hyperledger/aries-rfcs/blob/main/features/0035-report-problem/README.md)) Report Problem Protocol
+- ✅ ([RFC 0023](https://github.com/hyperledger/aries-rfcs/tree/main/features/0023-did-exchange)) DID Exchange Protocol (AIP 2.0)
 
 ### Not supported yet
-- ❌ ([RFC 0023](https://github.com/hyperledger/aries-rfcs/tree/main/features/0023-did-exchange)) DID Exchange Protocol (AIP 2.0)
 - ❌ ([RFC 0056](https://github.com/hyperledger/aries-rfcs/blob/main/features/0056-service-decorator/README.md)) Service Decorator
 
 ## Requirements & Installation
@@ -28,7 +28,7 @@ Aries Framework Swift requires iOS 15.0+ and distributed as a Swift package.
 Add a dependency to your `Package.swift` file:
 ```swift
 dependencies: [
-    .package(url: "https://github.com/hyperledger/aries-framework-swift", from: "2.0.0")
+    .package(url: "https://github.com/hyperledger/aries-framework-swift", from: "2.3.0")
 ]
 ```
 
