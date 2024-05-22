@@ -19,21 +19,23 @@ public class MessageReceiver {
                                                        plaintextMessage: decryptedMessage.plaintextMessage,
                                                        connection: connection,
                                                        senderVerkey: decryptedMessage.senderKey,
-                                                       recipientVerkey: decryptedMessage.recipientKey)
+                                                       recipientVerkey: decryptedMessage.recipientKey,
+                                                       outOfBand: nil)
             try await agent.dispatcher.dispatch(messageContext: messageContext)
         } catch {
             logger.error("failed to receive encrypted message: \(error)")
         }
     }
 
-    func receivePlaintextMessage(_ plaintextMessage: String, connection: ConnectionRecord) async throws {
+    func receivePlaintextMessage(_ plaintextMessage: String, connection: ConnectionRecord? = nil, outOfBand: OutOfBandRecord? = nil) async throws {
         do {
             let message = try MessageReceiver.decodeAgentMessage(plaintextMessage: plaintextMessage)
             let messageContext = InboundMessageContext(message: message,
                                                        plaintextMessage: plaintextMessage,
                                                        connection: connection,
                                                        senderVerkey: nil,
-                                                       recipientVerkey: nil)
+                                                       recipientVerkey: nil,
+                                                       outOfBand: outOfBand)
             try await agent.dispatcher.dispatch(messageContext: messageContext)
         } catch {
             logger.error("failed to receive plaintext message: \(error)")

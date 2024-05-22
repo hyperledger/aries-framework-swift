@@ -14,7 +14,13 @@ class IssueCredentialHandler: MessageHandler {
 
         if (credentialRecord.autoAcceptCredential != nil && credentialRecord.autoAcceptCredential! == .always) || agent.agentConfig.autoAcceptCredential == .always {
             let message = try await agent.credentialService.createAck(options: AcceptCredentialOptions(credentialRecordId: credentialRecord.id))
-            return OutboundMessage(payload: message, connection: messageContext.connection!)
+
+            var outOfBand = messageContext.outOfBand
+            if outOfBand == nil {
+                outOfBand = try await agent.outOfBandRepository.findByTags(credentialRecord.tags)
+            }
+            return OutboundMessage(payload: message, connection: messageContext.connection, outOfBand: outOfBand)
+
         }
 
         return nil

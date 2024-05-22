@@ -13,4 +13,8 @@ class OutOfBandRepository: Repository<OutOfBandRecord> {
     func findByFingerprint(_ fingerprint: String) async throws -> OutOfBandRecord? {
         return try await findSingleByQuery("{\"recipientKeyFingerprints\": [\"\(fingerprint)\"]}")
     }
+
+    func findByTags(_ tags: Tags?) async throws -> OutOfBandRecord? {
+        return try await findById(tags?["oobId"])
+    }
 }

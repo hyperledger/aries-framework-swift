@@ -282,15 +282,14 @@ public class OutOfBandCommand {
             if existingConnection != nil {
                 try await processMessages(messages, connectionRecord: existingConnection!)
             } else {
-                // TODO: send message to the service endpoint
-                throw AriesFrameworkError.frameworkError("Cannot process request messages. No connection found.")
+                try await processMessages(messages, outOfBand: outOfBandRecord)
             }
         }
 
         return (outOfBandRecord, nil)
     }
 
-    private func processMessages(_ messages: [String], connectionRecord: ConnectionRecord) async throws {
+    private func processMessages(_ messages: [String], connectionRecord: ConnectionRecord? = nil, outOfBand: OutOfBandRecord? = nil) async throws {
         let message = messages.first(where: { message in
             guard let agentMessage = try? MessageReceiver.decodeAgentMessage(plaintextMessage: message) else {
                 logger.warning("Cannot decode agent message: \(message)")
@@ -303,7 +302,7 @@ public class OutOfBandCommand {
             throw AriesFrameworkError.frameworkError("There is no message in requests~attach supported by agent.")
         }
 
-        try await agent.messageReceiver.receivePlaintextMessage(message!, connection: connectionRecord)
+        try await agent.messageReceiver.receivePlaintextMessage(message!, connection: connectionRecord, outOfBand: outOfBand)
     }
 
     private func handleHandshakeReuse(outOfBandRecord: OutOfBandRecord, connectionRecord: ConnectionRecord) async throws -> Bool {

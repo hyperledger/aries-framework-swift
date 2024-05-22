@@ -82,8 +82,8 @@ public class Repository<T: BaseRecord & Codable> {
         }
     }
 
-    public func findById(_ id: String) async throws -> T? {
-        guard let record = try await wallet.session!.fetch(category: T.type, name: id, forUpdate: false) else {
+    public func findById(_ id: String?) async throws -> T? {
+        guard let id = id, let record = try await wallet.session!.fetch(category: T.type, name: id, forUpdate: false) else {
             return nil
         }
         return try recordToInstance(record: record)

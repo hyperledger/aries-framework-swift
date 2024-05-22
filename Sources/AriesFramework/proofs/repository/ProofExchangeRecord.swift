@@ -7,7 +7,7 @@ public struct ProofExchangeRecord: BaseRecord {
     public var updatedAt: Date?
     public var tags: Tags?
 
-    public var connectionId: String
+    public var connectionId: String?
     public var threadId: String
     public var isVerified: Bool?
     public var presentationId: String?
@@ -25,7 +25,7 @@ extension ProofExchangeRecord: Codable {
 
     init(
         tags: Tags? = nil,
-        connectionId: String,
+        connectionId: String? = nil,
         threadId: String,
         isVerified: Bool? = nil,
         presentationId: String? = nil,

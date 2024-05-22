@@ -63,7 +63,8 @@ public struct OutboundPackage: Codable {
 
 public struct OutboundMessage {
     var payload: AgentMessage
-    var connection: ConnectionRecord
+    var connection: ConnectionRecord? = nil
+    var outOfBand: OutOfBandRecord? = nil
 }
 
 public struct EncryptedMessage: Codable {
@@ -95,6 +96,7 @@ public struct InboundMessageContext {
     let connection: ConnectionRecord?
     let senderVerkey: String?
     let recipientVerkey: String?
+    let outOfBand: OutOfBandRecord?
 
     func assertReadyConnection() throws -> ConnectionRecord {
         if connection == nil {

@@ -124,12 +124,20 @@ public class CredentialService {
 
             return credentialRecord
         } else {
-            let connection = try messageContext.assertReadyConnection()
-            let credentialRecord = CredentialExchangeRecord(
-                connectionId: connection.id,
+            var credentialRecord = CredentialExchangeRecord(
                 threadId: offerMessage.id,
                 state: .OfferReceived,
                 protocolVersion: "v1")
+
+            if messageContext.connection != nil {
+                let connection = try messageContext.assertReadyConnection()
+                credentialRecord.connectionId = connection.id
+            }
+
+            if let oob = messageContext.outOfBand {
+                credentialRecord.tags = credentialRecord.tags ?? [:]
+                credentialRecord.tags!["oobId"] = oob.id
+            }
 
             try await agent.didCommMessageRepository.saveAgentMessage(
                 role: .Receiver,
@@ -226,8 +234,10 @@ public class CredentialService {
             connectionId: nil)
 
         // The credential offer may have been a connectionless-offer.
-        let connection = try messageContext.assertReadyConnection()
-        credentialRecord.connectionId = connection.id
+        if messageContext.connection != nil {
+            let connection = try messageContext.assertReadyConnection()
+            credentialRecord.connectionId = connection.id
+        }
 
         try await agent.didCommMessageRepository.saveAgentMessage(
             role: DidCommMessageRole.Receiver,
@@ -423,8 +433,11 @@ public class CredentialService {
     }
 
     func getHolderDid(credentialRecord: CredentialExchangeRecord) async throws -> String {
-        let connection = try await agent.connectionRepository.getById(credentialRecord.connectionId)
-        return connection.did
+        if let connectionId = credentialRecord.connectionId {
+            return try await agent.connectionRepository.getById(connectionId).did
+        } else {
+            return try await agent.mediationRecipient.getRouting().did
+        }
     }
 
     func updateState(credentialRecord: inout CredentialExchangeRecord, newState: CredentialState) async throws {
