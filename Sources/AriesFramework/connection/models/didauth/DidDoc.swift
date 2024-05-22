@@ -114,3 +114,18 @@ extension DidDoc {
         }
     }
 }
+
+extension DidDoc {
+    public init(from: [DidDocService]) throws {
+        guard let service = from.first else {
+            throw AriesFrameworkError.frameworkError("new DidDoc from a DidDocService failed. services is empty.")
+        }
+        guard let key = service.recipientKeys.first else {
+            throw AriesFrameworkError.frameworkError("new DidDoc from a DidDocService failed. service has no recipientKeys.")
+        }
+        self.id = key
+        self.service = from
+        self.publicKey = []
+        self.authentication = []
+    }
+}

@@ -117,22 +117,34 @@ public class ConnectionCommand {
 
     func acceptOutOfBandInvitation(
         outOfBandRecord: OutOfBandRecord,
-        handshakeProtocol: HandshakeProtocol,
+        handshakeProtocol: HandshakeProtocol?,
         config: ReceiveOutOfBandInvitationConfig?) async throws -> ConnectionRecord {
-        let connection = try await receiveInvitation(outOfBandInvitation: outOfBandRecord.outOfBandInvitation,
+        var connection = try await receiveInvitation(outOfBandInvitation: outOfBandRecord.outOfBandInvitation,
             autoAcceptConnection: false, alias: config?.alias)
         let message: OutboundMessage
-        if handshakeProtocol == .Connections {
-            message = try await agent.connectionService.createRequest(connectionId: connection.id,
-                label: config?.label,
-                imageUrl: config?.imageUrl,
-                autoAcceptConnection: config?.autoAcceptConnection)
+        if let handshakeProtocol = handshakeProtocol {
+            if handshakeProtocol == .Connections {
+                message = try await agent.connectionService.createRequest(connectionId: connection.id,
+                    label: config?.label,
+                    imageUrl: config?.imageUrl,
+                    autoAcceptConnection: config?.autoAcceptConnection)
+            } else {
+                message = try await agent.didExchangeService.createRequest(connectionId: connection.id,
+                    label: config?.label,
+                    autoAcceptConnection: config?.autoAcceptConnection)
+            }
+            try await agent.messageSender.send(message: message)
+            return message.connection
         } else {
-            message = try await agent.didExchangeService.createRequest(connectionId: connection.id,
-                label: config?.label,
-                autoAcceptConnection: config?.autoAcceptConnection)
+            // out-of-band invitation without handshake protocols happens
+            // connection-less exchange credential or presentation.
+            // Creates a fake connection to minimize changes.
+            let didDocServices = try outOfBandRecord.outOfBandInvitation.services.compactMap { try $0.asDidDocService() }
+            let theirDidDoc = try connection.theirDidDoc ?? DidDoc(from: didDocServices)
+            connection.theirDidDoc = theirDidDoc
+            try await agent.connectionService.updateState(connectionRecord: &connection, newState: .Complete)
+            return connection
+
         }
-        try await agent.messageSender.send(message: message)
-        return message.connection
     }
 }
