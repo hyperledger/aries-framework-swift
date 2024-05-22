@@ -24,6 +24,12 @@ class RequestPresentationHandler: MessageHandler {
         let requestedCredentials = try await agent.proofService.autoSelectCredentialsForProofRequest(retrievedCredentials: retrievedCredentials)
 
         let (message, _) = try await agent.proofService.createPresentation(proofRecord: record, requestedCredentials: requestedCredentials)
-        return OutboundMessage(payload: message, connection: messageContext.connection!)
+
+        var outOfBand = messageContext.outOfBand
+        if outOfBand == nil {
+            outOfBand = try await agent.outOfBandRepository.findByTags(record.tags)
+        }
+
+        return OutboundMessage(payload: message, connection: messageContext.connection, outOfBand: outOfBand)
     }
 }

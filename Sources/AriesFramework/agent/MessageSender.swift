@@ -45,7 +45,7 @@ public class MessageSender {
         // We should not override the parent thread id if it is already set, because it may be
         // a response to a different invitation. For example, a handshake-reuse message sent
         // over an existing connection created from a different out-of-band invitation.
-        if let oobInvitation = message.connection.outOfBandInvitation {
+        if let oobInvitation = message.connection?.outOfBandInvitation ?? message.outOfBand?.outOfBandInvitation {
             var thread = agentMessage.thread ?? ThreadDecorator()
             if thread.parentThreadId == nil {
                 thread.parentThreadId = oobInvitation.id
@@ -56,58 +56,97 @@ public class MessageSender {
         return agentMessage
     }
 
+    func getSenderVerkey(for message: OutboundMessage) async throws -> String {
+        if let connectionVerkey = message.connection?.verkey {
+            return connectionVerkey
+        }
+        return try await agent.mediationRecipient.getRouting().verkey
+    }
+
+    func canSendMessage(to service: DidDocService, with endpointPrefix: String?) -> Bool {
+        if let prefix = endpointPrefix, !service.serviceEndpoint.hasPrefix(prefix) {
+            return false
+        }
+        if endpointPrefix == nil, outboundTransportForEndpoint(service.serviceEndpoint) == nil {
+            return false
+        }
+        return true
+    }
+
     public func send(message: OutboundMessage, endpointPrefix: String? = nil) async throws {
-        let agentMessage = decorateMessage(message)
-        let services = try findDidCommServices(connection: message.connection)
-        if services.isEmpty {
-            logger.error("Cannot find services for message of type \(agentMessage.type)")
+        let agentMessage = await decorateMessage(message)
+        let services = try await findDidCommServices(message)
+        guard !services.isEmpty else {
+            logger.error("Cannot find outbound service for message of type \(agentMessage.type)")
+            throw AriesFrameworkError.frameworkError("No services found for message of type \(agentMessage.type)")
         }
 
+        let senderVerkey = try await getSenderVerkey(for: message)
+
         for service in services {
-            if endpointPrefix != nil && !service.serviceEndpoint.hasPrefix(endpointPrefix!) {
-                continue
-            }
-            logger.debug("Send outbound message of type \(agentMessage.type) to endpoint \(service.serviceEndpoint)")
-            if endpointPrefix == nil && outboundTransportForEndpoint(service.serviceEndpoint) == nil {
-                logger.debug("endpoint is not supported")
+            guard canSendMessage(to: service, with: endpointPrefix) else {
+                logger.debug("Skipping unsupported endpoint \(service.serviceEndpoint)")
                 continue
             }
             do {
                 try await sendMessageToService(
-                    message: agentMessage, service: service,
-                    senderKey: message.connection.verkey,
-                    connectionId: message.connection.id)
+                    message: agentMessage,
+                    service: service,
+                    senderKey: senderVerkey,
+                    connectionId: message.connection?.id)
                 return
             } catch {
                 logger.debug("Sending outbound message to service \(service.serviceEndpoint) failed with the following error: \(error.localizedDescription)")
             }
         }
 
-        throw AriesFrameworkError.frameworkError("Message is undeliverable to connection \(message.connection.id)")
+        let endpoints = services.compactMap { $0.serviceEndpoint }
+        throw AriesFrameworkError.frameworkError("Message is not delivered to the following services. \(endpoints)")
     }
 
-    func findDidCommServices(connection: ConnectionRecord) throws -> [DidDocService] {
-        if (connection.theirDidDoc) != nil {
-            return connection.theirDidDoc!.didCommServices()
+    func findDidCommServicesFromConnection(_ connection: ConnectionRecord) throws -> [DidDocService]? {
+        if let theirDidDoc = connection.theirDidDoc {
+            return theirDidDoc.didCommServices()
         }
 
-        if connection.role == ConnectionRole.Invitee {
-            if let invitation = connection.invitation, let serviceEndpoint = invitation.serviceEndpoint {
-                let service = DidCommService(
-                    id: "\(connection.id)-invitation", serviceEndpoint: serviceEndpoint,
-                    recipientKeys: invitation.recipientKeys ?? [],
-                    routingKeys: invitation.routingKeys ?? [])
-                return [DidDocService.didComm(service)]
+        if let invitation = connection.invitation, let serviceEndpoint = invitation.serviceEndpoint {
+            let service = DidCommService(
+                id: "\(connection.id)-invitation",
+                serviceEndpoint: serviceEndpoint,
+                recipientKeys: invitation.recipientKeys ?? [],
+                routingKeys: invitation.routingKeys ?? []
+            )
+            return [DidDocService.didComm(service)]
+        }
+
+        if let outOfBandInvitation = connection.outOfBandInvitation {
+            return try outOfBandInvitation.services.compactMap { try $0.asDidDocService() }
+        }
+
+        return nil
+    }
+
+    func findDidCommServicesFromOutOfBand(_ outOfBand: OutOfBandRecord) throws -> [DidDocService]? {
+        let invitation = outOfBand.outOfBandInvitation
+        return try invitation.services.compactMap { try $0.asDidDocService() }
+    }
+
+    func findDidCommServices(_ outboundMessage: OutboundMessage) async throws -> [DidDocService] {
+        if let connection = outboundMessage.connection {
+            if let services = try findDidCommServicesFromConnection(connection) {
+                return services
             }
-            if let invitation = connection.outOfBandInvitation {
-                return try invitation.services.compactMap { try $0.asDidDocService() }
+        }
+        if let outOfBand = outboundMessage.outOfBand {
+            if let services = try findDidCommServicesFromOutOfBand(outOfBand) {
+                return services
             }
         }
 
         return []
     }
 
-    func sendMessageToService(message: AgentMessage, service: DidDocService, senderKey: String, connectionId: String) async throws {
+    func sendMessageToService(message: AgentMessage, service: DidDocService, senderKey: String, connectionId: String?) async throws {
         let keys = EnvelopeKeys(
             recipientKeys: service.recipientKeys,
             routingKeys: service.routingKeys ?? [],
@@ -120,7 +159,7 @@ public class MessageSender {
         try await outboundTransport.sendPackage(outboundPackage)
     }
 
-    func packMessage(_ message: AgentMessage, keys: EnvelopeKeys, endpoint: String, connectionId: String) async throws -> OutboundPackage {
+    func packMessage(_ message: AgentMessage, keys: EnvelopeKeys, endpoint: String, connectionId: String?) async throws -> OutboundPackage {
         var encryptedMessage = try await agent.wallet.pack(message: message, recipientKeys: keys.recipientKeys, senderVerkey: keys.senderKey)
 
         var recipientKeys = keys.recipientKeys

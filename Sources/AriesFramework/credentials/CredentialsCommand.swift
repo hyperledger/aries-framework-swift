@@ -59,9 +59,14 @@ public class CredentialsCommand {
     public func acceptOffer(options: AcceptOfferOptions) async throws -> CredentialExchangeRecord {
         let message = try await agent.credentialService.createRequest(options: options)
         let credentialRecord = try await agent.credentialExchangeRepository.getById(options.credentialRecordId)
-        let connection = try await agent.connectionRepository.getById(credentialRecord.connectionId)
-        try await agent.messageSender.send(message: OutboundMessage(payload: message, connection: connection))
-
+        if let connectionId = credentialRecord.connectionId {
+            let connection = try await agent.connectionRepository.getById(connectionId)
+            try await agent.messageSender.send(message: OutboundMessage(payload: message, connection: connection))
+        } else {
+            // connection-less credential exchange
+            let oobRecord = try await agent.outOfBandRepository.findByTags(credentialRecord.tags)
+            try await agent.messageSender.send(message: OutboundMessage(payload: message, outOfBand: oobRecord))
+        }
         return credentialRecord
     }
 
@@ -74,9 +79,14 @@ public class CredentialsCommand {
     public func declineOffer(credentialRecordId: String) async throws -> CredentialExchangeRecord {
         let message = try await agent.credentialService.createOfferDeclinedProblemReport(credentialRecordId: credentialRecordId)
         let credentialRecord = try await agent.credentialExchangeRepository.getById(credentialRecordId)
-        let connection = try await agent.connectionRepository.getById(credentialRecord.connectionId)
-        try await agent.messageSender.send(message: OutboundMessage(payload: message, connection: connection))
-
+        if let connectionId = credentialRecord.connectionId {
+            let connection = try await agent.connectionRepository.getById(connectionId)
+            try await agent.messageSender.send(message: OutboundMessage(payload: message, connection: connection))
+        } else {
+            // connection-less credential exchange
+            let oobRecord = try await agent.outOfBandRepository.findByTags(credentialRecord.tags)
+            try await agent.messageSender.send(message: OutboundMessage(payload: message, outOfBand: oobRecord))
+        }
         return credentialRecord
     }
 
@@ -90,7 +100,7 @@ public class CredentialsCommand {
     public func acceptRequest(options: AcceptRequestOptions) async throws -> CredentialExchangeRecord {
         let message = try await agent.credentialService.createCredential(options: options)
         let credentialRecord = try await agent.credentialExchangeRepository.getById(options.credentialRecordId)
-        let connection = try await agent.connectionRepository.getById(credentialRecord.connectionId)
+        let connection = try await agent.connectionRepository.getById(credentialRecord.connectionId!)
         try await agent.messageSender.send(message: OutboundMessage(payload: message, connection: connection))
 
         return credentialRecord
@@ -106,9 +116,14 @@ public class CredentialsCommand {
     public func acceptCredential(options: AcceptCredentialOptions) async throws -> CredentialExchangeRecord {
         let message = try await agent.credentialService.createAck(options: options)
         let credentialRecord = try await agent.credentialExchangeRepository.getById(options.credentialRecordId)
-        let connection = try await agent.connectionRepository.getById(credentialRecord.connectionId)
-        try await agent.messageSender.send(message: OutboundMessage(payload: message, connection: connection))
-
+        if let connectionId = credentialRecord.connectionId {
+            let connection = try await agent.connectionRepository.getById(connectionId)
+            try await agent.messageSender.send(message: OutboundMessage(payload: message, connection: connection))
+        } else {
+            // connection-less credential exchange
+            let oobRecord = try await agent.outOfBandRepository.findByTags(credentialRecord.tags)
+            try await agent.messageSender.send(message: OutboundMessage(payload: message, outOfBand: oobRecord))
+        }
         return credentialRecord
     }
 

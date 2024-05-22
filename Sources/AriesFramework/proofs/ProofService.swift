@@ -66,10 +66,19 @@ public class ProofService {
         let proofRequestMessage = try JSONDecoder().decode(RequestPresentationMessage.self, from: Data(messageContext.plaintextMessage.utf8))
 
         let connection = try messageContext.assertReadyConnection()
-        let proofRecord = ProofExchangeRecord(
-            connectionId: connection.id,
+        var proofRecord = ProofExchangeRecord(
+            connectionId: nil,
             threadId: proofRequestMessage.threadId,
             state: .RequestReceived)
+        if messageContext.connection != nil {
+            let connection = try messageContext.assertReadyConnection()
+            proofRecord.connectionId = connection.id
+        }
+
+        if let oob = messageContext.outOfBand {
+            proofRecord.tags = proofRecord.tags ?? [:]
+            proofRecord.tags!["oobId"] = oob.id
+        }
 
         try await agent.didCommMessageRepository.saveAgentMessage(
             role: .Receiver,
@@ -196,11 +205,14 @@ public class ProofService {
     */
     public func processAck(messageContext: InboundMessageContext) async throws -> ProofExchangeRecord {
         let ackMessage = try JSONDecoder().decode(PresentationAckMessage.self, from: Data(messageContext.plaintextMessage.utf8))
-        let connection = try messageContext.assertReadyConnection()
-
+        let connection = messageContext.connection
+        if connection != nil {
+            _ = try messageContext.assertReadyConnection()
+        }
+        
         var proofRecord = try await agent.proofRepository.getByThreadAndConnectionId(
             threadId: ackMessage.threadId,
-            connectionId: connection.id)
+            connectionId: connection?.id)
         try proofRecord.assertState(.PresentationSent)
 
         try await updateState(proofRecord: &proofRecord, newState: .Done)

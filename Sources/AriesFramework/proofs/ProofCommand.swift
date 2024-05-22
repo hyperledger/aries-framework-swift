@@ -66,8 +66,14 @@ public class ProofCommand {
             requestedCredentials: requestedCredentials,
             comment: comment)
 
-        let connection = try await agent.connectionRepository.getById(record.connectionId)
-        try await agent.messageSender.send(message: OutboundMessage(payload: message, connection: connection))
+        if let connectionId = record.connectionId {
+            let connection = try await agent.connectionRepository.getById(connectionId)
+            try await agent.messageSender.send(message: OutboundMessage(payload: message, connection: connection))
+        } else {
+            // connection-less proof exchange.
+            let outOfBand = try await agent.outOfBandRepository.findByTags(record.tags)
+            try await agent.messageSender.send(message: OutboundMessage(payload: message, outOfBand: outOfBand))
+        }
 
         return proofRecord
     }
@@ -83,8 +89,15 @@ public class ProofCommand {
         let record = try await agent.proofRepository.getById(proofRecordId)
         let (message, proofRecord) = try await agent.proofService.createPresentationDeclinedProblemReport(proofRecord: record)
 
-        let connection = try await agent.connectionRepository.getById(record.connectionId)
-        try await agent.messageSender.send(message: OutboundMessage(payload: message, connection: connection))
+        if let connectionId = record.connectionId {
+            let connection = try await agent.connectionRepository.getById(connectionId)
+            try await agent.messageSender.send(message: OutboundMessage(payload: message, connection: connection))
+        } else {
+            // connection-less proof exchange.
+            let outOfBand = try await agent.outOfBandRepository.findByTags(record.tags)
+            try await agent.messageSender.send(message: OutboundMessage(payload: message, outOfBand: outOfBand))
+        }
+
         return proofRecord
     }
 
@@ -97,7 +110,7 @@ public class ProofCommand {
     */
     public func acceptPresentation(proofRecordId: String) async throws -> ProofExchangeRecord {
         let record = try await agent.proofRepository.getById(proofRecordId)
-        let connection = try await agent.connectionRepository.getById(record.connectionId)
+        let connection = try await agent.connectionRepository.getById(record.connectionId!)
         let (message, proofRecord) = try await agent.proofService.createAck(proofRecord: record)
         try await agent.messageSender.send(message: OutboundMessage(payload: message, connection: connection))
         return proofRecord

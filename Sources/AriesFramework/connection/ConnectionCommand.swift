@@ -112,7 +112,7 @@ public class ConnectionCommand {
         logger.debug("Accept connection invitation")
         let message = try await agent.connectionService.createRequest(connectionId: connectionId, autoAcceptConnection: autoAcceptConnection)
         try await agent.messageSender.send(message: message)
-        return message.connection
+        return message.connection!
     }
 
     func acceptOutOfBandInvitation(
@@ -133,6 +133,6 @@ public class ConnectionCommand {
                 autoAcceptConnection: config?.autoAcceptConnection)
         }
         try await agent.messageSender.send(message: message)
-        return message.connection
+        return message.connection!
     }
 }
