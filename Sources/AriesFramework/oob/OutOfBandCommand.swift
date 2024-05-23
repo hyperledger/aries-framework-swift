@@ -257,16 +257,8 @@ public class OutOfBandCommand {
                 config: config)
         }
 
-        if try await agent.connectionService.fetchState(connectionRecord: connectionRecord!) != .Complete {
-            var result = false
-            if handshakeProtocol == .Connections {
-                result = try await agent.connectionService.waitForConnection()
-            } else {
-                result = try await agent.didExchangeService.waitForConnection()
-            }
-            if !result {
-                throw AriesFrameworkError.frameworkError("Connection timed out.")
-            }
+        if handshakeProtocol != nil {
+            try await waitForConnection(connection: connectionRecord!, handshakeProtocol: handshakeProtocol!)
         }
         connectionRecord = try await agent.connectionRepository.getById(connectionRecord!.id)
         if !outOfBandRecord.reusable {
@@ -277,6 +269,21 @@ public class OutOfBandCommand {
             try await processMessages(messages, connectionRecord: connectionRecord!)
         }
         return (outOfBandRecord, connectionRecord)
+    }
+
+    private func waitForConnection(connection: ConnectionRecord, handshakeProtocol: HandshakeProtocol) async throws {
+        if try await agent.connectionService.fetchState(connectionRecord: connection) != .Complete {
+            var result = false
+            switch handshakeProtocol {
+            case .Connections:
+                result = try await agent.connectionService.waitForConnection()
+            case .DidExchange10, .DidExchange11:
+                result = try await agent.didExchangeService.waitForConnection()
+            }
+            if !result {
+                throw AriesFrameworkError.frameworkError("Connection timed out.")
+            }
+        }
     }
 
     private func processMessages(_ messages: [String], connectionRecord: ConnectionRecord) async throws {
