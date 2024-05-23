@@ -1,4 +1,3 @@
-// swiftlint:disable cyclomatic_complexity
 
 import Foundation
 import os
