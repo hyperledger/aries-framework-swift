@@ -99,6 +99,15 @@ public class OutOfBandService {
     public func findByFingerprint(_ fingerprint: String) async throws -> OutOfBandRecord? {
         return try await outOfBandRepository.findByFingerprint(fingerprint)
     }
+    
+    public func findByAttachmentThreadId(_ threadId: String?) async throws -> OutOfBandRecord? {
+        guard let threadId = threadId else {
+            return nil
+        }
+        return try await outOfBandRepository.findSingleByQuery("""
+            {"attach_thread_id": "\(threadId)"}
+            """)
+    }
 
     public func getAll() async -> [OutOfBandRecord] {
         return await outOfBandRepository.getAll()
