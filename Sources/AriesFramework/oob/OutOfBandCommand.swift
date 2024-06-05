@@ -86,9 +86,25 @@ public class OutOfBandCommand {
             try messages.forEach { message in
                 try outOfBandInvitation.addRequest(message: message)
             }
+            if handshake == false {
+                // For connection-less exchange. Create a fake connection in inviter side.
+                let connectionRecord = try await agent.connectionService.createConnection(
+                    role: .Inviter,
+                    state: .Complete,
+                    outOfBandInvitation: outOfBandInvitation,
+                    alias: nil,
+                    routing: routing,
+                    theirLabel: nil,
+                    autoAcceptConnection: true,
+                    multiUseInvitation: false,
+                    tags: nil,
+                    imageUrl: nil,
+                    threadId: nil)
+                try await agent.connectionRepository.save(connectionRecord)
+            }
         }
 
-        let outOfBandRecord = OutOfBandRecord(
+        var outOfBandRecord = OutOfBandRecord(
             id: OutOfBandRecord.generateId(),
             createdAt: Date(),
             outOfBandInvitation: outOfBandInvitation,
@@ -96,6 +112,9 @@ public class OutOfBandCommand {
             state: .AwaitResponse,
             reusable: multiUseInvitation,
             autoAcceptConnection: autoAcceptConnection)
+        if let message = messages.first, handshake == false {
+            outOfBandRecord.tags = ["attach_thread_id": message.threadId]
+        }
 
         try await self.agent.outOfBandRepository.save(outOfBandRecord)
         agent.agentDelegate?.onOutOfBandStateChanged(outOfBandRecord: outOfBandRecord)

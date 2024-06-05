@@ -11,3 +11,9 @@ public struct DidCommService: Codable {
     var accept: [String]?
     var priority: Int? = 0
 }
+
+public extension DidCommService {
+    func asDidDocService() -> DidDocService {
+        return DidDocService.didComm(self)
+    }
+}

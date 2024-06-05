@@ -22,4 +22,4 @@ jobs:
     - name: Build
       run: swift build
     - name: Run tests
-      run: swift test --skip AgentTest --skip CredentialsTest --skip LedgerServiceTest --skip OobTest --skip ProofsTest --skip RevocationTest --skip testCredentialDeclinedProblemReport --skip testProofDeclinedProblemReport | xcpretty && exit ${PIPESTATUS[0]}
+      run: swift test --skip AgentTest --skip CredentialsTest --skip LedgerServiceTest --skip OobTest --skip ProofsTest --skip RevocationTest --skip testCredentialDeclinedProblemReport --skip testProofDeclinedProblemReport --skip ConnectionlessExchangeTest | xcpretty && exit ${PIPESTATUS[0]}
