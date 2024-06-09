@@ -136,9 +136,6 @@ public class ConnectionCommand {
             try await agent.messageSender.send(message: message)
             return message.connection
         } else {
-            // out-of-band invitation without handshake protocols happens
-            // connection-less exchange credential or presentation.
-            // Creates a fake connection to minimize changes.
             let didDocServices = try outOfBandRecord.outOfBandInvitation.services.compactMap { try $0.asDidDocService() }
             let theirDidDoc = try connection.theirDidDoc ?? DidDoc(from: didDocServices)
             connection.theirDidDoc = theirDidDoc

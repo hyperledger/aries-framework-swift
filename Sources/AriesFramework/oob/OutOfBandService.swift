@@ -100,10 +100,7 @@ public class OutOfBandService {
         return try await outOfBandRepository.findByFingerprint(fingerprint)
     }
     
-    public func findByAttachmentThreadId(_ threadId: String?) async throws -> OutOfBandRecord? {
-        guard let threadId = threadId else {
-            return nil
-        }
+    public func findByAttachmentThreadId(_ threadId: String) async throws -> OutOfBandRecord? {
         return try await outOfBandRepository.findSingleByQuery("""
             {"attach_thread_id": "\(threadId)"}
             """)

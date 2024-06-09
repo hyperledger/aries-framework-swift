@@ -49,7 +49,7 @@ public class MessageReceiver {
                 // a connection-less exchange and recipient is the oob inviter.
                 // To be able to respond to the sender, sender's information should be updated
                 // based on incomming message because the oob inviter created a fake connection.
-                updateConnectionTheirDidDoc(&connection!, senderKey: decryptedMessage.senderKey)
+                try await updateConnectionTheirDidDoc(&connection!, senderKey: decryptedMessage.senderKey)
             }
         }
         return connection
@@ -62,17 +62,19 @@ public class MessageReceiver {
     }
 
     func findConnectionByMessageThreadId(message: AgentMessage) async throws -> ConnectionRecord? {
-        guard let threadId = message.thread?.threadId else {
-            return nil
-        }
+        let threadId = message.threadId
         guard let oobRecord = try await agent.outOfBandService.findByAttachmentThreadId(threadId) else {
             return nil
         }
-        let connection = try await agent.connectionService.findByInvitationKey(oobRecord.outOfBandInvitation.invitationKey()!)
+        guard let invitationKey = try oobRecord.outOfBandInvitation.invitationKey() else {
+            return nil
+        }
+        let connection = await agent.connectionService.findByInvitationKey(invitationKey)
         return connection
     }
 
-    func updateConnectionTheirDidDoc(_ connection: inout ConnectionRecord, senderKey: String?) {
+    func updateConnectionTheirDidDoc(_ connection: inout ConnectionRecord, senderKey: String?) async throws {
+        // TODO: get this from the message's service decorator if exists.
         guard let senderKey = senderKey else {
             return
         }
@@ -89,6 +91,7 @@ public class MessageReceiver {
             authentication: []
         )
         connection.theirDidDoc = theirDidDoc
+        try await agent.connectionRepository.update(connection)
     }
 
     static func decodeAgentMessage(plaintextMessage: String) throws -> AgentMessage {

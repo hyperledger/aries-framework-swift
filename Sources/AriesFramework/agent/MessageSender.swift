@@ -104,12 +104,6 @@ public class MessageSender {
             }
         }
 
-        if connection.role == ConnectionRole.Inviter {
-            if let invitation = connection.outOfBandInvitation {
-                return try invitation.services.compactMap { try $0.asDidDocService() }
-            }
-        }
-
         return []
     }
 
