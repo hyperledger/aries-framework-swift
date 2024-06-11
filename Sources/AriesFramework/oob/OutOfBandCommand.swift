@@ -112,9 +112,6 @@ public class OutOfBandCommand {
             state: .AwaitResponse,
             reusable: multiUseInvitation,
             autoAcceptConnection: autoAcceptConnection)
-        if let message = messages.first, handshake == false {
-            outOfBandRecord.tags = ["attach_thread_id": message.threadId]
-        }
 
         try await self.agent.outOfBandRepository.save(outOfBandRecord)
         agent.agentDelegate?.onOutOfBandStateChanged(outOfBandRecord: outOfBandRecord)

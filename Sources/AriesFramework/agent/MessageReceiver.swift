@@ -62,8 +62,10 @@ public class MessageReceiver {
     }
 
     func findConnectionByMessageThreadId(message: AgentMessage) async throws -> ConnectionRecord? {
-        let threadId = message.threadId
-        guard let oobRecord = try await agent.outOfBandService.findByAttachmentThreadId(threadId) else {
+        guard let pthId = message.thread?.parentThreadId else {
+            return nil
+        }
+        guard let oobRecord = try await agent.outOfBandService.findByInvitationId(pthId) else {
             return nil
         }
         guard let invitationKey = try oobRecord.outOfBandInvitation.invitationKey() else {
