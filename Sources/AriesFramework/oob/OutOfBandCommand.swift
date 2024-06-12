@@ -1,4 +1,3 @@
-// swiftlint:disable cyclomatic_complexity
 
 import Foundation
 import os
@@ -87,9 +86,25 @@ public class OutOfBandCommand {
             try messages.forEach { message in
                 try outOfBandInvitation.addRequest(message: message)
             }
+            if handshake == false {
+                // For connection-less exchange. Create a fake connection in inviter side.
+                let connectionRecord = try await agent.connectionService.createConnection(
+                    role: .Inviter,
+                    state: .Complete,
+                    outOfBandInvitation: outOfBandInvitation,
+                    alias: nil,
+                    routing: routing,
+                    theirLabel: nil,
+                    autoAcceptConnection: true,
+                    multiUseInvitation: false,
+                    tags: nil,
+                    imageUrl: nil,
+                    threadId: nil)
+                try await agent.connectionRepository.save(connectionRecord)
+            }
         }
 
-        let outOfBandRecord = OutOfBandRecord(
+        var outOfBandRecord = OutOfBandRecord(
             id: OutOfBandRecord.generateId(),
             createdAt: Date(),
             outOfBandInvitation: outOfBandInvitation,
@@ -231,63 +246,59 @@ public class OutOfBandCommand {
 
         let messages = try outOfBandRecord.outOfBandInvitation.getRequests()
         let handshakeProtocols = outOfBandRecord.outOfBandInvitation.handshakeProtocols ?? []
-        if handshakeProtocols.count > 0 {
-            var connectionRecord: ConnectionRecord?
-            if existingConnection != nil && config?.reuseConnection ?? true {
-                if messages.count > 0 {
-                    logger.debug("Skip handshake and reuse existing connection \(existingConnection!.id)")
+
+        var connectionRecord: ConnectionRecord?
+        if existingConnection != nil && config?.reuseConnection ?? true {
+            if messages.count > 0 {
+                logger.debug("Skip handshake and reuse existing connection \(existingConnection!.id)")
+                connectionRecord = existingConnection
+            } else {
+                logger.debug("Start handshake to reuse connection.")
+                let isHandshakeReuseSuccessful = try await handleHandshakeReuse(outOfBandRecord: outOfBandRecord, connectionRecord: existingConnection!)
+                if isHandshakeReuseSuccessful {
                     connectionRecord = existingConnection
                 } else {
-                    logger.debug("Start handshake to reuse connection.")
-                    let isHandshakeReuseSuccessful = try await handleHandshakeReuse(outOfBandRecord: outOfBandRecord, connectionRecord: existingConnection!)
-                    if isHandshakeReuseSuccessful {
-                        connectionRecord = existingConnection
-                    } else {
-                        logger.warning("Handshake reuse failed. Not using existing connection \(existingConnection!.id)")
-                    }
+                    logger.warning("Handshake reuse failed. Not using existing connection \(existingConnection!.id)")
                 }
-            }
-
-            let handshakeProtocol = try selectHandshakeProtocol(handshakeProtocols)
-            if connectionRecord == nil {
-                logger.debug("Creating new connection.")
-                connectionRecord = try await agent.connections.acceptOutOfBandInvitation(
-                    outOfBandRecord: outOfBandRecord,
-                    handshakeProtocol: handshakeProtocol,
-                    config: config)
-            }
-
-            if try await agent.connectionService.fetchState(connectionRecord: connectionRecord!) != .Complete {
-                var result = false
-                if handshakeProtocol == .Connections {
-                    result = try await agent.connectionService.waitForConnection()
-                } else {
-                    result = try await agent.didExchangeService.waitForConnection()
-                }
-                if !result {
-                    throw AriesFrameworkError.frameworkError("Connection timed out.")
-                }
-            }
-            connectionRecord = try await agent.connectionRepository.getById(connectionRecord!.id)
-            if !outOfBandRecord.reusable {
-                try await agent.outOfBandService.updateState(outOfBandRecord: &outOfBandRecord, newState: .Done)
-            }
-
-            if messages.count > 0 {
-                try await processMessages(messages, connectionRecord: connectionRecord!)
-            }
-            return (outOfBandRecord, connectionRecord)
-        } else if messages.count > 0 {
-            logger.debug("Out of band message contains only request messages.")
-            if existingConnection != nil {
-                try await processMessages(messages, connectionRecord: existingConnection!)
-            } else {
-                // TODO: send message to the service endpoint
-                throw AriesFrameworkError.frameworkError("Cannot process request messages. No connection found.")
             }
         }
 
-        return (outOfBandRecord, nil)
+        let handshakeProtocol = try selectHandshakeProtocol(handshakeProtocols)
+        if connectionRecord == nil {
+            logger.debug("Creating new connection.")
+            connectionRecord = try await agent.connections.acceptOutOfBandInvitation(
+                outOfBandRecord: outOfBandRecord,
+                handshakeProtocol: handshakeProtocol,
+                config: config)
+        }
+
+        if handshakeProtocol != nil {
+            try await waitForConnection(connection: connectionRecord!, handshakeProtocol: handshakeProtocol!)
+        }
+        connectionRecord = try await agent.connectionRepository.getById(connectionRecord!.id)
+        if !outOfBandRecord.reusable {
+            try await agent.outOfBandService.updateState(outOfBandRecord: &outOfBandRecord, newState: .Done)
+        }
+
+        if messages.count > 0 {
+            try await processMessages(messages, connectionRecord: connectionRecord!)
+        }
+        return (outOfBandRecord, connectionRecord)
+    }
+
+    private func waitForConnection(connection: ConnectionRecord, handshakeProtocol: HandshakeProtocol) async throws {
+        if try await agent.connectionService.fetchState(connectionRecord: connection) != .Complete {
+            var result = false
+            switch handshakeProtocol {
+            case .Connections:
+                result = try await agent.connectionService.waitForConnection()
+            case .DidExchange10, .DidExchange11:
+                result = try await agent.didExchangeService.waitForConnection()
+            }
+            if !result {
+                throw AriesFrameworkError.frameworkError("Connection timed out.")
+            }
+        }
     }
 
     private func processMessages(_ messages: [String], connectionRecord: ConnectionRecord) async throws {
@@ -351,7 +362,10 @@ public class OutOfBandCommand {
         })
     }
 
-    private func selectHandshakeProtocol(_ handshakeProtocols: [HandshakeProtocol]) throws -> HandshakeProtocol {
+    private func selectHandshakeProtocol(_ handshakeProtocols: [HandshakeProtocol]) throws -> HandshakeProtocol? {
+        if handshakeProtocols.isEmpty {
+            return nil
+        }
         let supportedProtocols = getSupportedHandshakeProtocols()
         if handshakeProtocols.contains(agent.agentConfig.preferredHandshakeProtocol) &&
             supportedProtocols.contains(agent.agentConfig.preferredHandshakeProtocol) {
