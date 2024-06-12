@@ -37,7 +37,7 @@ public class ProofService {
         let message = RequestPresentationMessage(comment: comment, requestPresentationAttachments: [attachment])
 
         let proofRecord = ProofExchangeRecord(
-            connectionId: connectionRecord?.id ?? "proof-request",
+            connectionId: connectionRecord?.id ?? "connectionless-proof-request",
             threadId: message.threadId,
             state: .RequestSent,
             autoAcceptProof: autoAcceptProof)
@@ -132,7 +132,6 @@ public class ProofService {
     */
     public func processPresentation(messageContext: InboundMessageContext) async throws -> ProofExchangeRecord {
         let presentationMessage = try JSONDecoder().decode(PresentationMessage.self, from: Data(messageContext.plaintextMessage.utf8))
-        let connection = try messageContext.assertReadyConnection()
 
         var proofRecord = try await agent.proofRepository.getByThreadAndConnectionId(
             threadId: presentationMessage.threadId,

@@ -70,7 +70,7 @@ public class JwsService {
               let protected = try JSONSerialization.jsonObject(with: protectedJson) as? [String: Any],
               let signature = Data(base64Encoded: firstSig.signature.base64urlToBase64()),
               let jwk = protected["jwk"] else {
-            throw AriesFrameworkError.frameworkError("Invalid Jws: \(firstSig)")
+            throw AriesFrameworkError.frameworkError("Invalid Jws: \(String(describing: firstSig))")
         }
         let jwkData = try JSONSerialization.data(withJSONObject: jwk)
         let jwkString = String(data: jwkData, encoding: .utf8)!

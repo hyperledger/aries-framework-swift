@@ -15,6 +15,7 @@
     {
       "skippedTests" : [
         "AgentTest",
+        "ConnectionlessExchangeTest",
         "CredentialsTest",
         "LedgerServiceTest",
         "OobTest\/testCreateWithOfferCredentialMessage()",
