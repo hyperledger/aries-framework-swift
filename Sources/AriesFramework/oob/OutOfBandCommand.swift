@@ -104,7 +104,7 @@ public class OutOfBandCommand {
             }
         }
 
-        var outOfBandRecord = OutOfBandRecord(
+        let outOfBandRecord = OutOfBandRecord(
             id: OutOfBandRecord.generateId(),
             createdAt: Date(),
             outOfBandInvitation: outOfBandInvitation,

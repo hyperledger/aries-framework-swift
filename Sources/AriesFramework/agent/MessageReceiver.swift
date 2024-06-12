@@ -62,17 +62,12 @@ public class MessageReceiver {
     }
 
     func findConnectionByMessageThreadId(message: AgentMessage) async throws -> ConnectionRecord? {
-        guard let pthId = message.thread?.parentThreadId else {
+        guard let pthId = message.thread?.parentThreadId,
+              let oobRecord = try await agent.outOfBandService.findByInvitationId(pthId),
+              let invitationKey = try oobRecord.outOfBandInvitation.invitationKey() else {
             return nil
         }
-        guard let oobRecord = try await agent.outOfBandService.findByInvitationId(pthId) else {
-            return nil
-        }
-        guard let invitationKey = try oobRecord.outOfBandInvitation.invitationKey() else {
-            return nil
-        }
-        let connection = await agent.connectionService.findByInvitationKey(invitationKey)
-        return connection
+        return await agent.connectionService.findByInvitationKey(invitationKey)
     }
 
     func updateConnectionTheirDidDoc(_ connection: inout ConnectionRecord, senderKey: String?) async throws {
@@ -86,7 +81,7 @@ public class MessageReceiver {
             recipientKeys: [senderKey]
         ).asDidDocService()
 
-        var theirDidDoc = DidDoc(
+        let theirDidDoc = DidDoc(
             id: senderKey,
             publicKey: [],
             service: [service],
