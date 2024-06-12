@@ -26,18 +26,18 @@ public class ProofService {
     */
     public func createRequest(
         proofRequest: ProofRequest,
-        connectionRecord: ConnectionRecord,
+        connectionRecord: ConnectionRecord? = nil,
         comment: String? = nil,
         autoAcceptProof: AutoAcceptProof? = nil
     ) async throws -> (message: RequestPresentationMessage, record: ProofExchangeRecord) {
-        try connectionRecord.assertReady()
+        try connectionRecord?.assertReady()
 
         let proofRequestJson = try JSONEncoder().encode(proofRequest)
         let attachment = Attachment.fromData(proofRequestJson, id: RequestPresentationMessage.INDY_PROOF_REQUEST_ATTACHMENT_ID)
         let message = RequestPresentationMessage(comment: comment, requestPresentationAttachments: [attachment])
 
         let proofRecord = ProofExchangeRecord(
-            connectionId: connectionRecord.id,
+            connectionId: connectionRecord?.id ?? "proof-request",
             threadId: message.threadId,
             state: .RequestSent,
             autoAcceptProof: autoAcceptProof)
@@ -136,7 +136,7 @@ public class ProofService {
 
         var proofRecord = try await agent.proofRepository.getByThreadAndConnectionId(
             threadId: presentationMessage.threadId,
-            connectionId: connection.id)
+            connectionId: nil)
         try proofRecord.assertState(.RequestSent)
 
         let indyProofJson = try presentationMessage.indyProof()

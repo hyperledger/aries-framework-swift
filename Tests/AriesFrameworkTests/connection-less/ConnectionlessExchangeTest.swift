@@ -6,24 +6,21 @@ import XCTest
 class ConnectionlessExchangeTest: XCTestCase {
     var issuerAgent: Agent!
     var holderAgent: Agent!
+    var verifierAgent: Agent!
 
     var credDefId: String!
-    var faberConnection: ConnectionRecord!
-    var aliceConnection: ConnectionRecord!
 
     let credentialPreview = CredentialPreview.fromDictionary([
         "name": "John",
         "age": "99"
     ])
-    let receiveInvitationConfig = ReceiveOutOfBandInvitationConfig(
-        autoAcceptConnection: true)
+    let receiveInvitationConfig = ReceiveOutOfBandInvitationConfig(autoAcceptConnection: true)
 
     override func setUp() async throws {
         try await super.setUp()
 
         var issuerConfig = try TestHelper.getBaseConfig(name: "issuer", useLedgerService: true)
         issuerConfig.autoAcceptCredential = .always
-        issuerConfig.autoAcceptProof = .always
         self.issuerAgent = Agent(agentConfig: issuerConfig, agentDelegate: nil)
 
         var holderConfig = try TestHelper.getBaseConfig(name: "holder", useLedgerService: true)
@@ -31,11 +28,13 @@ class ConnectionlessExchangeTest: XCTestCase {
         holderConfig.autoAcceptProof = .always
         self.holderAgent = Agent(agentConfig: holderConfig, agentDelegate: nil)
 
-        self.issuerAgent.setOutboundTransport(SubjectOutboundTransport(subject: holderAgent))
-        self.holderAgent.setOutboundTransport(SubjectOutboundTransport(subject: issuerAgent))
+        var verifierConfig = try TestHelper.getBaseConfig(name: "verifier", useLedgerService: true)
+        verifierConfig.autoAcceptProof = .always
+        self.verifierAgent = Agent(agentConfig: verifierConfig, agentDelegate: nil)
 
         try await issuerAgent.initialize()
         try await holderAgent.initialize()
+        try await verifierAgent.initialize()
 
         credDefId = try await TestHelper.prepareForIssuance(issuerAgent, ["name", "age"])
     }
@@ -43,22 +42,16 @@ class ConnectionlessExchangeTest: XCTestCase {
     override func tearDown() async throws {
         try await issuerAgent?.reset()
         try await holderAgent?.reset()
+        try await verifierAgent?.reset()
         try await super.tearDown()
     }
 
-    func validateState(for agent: Agent, threadId: String, state: CredentialState) async throws {
-        let record = try await agent.credentialExchangeRepository.getByThreadAndConnectionId(threadId: threadId, connectionId: nil)
-        XCTAssertEqual(record.state, state, "agent=\(agent.agentConfig.label)")
-    }
+    func testConnectionlessExchange() async throws {
+        self.issuerAgent.setOutboundTransport(SubjectOutboundTransport(subject: holderAgent))
+        self.holderAgent.setOutboundTransport(SubjectOutboundTransport(subject: issuerAgent))
 
-    func validateState(for agent: Agent, threadId: String, state: ProofState) async throws {
-        let record = try await agent.proofRepository.getByThreadAndConnectionId(threadId: threadId, connectionId: nil)
-        XCTAssertEqual(record.state, state, "agent=\(agent.agentConfig.label)")
-    }
-
-    func testConnectionlessCredentialExchange() async throws {
         let offerOptions = CreateOfferOptions(
-            connection: faberConnection,
+            connection: nil,
             credentialDefinitionId: credDefId,
             attributes: credentialPreview.attributes,
             comment: "this is credential-offer for you")
@@ -78,31 +71,55 @@ class ConnectionlessExchangeTest: XCTestCase {
             routing: nil)
         let oobInvitation = try await issuerAgent.oob.createInvitation(config: oobConfig)
 
-        var (oob, connection) = try await holderAgent.oob.receiveInvitation(oobInvitation.outOfBandInvitation)
+        let (oob, connection) = try await holderAgent.oob.receiveInvitation(oobInvitation.outOfBandInvitation)
         XCTAssertNotNil(connection)
         XCTAssertEqual(connection?.state, .Complete) // this is a fake connection.
         XCTAssertNotNil(oob)
 
-        (oob, connection) = try await holderAgent.oob.acceptInvitation(outOfBandId: oob.id, config: receiveInvitationConfig)
-        XCTAssertNotNil(connection)
-        XCTAssertNotNil(oob)
-        try await validateState(for: holderAgent, threadId: record.threadId, state: CredentialState.RequestSent)
-
         try await Task.sleep(nanoseconds: UInt64(5 * SECOND))
-
         try await validateState(for: holderAgent, threadId: record.threadId, state: CredentialState.Done)
         try await validateState(for: issuerAgent, threadId: record.threadId, state: CredentialState.Done)
+
+        // credential exchange done.
+
+        self.holderAgent.setOutboundTransport(SubjectOutboundTransport(subject: verifierAgent))
+        self.verifierAgent.setOutboundTransport(SubjectOutboundTransport(subject: holderAgent))
+
+        let proofRequest = try await getProofRequest()
+        let (proofRequestMessage, proofExchangeRecord) = try await verifierAgent.proofService.createRequest(proofRequest: proofRequest)
+        try await validateState(for: verifierAgent, threadId: proofExchangeRecord.threadId, state: ProofState.RequestSent)
+
+        let oobConfigForProofExchange = CreateOutOfBandInvitationConfig(
+            label: "verifier-to-holder-invitation",
+            alias: "verifier-to-holder-invitation",
+            imageUrl: nil,
+            goalCode: nil,
+            goal: nil,
+            handshake: false,
+            messages: [proofRequestMessage],
+            multiUseInvitation: false,
+            autoAcceptConnection: true,
+            routing: nil)
+        let oobInvitationForProofExchange = try await verifierAgent.oob.createInvitation(config: oobConfigForProofExchange)
+
+        let (oobForProofExchange, connectionForProofExchange) = try await holderAgent.oob.receiveInvitation(oobInvitationForProofExchange.outOfBandInvitation)
+        XCTAssertNotNil(connectionForProofExchange)
+        XCTAssertEqual(connectionForProofExchange?.state, .Complete) // this is a fake connection.
+        XCTAssertNotNil(oobForProofExchange)
+
+        try await Task.sleep(nanoseconds: UInt64(5 * SECOND))
+        try await validateState(for: holderAgent, threadId: proofExchangeRecord.threadId, state: ProofState.Done)
+        try await validateState(for: verifierAgent, threadId: proofExchangeRecord.threadId, state: ProofState.Done)
     }
 
-    func validateProofExchangeRecordState(for agent: Agent, threadId: String, state: ProofState) async throws {
-        let record = try await agent.proofRepository.getByThreadAndConnectionId(threadId: threadId, connectionId: nil)
+    func validateState(for agent: Agent, threadId: String, state: CredentialState) async throws {
+        let record = try await agent.credentialExchangeRepository.getByThreadAndConnectionId(threadId: threadId, connectionId: nil)
         XCTAssertEqual(record.state, state, "agent=\(agent.agentConfig.label)")
     }
 
-    // Note: this test should be run after credential exchange is done.
-    func testConnectionlessProofExchange() async throws {
-        let proofRequest = try await getProofRequest()
-        // TODO not implemented yet.
+    func validateState(for agent: Agent, threadId: String, state: ProofState) async throws {
+        let record = try await agent.proofRepository.getByThreadAndConnectionId(threadId: threadId, connectionId: nil)
+        XCTAssertEqual(record.state, state, "agent=\(agent.agentConfig.label)")
     }
 
     func getProofRequest() async throws -> ProofRequest {
