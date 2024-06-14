@@ -123,12 +123,13 @@ public class ConnectionCommand {
             autoAcceptConnection: false, alias: config?.alias)
         let message: OutboundMessage
         if let handshakeProtocol = handshakeProtocol {
-            if handshakeProtocol == .Connections {
+            switch handshakeProtocol {
+            case .Connections:
                 message = try await agent.connectionService.createRequest(connectionId: connection.id,
                     label: config?.label,
                     imageUrl: config?.imageUrl,
                     autoAcceptConnection: config?.autoAcceptConnection)
-            } else {
+            case .DidExchange10, .DidExchange11:
                 message = try await agent.didExchangeService.createRequest(connectionId: connection.id,
                     label: config?.label,
                     autoAcceptConnection: config?.autoAcceptConnection)
