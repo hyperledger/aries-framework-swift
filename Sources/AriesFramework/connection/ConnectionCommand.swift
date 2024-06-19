@@ -120,28 +120,27 @@ public class ConnectionCommand {
         handshakeProtocol: HandshakeProtocol?,
         config: ReceiveOutOfBandInvitationConfig?) async throws -> ConnectionRecord {
         var connection = try await receiveInvitation(outOfBandInvitation: outOfBandRecord.outOfBandInvitation,
-            autoAcceptConnection: false, alias: config?.alias)
-        let message: OutboundMessage
-        if let handshakeProtocol = handshakeProtocol {
-            if handshakeProtocol == .Connections {
-                message = try await agent.connectionService.createRequest(connectionId: connection.id,
-                    label: config?.label,
-                    imageUrl: config?.imageUrl,
-                    autoAcceptConnection: config?.autoAcceptConnection)
-            } else {
-                message = try await agent.didExchangeService.createRequest(connectionId: connection.id,
-                    label: config?.label,
-                    autoAcceptConnection: config?.autoAcceptConnection)
-            }
-            try await agent.messageSender.send(message: message)
-            return message.connection
-        } else {
+                                                     autoAcceptConnection: false, alias: config?.alias)
+        guard let handshakeProtocol = handshakeProtocol else {
             let didDocServices = try outOfBandRecord.outOfBandInvitation.services.compactMap { try $0.asDidDocService() }
-            let theirDidDoc = try connection.theirDidDoc ?? DidDoc(from: didDocServices)
-            connection.theirDidDoc = theirDidDoc
+            connection.theirDidDoc = try connection.theirDidDoc ?? DidDoc(from: didDocServices)
             try await agent.connectionService.updateState(connectionRecord: &connection, newState: .Complete)
             return connection
-
         }
+
+        let message: OutboundMessage
+        switch handshakeProtocol {
+        case .Connections:
+            message = try await agent.connectionService.createRequest(connectionId: connection.id,
+                label: config?.label,
+                imageUrl: config?.imageUrl,
+                autoAcceptConnection: config?.autoAcceptConnection)
+        case .DidExchange10, .DidExchange11:
+            message = try await agent.didExchangeService.createRequest(connectionId: connection.id,
+                label: config?.label,
+                autoAcceptConnection: config?.autoAcceptConnection)
+        }
+        try await agent.messageSender.send(message: message)
+        return message.connection
     }
 }

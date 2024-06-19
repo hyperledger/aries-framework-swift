@@ -13,7 +13,6 @@ class ConnectionlessExchangeTest: XCTestCase {
         "name": "John",
         "age": "99"
     ])
-    let receiveInvitationConfig = ReceiveOutOfBandInvitationConfig(autoAcceptConnection: true)
 
     override func setUp() async throws {
         try await super.setUp()
@@ -50,7 +49,6 @@ class ConnectionlessExchangeTest: XCTestCase {
         self.holderAgent.setOutboundTransport(SubjectOutboundTransport(subject: issuerAgent))
 
         let offerOptions = CreateOfferOptions(
-            connection: nil,
             credentialDefinitionId: credDefId,
             attributes: credentialPreview.attributes,
             comment: "this is credential-offer for you")
@@ -60,19 +58,15 @@ class ConnectionlessExchangeTest: XCTestCase {
         let oobConfig = CreateOutOfBandInvitationConfig(
             label: "issuer-to-holder-invitation",
             alias: "issuer-to-holder-invitation",
-            imageUrl: nil,
-            goalCode: nil,
-            goal: nil,
             handshake: false,
             messages: [message],
             multiUseInvitation: false,
-            autoAcceptConnection: true,
-            routing: nil)
+            autoAcceptConnection: true)
         let oobInvitation = try await issuerAgent.oob.createInvitation(config: oobConfig)
 
         let (oob, connection) = try await holderAgent.oob.receiveInvitation(oobInvitation.outOfBandInvitation)
         XCTAssertNotNil(connection)
-        XCTAssertEqual(connection?.state, .Complete) // this is a fake connection.
+        XCTAssertEqual(connection?.state, .Complete)
         XCTAssertNotNil(oob)
 
         try await Task.sleep(nanoseconds: UInt64(5 * SECOND))
@@ -91,19 +85,15 @@ class ConnectionlessExchangeTest: XCTestCase {
         let oobConfigForProofExchange = CreateOutOfBandInvitationConfig(
             label: "verifier-to-holder-invitation",
             alias: "verifier-to-holder-invitation",
-            imageUrl: nil,
-            goalCode: nil,
-            goal: nil,
             handshake: false,
             messages: [proofRequestMessage],
             multiUseInvitation: false,
-            autoAcceptConnection: true,
-            routing: nil)
+            autoAcceptConnection: true)
         let oobInvitationForProofExchange = try await verifierAgent.oob.createInvitation(config: oobConfigForProofExchange)
 
         let (oobForProofExchange, connectionForProofExchange) = try await holderAgent.oob.receiveInvitation(oobInvitationForProofExchange.outOfBandInvitation)
         XCTAssertNotNil(connectionForProofExchange)
-        XCTAssertEqual(connectionForProofExchange?.state, .Complete) // this is a fake connection.
+        XCTAssertEqual(connectionForProofExchange?.state, .Complete)
         XCTAssertNotNil(oobForProofExchange)
 
         try await Task.sleep(nanoseconds: UInt64(5 * SECOND))
