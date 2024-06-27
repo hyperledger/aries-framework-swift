@@ -7,7 +7,7 @@ import SwiftUI
 import CodeScanner
 
 enum MainMenu: Identifiable {
-    case qrcode, list, loading
+    case qrcode, list, loading, request
     var id: Int {
         hashValue
     }
@@ -32,6 +32,12 @@ struct WalletMainView: View {
                             credentialHandler.menu = .list
                         }) {
                             Text("Credentials")
+                        }
+
+                        Button(action: {
+                            credentialHandler.menu = .request
+                        }) {
+                            Text("Request a proof")
                         }
                     }
                     .navigationTitle("Wallet App")
@@ -61,6 +67,8 @@ struct WalletMainView: View {
                     CodeScannerView(codeTypes: [.qr], completion: QRCodeHandler().handleResult)
                 case .list:
                     CredentialListView()
+                case .request:
+                    RequestProofView()
                 case .loading:
                     Text("Processing ...")
                 }

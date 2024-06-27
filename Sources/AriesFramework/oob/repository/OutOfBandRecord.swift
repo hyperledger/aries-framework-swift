@@ -8,7 +8,7 @@ public struct OutOfBandRecord: BaseRecord {
     var updatedAt: Date?
     public var tags: Tags?
 
-    var outOfBandInvitation: OutOfBandInvitation
+    public var outOfBandInvitation: OutOfBandInvitation
     var role: OutOfBandRole
     var state: OutOfBandState
     var reusable: Bool

@@ -110,4 +110,15 @@ extension CredentialHandler: AgentDelegate {
             self?.showAlert = true
         }
     }
+
+    func createProofInvitation() async throws -> String {
+        let attributes = ["attrbutes1": ProofAttributeInfo(names: ["name", "degree"])]
+        let nonce = try ProofService.generateProofRequestNonce()
+        let proofRequest = ProofRequest(nonce: nonce, requestedAttributes: attributes, requestedPredicates: [:])
+        let (message, _) = try await agent!.proofService.createRequest(proofRequest: proofRequest)
+        let outOfBandRecord = try await agent!.oob.createInvitation(
+            config: CreateOutOfBandInvitationConfig(handshake: false, messages: [message]))
+        let invitation = outOfBandRecord.outOfBandInvitation
+        return try invitation.toUrl(domain: "http://example.com")
+    }
 }

@@ -20,6 +20,7 @@
 		BB90F26828F92DA20066AE87 /* local-genesis.txn in Resources */ = {isa = PBXBuildFile; fileRef = BB90F26628F92DA10066AE87 /* local-genesis.txn */; };
 		BBB509D628ED680700A6405A /* WalletOpener.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBB509D528ED680700A6405A /* WalletOpener.swift */; };
 		BBB509D828ED682000A6405A /* OpenWalletView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBB509D728ED681F00A6405A /* OpenWalletView.swift */; };
+		BBB9FD232C2D4F1B008FD38D /* RequestProofView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBB9FD222C2D4F1B008FD38D /* RequestProofView.swift */; };
 		BBD7B25127181C4300C3FB6C /* QRCodeHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBD7B25027181C4300C3FB6C /* QRCodeHandler.swift */; };
 /* End PBXBuildFile section */
 
@@ -37,6 +38,7 @@
 		BB90F26628F92DA10066AE87 /* local-genesis.txn */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "local-genesis.txn"; sourceTree = "<group>"; };
 		BBB509D528ED680700A6405A /* WalletOpener.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WalletOpener.swift; sourceTree = "<group>"; };
 		BBB509D728ED681F00A6405A /* OpenWalletView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OpenWalletView.swift; sourceTree = "<group>"; };
+		BBB9FD222C2D4F1B008FD38D /* RequestProofView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestProofView.swift; sourceTree = "<group>"; };
 		BBD7B25027181C4300C3FB6C /* QRCodeHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRCodeHandler.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -94,6 +96,7 @@
 				BB5C4680270C1501008D77AE /* WalletMainView.swift */,
 				BBB509D528ED680700A6405A /* WalletOpener.swift */,
 				BBB509D728ED681F00A6405A /* OpenWalletView.swift */,
+				BBB9FD222C2D4F1B008FD38D /* RequestProofView.swift */,
 				BB5C468C270C390E008D77AE /* CredentialListView.swift */,
 				BB5C468E270C4181008D77AE /* CredentialDetailView.swift */,
 				BBD7B25027181C4300C3FB6C /* QRCodeHandler.swift */,
@@ -202,6 +205,7 @@
 			files = (
 				BBB509D828ED682000A6405A /* OpenWalletView.swift in Sources */,
 				BBD7B25127181C4300C3FB6C /* QRCodeHandler.swift in Sources */,
+				BBB9FD232C2D4F1B008FD38D /* RequestProofView.swift in Sources */,
 				BB5C468D270C390E008D77AE /* CredentialListView.swift in Sources */,
 				BB5C4681270C1501008D77AE /* WalletMainView.swift in Sources */,
 				BB5C468F270C4181008D77AE /* CredentialDetailView.swift in Sources */,
