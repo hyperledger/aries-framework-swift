@@ -39,7 +39,10 @@ public class Agent {
     private var _isInitialized = false
 
     var bleInboundTransport: BleInboundTransport!
-    public var isBluetoothOn = false
+    public var isBluetoothOn: Bool {
+        return _isBluetoothOn
+    }
+    private var _isBluetoothOn = false
 
     public init(agentConfig: AgentConfig, agentDelegate: AgentDelegate?) {
         self.agentConfig = agentConfig
@@ -158,23 +161,24 @@ public class Agent {
     /**
      Start the BLE inbound transport. This enables message exchange via Bluetooth.
      Call this before creating a connection invitation.
+     Note that the BLE outbound transport is available regardless of the state of BLE.
     */
     public func startBLE() async throws {
-        if isBluetoothOn {
+        if _isBluetoothOn {
             return
         }
         try await bleInboundTransport.start()
-        isBluetoothOn = true
+        _isBluetoothOn = true
     }
 
     /**
      Stop the BLE inbound transport.
     */
     public func stopBLE() async throws {
-        if !isBluetoothOn {
+        if !_isBluetoothOn {
             return
         }
         try await bleInboundTransport.stop()
-        isBluetoothOn = false
+        _isBluetoothOn = false
     }
 }
