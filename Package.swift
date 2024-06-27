@@ -19,7 +19,8 @@ let package = Package(
         .package(url: "https://github.com/keefertaylor/Base58Swift", exact: "2.1.7"),
         .package(url: "https://github.com/thecatalinstan/Criollo", exact: "1.1.0"),
         .package(url: "https://github.com/groue/Semaphore", exact: "0.0.8"),
-        .package(url: "https://github.com/beatt83/peerdid-swift", exact: "3.0.0")
+        .package(url: "https://github.com/beatt83/peerdid-swift", exact: "3.0.0"),
+        .package(path: "../BlueSwift")
     ],
     targets: [
         .target(
@@ -32,11 +33,12 @@ let package = Package(
                 .product(name: "PeerDID", package: "peerdid-swift"),
                 "CollectionConcurrencyKit",
                 "Base58Swift",
-                "Semaphore"
+                "Semaphore",
+                "BlueSwift"
             ]),
         .testTarget(
             name: "AriesFrameworkTests",
-            dependencies: ["AriesFramework", "Criollo"],
+            dependencies: ["AriesFramework", "Criollo", "BlueSwift"],
             resources: [
                 .copy("resources/local-genesis.txn"),
                 .copy("resources/bcovrin-genesis.txn")

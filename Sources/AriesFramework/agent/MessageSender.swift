@@ -7,12 +7,14 @@ public class MessageSender {
     var defaultOutboundTransport: OutboundTransport?
     let httpOutboundTransport: HttpOutboundTransport
     let wsOutboundTransport: WsOutboundTransport
+    let bleOutboundTransport: BleOutboundTransport
     let logger = Logger(subsystem: "AriesFramework", category: "MessageSender")
 
     public init(agent: Agent) {
         self.agent = agent
         self.httpOutboundTransport = HttpOutboundTransport(agent)
         self.wsOutboundTransport = WsOutboundTransport(agent)
+        self.bleOutboundTransport = BleOutboundTransport(agent)
     }
 
     public func setOutboundTransport(_ outboundTransport: OutboundTransport) {
@@ -26,6 +28,8 @@ public class MessageSender {
             return httpOutboundTransport
         } else if endpoint.hasPrefix("ws://") || endpoint.hasPrefix("wss://") {
             return wsOutboundTransport
+        } else if endpoint.hasPrefix("ble://") {
+            return bleOutboundTransport
         } else {
             return nil
         }
@@ -69,7 +73,7 @@ public class MessageSender {
             }
             logger.debug("Send outbound message of type \(agentMessage.type) to endpoint \(service.serviceEndpoint)")
             if endpointPrefix == nil && outboundTransportForEndpoint(service.serviceEndpoint) == nil {
-                logger.debug("endpoint is not supported")
+                logger.debug("Endpoint is not supported")
                 continue
             }
             do {
