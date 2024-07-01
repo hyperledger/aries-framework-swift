@@ -50,6 +50,7 @@ public class BleInboundTransport: InboundTransport {
     public func stop() async throws {
         uuid = ""
         advertisement.stopAdvertising()
+        logger.debug("BLE advertisement stoped")
     }
 
     public func endpoint(domain: String = "aries/endpoint") throws -> String {

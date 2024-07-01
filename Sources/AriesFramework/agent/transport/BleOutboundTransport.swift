@@ -20,6 +20,8 @@ public class BleOutboundTransport: OutboundTransport {
         let configuration = try Configuration(services: [service], advertisement: uuid)
         let peripheral = Peripheral(configuration: configuration)
 
+        // TODO: timeout
+        // TODO: handle SWIFT TASK CONTINUATION MISUSE error
         let connectionError = await withCheckedContinuation({ continuation in
             central.connect(peripheral) {  error in
                 continuation.resume(returning: error)

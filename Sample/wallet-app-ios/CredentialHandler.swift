@@ -88,7 +88,7 @@ extension CredentialHandler: AgentDelegate {
                 _ = try await agent!.proofs.acceptRequest(proofRecordId: proofRecordId, requestedCredentials: requestedCredentials)
             } catch {
                 menu = nil
-                showSimpleAlert(message: "Failed to present proof")
+                showSimpleAlert(message: "Failed to present proof: \(error)")
                 print(error)
             }
         }
