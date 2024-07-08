@@ -37,6 +37,12 @@ extension CredentialHandler: AgentDelegate {
         } else if proofRecord.state == .Done {
             menu = nil
             showSimpleAlert(message: "Proof done")
+        } else if proofRecord.state == .PresentationReceived {
+            menu = nil
+            showSimpleAlert(message: "Proof.isVerified: \(proofRecord.isVerified!)")
+        } else if proofRecord.state == .PresentationSent {
+            menu = nil
+            showSimpleAlert(message: "Proof sent")
         }
     }
 }
