@@ -7,6 +7,7 @@ public class BleInboundTransport: InboundTransport {
     let logger = Logger(subsystem: "AriesFramework", category: "BleInboundTransport")
     let agent: Agent
     let advertisement = BluetoothAdvertisement.shared
+    var receivedMessage = Data()
     var uuid = ""
     /// The UUID used for BLE service and characteristic
     public var identifier: String {
@@ -37,9 +38,14 @@ public class BleInboundTransport: InboundTransport {
         advertisement.writeRequestCallback = { [weak self] characteristic, data in
             guard let data = data else { return }
             do {
-                let encryptedMessage = try JSONDecoder().decode(EncryptedMessage.self, from: data)
-                Task { [weak self] in
-                    try await self?.agent.receiveMessage(encryptedMessage)
+                if String(data: data, encoding: .utf8) == BleOutboundTransport.EOF && self != nil {
+                    let encryptedMessage = try JSONDecoder().decode(EncryptedMessage.self, from: self!.receivedMessage)
+                    Task { [weak self] in
+                        try await self?.agent.receiveMessage(encryptedMessage)
+                    }
+                    self?.receivedMessage = Data()
+                } else {
+                    self?.receivedMessage.append(data)
                 }
             } catch {
                 self?.logger.error("Error receiving message via BLE: \(error)")

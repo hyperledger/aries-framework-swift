@@ -20,6 +20,7 @@ let package = Package(
         .package(url: "https://github.com/thecatalinstan/Criollo", exact: "1.1.0"),
         .package(url: "https://github.com/groue/Semaphore", exact: "0.0.8"),
         .package(url: "https://github.com/beatt83/peerdid-swift", exact: "3.0.0"),
+        .package(url: "https://github.com/apple/swift-algorithms", from: "1.2.0"),
         .package(path: "../BlueSwift")
     ],
     targets: [
@@ -31,6 +32,7 @@ let package = Package(
                 .product(name: "IndyVdr", package: "aries-uniffi-wrappers"),
                 .product(name: "WebSockets", package: "concurrent-ws"),
                 .product(name: "PeerDID", package: "peerdid-swift"),
+                .product(name: "Algorithms", package: "swift-algorithms"),
                 "CollectionConcurrencyKit",
                 "Base58Swift",
                 "Semaphore",
