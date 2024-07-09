@@ -13,7 +13,7 @@ Aries Framework Swift supports most of [AIP 1.0](https://github.com/hyperledger/
 - ✅ ([RFC 0036](https://github.com/hyperledger/aries-rfcs/blob/master/features/0036-issue-credential/README.md)) Issue Credential Protocol
 - ✅ ([RFC 0037](https://github.com/hyperledger/aries-rfcs/tree/master/features/0037-present-proof/README.md)) Present Proof Protocol
   - Does not implement alternate begining (Prover begins with proposal)
-- ✅ HTTP & WebSocket Transport
+- ✅ HTTP, WebSocket and Bluetooth Transport
 - ✅ ([RFC 0434](https://github.com/hyperledger/aries-rfcs/blob/main/features/0434-outofband/README.md)) Out of Band Protocol (AIP 2.0)
 - ✅ ([RFC 0035](https://github.com/hyperledger/aries-rfcs/blob/main/features/0035-report-problem/README.md)) Report Problem Protocol
 - ✅ ([RFC 0023](https://github.com/hyperledger/aries-rfcs/tree/main/features/0023-did-exchange)) DID Exchange Protocol (AIP 2.0)
@@ -28,7 +28,7 @@ Aries Framework Swift requires iOS 15.0+ and distributed as a Swift package.
 Add a dependency to your `Package.swift` file:
 ```swift
 dependencies: [
-    .package(url: "https://github.com/hyperledger/aries-framework-swift", from: "2.3.0")
+    .package(url: "https://github.com/hyperledger/aries-framework-swift", from: "2.5.0")
 ]
 ```
 
@@ -139,6 +139,27 @@ Another way to handle those requests is to implement your own `MessageHandler` c
     let messageHandler = MyOfferCredentialHandler()
     agent.dispatcher.registerHandler(handler: messageHandler)
 ```
+
+## Bluetooth support
+
+Aries Framework Swift supports phone to phone communication over Bluetooth.
+You will need to add `NSBluetoothAlwaysUsageDescription` key to the info.plist of your app to use Bluetooth.
+
+### How to use
+
+Verifier side:
+1. Call `try await agent.startBLE()` to create an endpoint over BLE. The endpoint has the form of "ble://aries/endpoint?uuid={uuid}".
+2. Create an oob-invitation and create a QR code with the invitation url. This invitation will use the endpoint created above even though the agent has a mediator connection. You should create an oob-invitation attaching a proof request message without handshake option. This allows the prover sends the proof directly to the verifier without preparing any endpoint.
+```swift
+let oob = try await agent!.oob.createInvitation(config: CreateOutOfBandInvitationConfig(handshake: false, messages: [message]))
+let invitationUrl = oob.outOfBandInvitation.toUrl(domain: "http://example.com")
+```
+3. Call `try? await agent.stopBLE()` after you finish verification.
+
+Prover side:
+- There is nothing you need to do to communicate over BLE on prover side. The agent will recognize the `ble://` scheme and connect to the verifier's device over BLE. The connection will be closed automatically after the message is sent.
+
+The sample app has sample codes that demonstrates proof exchange over Bluetooth.
 
 ## Sample App
 

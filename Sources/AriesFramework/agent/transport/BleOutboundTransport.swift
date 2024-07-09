@@ -30,7 +30,7 @@ public class BleOutboundTransport: OutboundTransport {
             bleWaiter.finish()
         }
         let success = try await bleWaiter.wait()
-        validateConnection(success: success, connectionError: connectionError)
+        try validateConnection(success: success, connectionError: connectionError)
 
         try await writeTo(peripheral: peripheral, characteristic: characteristic, payload: try JSONEncoder().encode(package.payload))
         central.disconnect(peripheral)
@@ -48,7 +48,7 @@ public class BleOutboundTransport: OutboundTransport {
                 bleWaiter.finish()
             }
             let success = try await bleWaiter.wait()
-            validateWrite(success: success, sendError: sendError)
+            try validateWrite(success: success, sendError: sendError)
         }
 
         let command = Command.utf8String(BleOutboundTransport.EOF)
@@ -58,7 +58,7 @@ public class BleOutboundTransport: OutboundTransport {
             bleWaiter.finish()
         }
         let success = try await bleWaiter.wait()
-        validateWrite(success: success, sendError: sendError)
+        try validateWrite(success: success, sendError: sendError)
     }
 
     func validateWrite(success: Bool, sendError: Error?) throws {

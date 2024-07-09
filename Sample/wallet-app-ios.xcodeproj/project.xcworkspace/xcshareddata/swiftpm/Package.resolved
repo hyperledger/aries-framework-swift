@@ -28,6 +28,15 @@
       }
     },
     {
+      "identity" : "blueswift",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/conanoc/BlueSwift",
+      "state" : {
+        "revision" : "5c9cc238396061bf7f3d6056dc8fdfe060a1add3",
+        "version" : "1.1.7"
+      }
+    },
+    {
       "identity" : "cocoaasyncsocket",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/robbiehanson/CocoaAsyncSocket",
