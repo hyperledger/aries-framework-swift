@@ -136,6 +136,10 @@ class MediationRecipient {
     }
 
     func getRoutingInfo() async throws -> ([String], [String]) {
+        if agent.isBluetoothOn {
+            return ([try agent.bleInboundTransport.endpoint()], [])
+        }
+
         let mediator = try await repository.getDefault()
         let endpoints = mediator?.endpoint == nil ? agent.agentConfig.endpoints : [mediator!.endpoint!]
         let routingKeys = mediator?.routingKeys ?? []
@@ -146,7 +150,7 @@ class MediationRecipient {
         let (endpoints, routingKeys) = try await getRoutingInfo()
         let (did, verkey) = try await agent.wallet.createDid()
         let mediator = try await repository.getDefault()
-        if mediator != nil && mediator!.isReady() {
+        if mediator != nil && mediator!.isReady() && !agent.isBluetoothOn {
             try await keylistUpdate(mediator: mediator!, verkey: verkey)
         }
 

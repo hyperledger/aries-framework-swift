@@ -13,7 +13,7 @@ class QRCodeHandler {
         Task {
             do {
                 let (_, connection) = try await agent!.oob.receiveInvitationFromUrl(url)
-                await credentialHandler.showSimpleAlert(message: "Connected with \(connection?.theirLabel ?? "unknown agent")")
+                print("Connected with \(connection?.theirLabel ?? "unknown agent")")
             } catch {
                 print(error)
                 await credentialHandler.reportError()

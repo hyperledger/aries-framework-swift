@@ -19,7 +19,9 @@ let package = Package(
         .package(url: "https://github.com/keefertaylor/Base58Swift", exact: "2.1.7"),
         .package(url: "https://github.com/thecatalinstan/Criollo", exact: "1.1.0"),
         .package(url: "https://github.com/groue/Semaphore", exact: "0.0.8"),
-        .package(url: "https://github.com/beatt83/peerdid-swift", exact: "3.0.0")
+        .package(url: "https://github.com/beatt83/peerdid-swift", exact: "3.0.0"),
+        .package(url: "https://github.com/apple/swift-algorithms", exact: "1.2.0"),
+        .package(url: "https://github.com/conanoc/BlueSwift", exact: "1.1.7")
     ],
     targets: [
         .target(
@@ -30,9 +32,11 @@ let package = Package(
                 .product(name: "IndyVdr", package: "aries-uniffi-wrappers"),
                 .product(name: "WebSockets", package: "concurrent-ws"),
                 .product(name: "PeerDID", package: "peerdid-swift"),
+                .product(name: "Algorithms", package: "swift-algorithms"),
                 "CollectionConcurrencyKit",
                 "Base58Swift",
-                "Semaphore"
+                "Semaphore",
+                "BlueSwift"
             ]),
         .testTarget(
             name: "AriesFrameworkTests",

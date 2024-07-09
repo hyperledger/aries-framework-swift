@@ -20,6 +20,19 @@ public enum OutOfBandState: String, Codable {
 }
 
 public struct CreateOutOfBandInvitationConfig {
+    public init(label: String? = nil, alias: String? = nil, imageUrl: String? = nil, goalCode: String? = nil, goal: String? = nil, handshake: Bool? = nil, messages: [AgentMessage]? = nil, multiUseInvitation: Bool? = nil, autoAcceptConnection: Bool? = nil, routing: Routing? = nil) {
+        self.label = label
+        self.alias = alias
+        self.imageUrl = imageUrl
+        self.goalCode = goalCode
+        self.goal = goal
+        self.handshake = handshake
+        self.messages = messages
+        self.multiUseInvitation = multiUseInvitation
+        self.autoAcceptConnection = autoAcceptConnection
+        self.routing = routing
+    }
+
     public var label: String?
     public var alias: String?
     public var imageUrl: String?
@@ -33,6 +46,16 @@ public struct CreateOutOfBandInvitationConfig {
 }
 
 public struct ReceiveOutOfBandInvitationConfig {
+    public init(label: String? = nil, alias: String? = nil, imageUrl: String? = nil, autoAcceptInvitation: Bool? = nil, autoAcceptConnection: Bool? = nil, reuseConnection: Bool? = nil, routing: Routing? = nil) {
+        self.label = label
+        self.alias = alias
+        self.imageUrl = imageUrl
+        self.autoAcceptInvitation = autoAcceptInvitation
+        self.autoAcceptConnection = autoAcceptConnection
+        self.reuseConnection = reuseConnection
+        self.routing = routing
+    }
+
     public var label: String?
     public var alias: String?
     public var imageUrl: String?

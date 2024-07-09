@@ -30,7 +30,9 @@ public class InvitationUrlParser {
     }
 
     static func invitationFromShortUrl(_ url: String) async throws -> (OutOfBandInvitation?, ConnectionInvitationMessage?) {
-        let url = URL(string: url)!
+        guard let url = URL(string: url) else {
+            throw AriesFrameworkError.frameworkError("Invalid url: \(url)")
+        }
         let (data, response) = try await URLSession.shared.data(for: URLRequest(url: url))
         if response.mimeType != "application/json" {
             throw AriesFrameworkError.frameworkError("Invalid content-type from short url: \(String(describing: response.mimeType))")

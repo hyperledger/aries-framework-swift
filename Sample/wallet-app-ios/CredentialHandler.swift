@@ -37,6 +37,12 @@ extension CredentialHandler: AgentDelegate {
         } else if proofRecord.state == .Done {
             menu = nil
             showSimpleAlert(message: "Proof done")
+        } else if proofRecord.state == .PresentationReceived {
+            menu = nil
+            showSimpleAlert(message: "Proof.isVerified: \(proofRecord.isVerified!)")
+        } else if proofRecord.state == .PresentationSent {
+            menu = nil
+            showSimpleAlert(message: "Proof sent")
         }
     }
 }
@@ -88,7 +94,7 @@ extension CredentialHandler: AgentDelegate {
                 _ = try await agent!.proofs.acceptRequest(proofRecordId: proofRecordId, requestedCredentials: requestedCredentials)
             } catch {
                 menu = nil
-                showSimpleAlert(message: "Failed to present proof")
+                showSimpleAlert(message: "Failed to present proof: \(error)")
                 print(error)
             }
         }
@@ -109,5 +115,16 @@ extension CredentialHandler: AgentDelegate {
             self?.alertMessage = message
             self?.showAlert = true
         }
+    }
+
+    func createProofInvitation() async throws -> String {
+        let attributes = ["attrbutes1": ProofAttributeInfo(names: ["name", "degree"])]
+        let nonce = try ProofService.generateProofRequestNonce()
+        let proofRequest = ProofRequest(nonce: nonce, requestedAttributes: attributes, requestedPredicates: [:])
+        let (message, _) = try await agent!.proofService.createRequest(proofRequest: proofRequest)
+        let outOfBandRecord = try await agent!.oob.createInvitation(
+            config: CreateOutOfBandInvitationConfig(handshake: false, messages: [message]))
+        let invitation = outOfBandRecord.outOfBandInvitation
+        return try invitation.toUrl(domain: "http://example.com")
     }
 }

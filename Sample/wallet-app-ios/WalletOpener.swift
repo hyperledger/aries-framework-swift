@@ -40,7 +40,7 @@ class WalletOpener : ObservableObject {
             autoAcceptProof: .never)
 
         do {
-            agent = Agent(agentConfig: config, agentDelegate: CredentialHandler.shared)
+            agent = Agent(agentConfig: config, agentDelegate: await CredentialHandler.shared)
             try await agent!.initialize()
         } catch {
             print("Cannot initialize agent: \(error)")

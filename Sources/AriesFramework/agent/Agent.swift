@@ -38,6 +38,12 @@ public class Agent {
     public var wallet: Wallet!
     private var _isInitialized = false
 
+    var bleInboundTransport: BleInboundTransport!
+    public var isBluetoothOn: Bool {
+        return _isBluetoothOn
+    }
+    private var _isBluetoothOn = false
+
     public init(agentConfig: AgentConfig, agentDelegate: AgentDelegate?) {
         self.agentConfig = agentConfig
         self.agentDelegate = agentDelegate
@@ -69,6 +75,7 @@ public class Agent {
         self.proofRepository = ProofRepository(agent: self)
         self.proofService = ProofService(agent: self)
         self.proofs = ProofCommand(agent: self, dispatcher: self.dispatcher)
+        self.bleInboundTransport = BleInboundTransport(agent: self)
     }
 
     /**
@@ -149,5 +156,29 @@ public class Agent {
     */
     public static func generateWalletKey() throws -> String {
         return try AskarStoreManager().generateRawStoreKey(seed: nil)
+    }
+
+    /**
+     Start the BLE inbound transport. This enables message exchange via Bluetooth.
+     Call this before creating a connection invitation.
+     Note that the BLE outbound transport is available regardless of the state of BLE.
+    */
+    public func startBLE() async throws {
+        if _isBluetoothOn {
+            return
+        }
+        try await bleInboundTransport.start()
+        _isBluetoothOn = true
+    }
+
+    /**
+     Stop the BLE inbound transport.
+    */
+    public func stopBLE() async throws {
+        if !_isBluetoothOn {
+            return
+        }
+        try await bleInboundTransport.stop()
+        _isBluetoothOn = false
     }
 }

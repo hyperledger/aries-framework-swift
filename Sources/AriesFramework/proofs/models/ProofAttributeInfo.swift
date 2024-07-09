@@ -1,6 +1,13 @@
 import Foundation
 
 public struct ProofAttributeInfo {
+    public init(name: String? = nil, names: [String]? = nil, nonRevoked: RevocationInterval? = nil, restrictions: [AttributeFilter]? = nil) {
+        self.name = name
+        self.names = names
+        self.nonRevoked = nonRevoked
+        self.restrictions = restrictions
+    }
+
     public let name: String?
     public let names: [String]?
     public let nonRevoked: RevocationInterval?
