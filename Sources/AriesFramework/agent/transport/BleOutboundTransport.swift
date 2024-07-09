@@ -25,17 +25,12 @@ public class BleOutboundTransport: OutboundTransport {
 
         let bleWaiter = AsyncWaiter(timeout: 10)
         var connectionError: ConnectionError? = nil
-        central.connect(peripheral) {  error in
+        central.connect(peripheral) { error in
             connectionError = error
             bleWaiter.finish()
         }
         let success = try await bleWaiter.wait()
-        if !success {
-            throw AriesFrameworkError.frameworkError("Timeout waiting for connection to peripheral")
-        }
-        if connectionError != nil {
-            throw AriesFrameworkError.frameworkError("Failed to connect to peripheral: \(String(describing: connectionError))")
-        }
+        validateConnection(success: success, connectionError: connectionError)
 
         try await writeTo(peripheral: peripheral, characteristic: characteristic, payload: try JSONEncoder().encode(package.payload))
         central.disconnect(peripheral)
@@ -53,12 +48,7 @@ public class BleOutboundTransport: OutboundTransport {
                 bleWaiter.finish()
             }
             let success = try await bleWaiter.wait()
-            if !success {
-                throw AriesFrameworkError.frameworkError("Timeout writing to peripheral")
-            }
-            if sendError != nil {
-                throw AriesFrameworkError.frameworkError("Failed to send message to peripheral: \(String(describing: sendError))")
-            }
+            validateWrite(success: success, sendError: sendError)
         }
 
         let command = Command.utf8String(BleOutboundTransport.EOF)
@@ -68,11 +58,24 @@ public class BleOutboundTransport: OutboundTransport {
             bleWaiter.finish()
         }
         let success = try await bleWaiter.wait()
+        validateWrite(success: success, sendError: sendError)
+    }
+
+    func validateWrite(success: Bool, sendError: Error?) throws {
         if !success {
             throw AriesFrameworkError.frameworkError("Timeout writing to peripheral")
         }
         if sendError != nil {
             throw AriesFrameworkError.frameworkError("Failed to send message to peripheral: \(String(describing: sendError))")
+        }
+    }
+
+    func validateConnection(success: Bool, connectionError: ConnectionError?) throws {
+        if !success {
+            throw AriesFrameworkError.frameworkError("Timeout waiting for connection to peripheral")
+        }
+        if connectionError != nil {
+            throw AriesFrameworkError.frameworkError("Failed to connect to peripheral: \(String(describing: connectionError))")
         }
     }
 
