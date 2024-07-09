@@ -32,7 +32,7 @@ public struct CreateOutOfBandInvitationConfig {
         self.autoAcceptConnection = autoAcceptConnection
         self.routing = routing
     }
-    
+
     public var label: String?
     public var alias: String?
     public var imageUrl: String?
@@ -55,7 +55,7 @@ public struct ReceiveOutOfBandInvitationConfig {
         self.reuseConnection = reuseConnection
         self.routing = routing
     }
-    
+
     public var label: String?
     public var alias: String?
     public var imageUrl: String?

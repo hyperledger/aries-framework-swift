@@ -7,7 +7,7 @@ public struct ProofAttributeInfo {
         self.nonRevoked = nonRevoked
         self.restrictions = restrictions
     }
-    
+
     public let name: String?
     public let names: [String]?
     public let nonRevoked: RevocationInterval?

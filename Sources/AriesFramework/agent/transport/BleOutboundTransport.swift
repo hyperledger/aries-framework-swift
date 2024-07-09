@@ -24,7 +24,7 @@ public class BleOutboundTransport: OutboundTransport {
         let peripheral = Peripheral(configuration: configuration)
 
         let bleWaiter = AsyncWaiter(timeout: 10)
-        var connectionError: ConnectionError? = nil
+        var connectionError: ConnectionError?
         central.connect(peripheral) { error in
             connectionError = error
             bleWaiter.finish()
@@ -42,7 +42,7 @@ public class BleOutboundTransport: OutboundTransport {
         let dataChunks = chunks.map { Data($0) }
         for chunk in dataChunks {
             let command = Command.data(chunk)
-            var sendError: Error? = nil
+            var sendError: Error?
             peripheral.write(command: command, characteristic: characteristic) { error in
                 sendError = error
                 bleWaiter.finish()
@@ -52,7 +52,7 @@ public class BleOutboundTransport: OutboundTransport {
         }
 
         let command = Command.utf8String(BleOutboundTransport.EOF)
-        var sendError: Error? = nil
+        var sendError: Error?
         peripheral.write(command: command, characteristic: characteristic) { error in
             sendError = error
             bleWaiter.finish()
