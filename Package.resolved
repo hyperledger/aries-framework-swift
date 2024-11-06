@@ -77,8 +77,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/beatt83/didcore-swift.git",
       "state" : {
-        "revision" : "2503b1690e11b16a0cdc8f492e370bbd9dcbe08b",
-        "version" : "2.0.0"
+        "revision" : "c754409ff0a732870133ad77d313c1c79e4d29f2",
+        "version" : "2.0.2"
       }
     },
     {
@@ -86,8 +86,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/beatt83/peerdid-swift",
       "state" : {
-        "revision" : "4e82ff42aa2b53b2d361f482b607763d79ccfdbb",
-        "version" : "3.0.0"
+        "revision" : "22bc7cfdf5cd5c5f846c641ba403822117829c82",
+        "version" : "3.0.3"
       }
     },
     {
