@@ -131,8 +131,12 @@ public class Wallet {
         let did = Base58.base58Encode([UInt8](publicKey[0..<16]))
         do {
             try await session!.insertKey(name: verkey, key: key, metadata: nil, tags: nil, expiryMs: nil)
-        } catch {
-            logger.error("createDid: Ignoring error. Failed to insert key: \(error)")
+        } catch let error as Askar.ErrorCode {
+            if error == .Duplicate(message: "Duplicate entry") {
+                logger.error("createDid: Ignoring error since key already exists. verkey=\(verkey)")
+            } else {
+                throw error
+            }
         }
         logger.debug("Created DID \(did) with verkey \(verkey)")
 
