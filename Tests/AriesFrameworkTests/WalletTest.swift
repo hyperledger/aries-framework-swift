@@ -32,7 +32,7 @@ class WalletTest: XCTestCase {
         let (_, _) = try await agent.wallet.createDid(seed: "00000000000000000000000000000My1")
         let (_, _) = try await agent.wallet.createDid(seed: "00000000000000000000000000000My1")
     }
-    
+
     func testPackUnpack() async throws {
         let json = """
           {
