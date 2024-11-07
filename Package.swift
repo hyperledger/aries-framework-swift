@@ -16,7 +16,7 @@ let package = Package(
         .package(url: "https://github.com/hyperledger/aries-uniffi-wrappers", exact: "0.2.1"),
         .package(url: "https://github.com/bhsw/concurrent-ws", exact: "0.5.0"),
         .package(url: "https://github.com/JohnSundell/CollectionConcurrencyKit", exact: "0.2.0"),
-        .package(url: "https://github.com/keefertaylor/Base58Swift", exact: "2.1.7"),
+        .package(url: "https://github.com/heckj/Base58Swift", exact: "2.1.15"),
         .package(url: "https://github.com/thecatalinstan/Criollo", exact: "1.1.0"),
         .package(url: "https://github.com/groue/Semaphore", exact: "0.0.8"),
         .package(url: "https://github.com/beatt83/peerdid-swift", exact: "3.0.0"),
